@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Budapest Boys Trip 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-app: #000000;
+            --bg-dark: #09090b;
+            --bg-card: #141417;
+            --bg-card-hover: #1f1f23;
+            --text-main: #ffffff;
+            --text-muted: #71717a;
+            --accent-gold: #f5c518;
+            --accent-sunset: #ff453a;
+            --border-color: #27272a;
+            --hungary-red: #ce1126;
+            --hungary-green: #008751;
+            --safe-bottom: env(safe-area-inset-bottom, 15px);
+            --safe-top: env(safe-area-inset-top, 0px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: calc(85px + var(--safe-bottom)); 
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Hungary Flag Top */
+        .flag-line {
+            display: flex;
+            height: 4px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        .flag-segment { flex: 1; height: 100%; }
+        .flag-red { background-color: var(--hungary-red); }
+        .flag-white { background-color: #ffffff; }
+        .flag-green { background-color: var(--hungary-green); }
+
+        /* Header */
+        .header {
+            padding: calc(15px + var(--safe-top)) 20px 12px;
+            background: var(--bg-dark);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            background: -webkit-linear-gradient(45deg, var(--accent-gold), var(--accent-sunset));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Navigation Buttons */
+        .maps-action-container { padding: 16px 16px 8px; }
+        .btn-maps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--accent-sunset), var(--accent-gold));
+            color: #000;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(255, 69, 58, 0.2);
+            transition: transform 0.1s;
+        }
+        .btn-maps:active { transform: scale(0.97); }
+        .btn-maps i { font-size: 1.6rem; }
+        .btn-maps-text { display: flex; flex-direction: column; align-items: flex-start; }
+        .btn-maps-text strong { font-size: 1.1rem; font-weight: 800; line-height: 1.2; }
+        .btn-maps-text span { font-size: 0.85rem; font-weight: 600; opacity: 0.8; }
+
+        /* Sections */
+        .section {
+            display: none;
+            padding: 8px 16px 16px;
+            animation: fadeUp 0.3s ease-out;
+        }
+        .section.active { display: block; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section-title {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin: 18px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Squad Card List */
+        .squad-list { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color); }
+        .squad-member { display: flex; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--border-color); gap: 12px; }
+        .squad-member:last-child { border-bottom: none; }
+        .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--accent-gold); font-size: 1.1rem; border: 1.5px solid var(--border-color); }
+        .member-info { flex: 1; }
+        .member-name { font-size: 1rem; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        .member-status { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+        .badge { background: rgba(255, 255, 255, 0.08); color: var(--accent-sunset); padding: 2px 6px; border-radius: 8px; font-size: 0.65rem; font-weight: 800; }
+
+        /* Swipeable Wist-je-datjes */
+        .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 8px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; scrollbar-width: none; }
+        .swipe-container::-webkit-scrollbar { display: none; }
+        .fact-card { min-width: 270px; background: linear-gradient(145deg, var(--bg-card), var(--bg-dark)); padding: 16px; border-radius: 16px; scroll-snap-align: center; border: 1px solid var(--border-color); }
+        .fact-card i { color: var(--accent-gold); font-size: 1.3rem; margin-bottom: 8px; }
+        .fact-card h3 { margin-bottom: 6px; font-size: 1.1rem; color: #fff; }
+        .fact-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
+
+        /* Explore Filtering & Grid */
+        .filter-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; scrollbar-width: none; }
+        .filter-container::-webkit-scrollbar { display: none; }
+        .filter-pill { background-color: var(--bg-card); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; border: 1px solid var(--border-color); }
+        .filter-pill.active { background: var(--text-main); color: #000; border-color: var(--text-main); }
+        .category-grid { display: flex; flex-direction: column; gap: 12px; }
+        .cat-card { background-color: var(--bg-card); border-radius: 16px; padding: 16px; border: 1px solid var(--border-color); }
+        .cat-card h3 { color: var(--text-main); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; font-size: 1.2rem; }
+        .cat-card h3 i { color: var(--accent-gold); }
+        .cat-card p.cat-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; margin-bottom: 14px; }
+        .recommendation { background: var(--bg-dark); padding: 12px; border-radius: 12px; margin-bottom: 8px; border-left: 3px solid var(--accent-gold); }
+        .recommendation:last-child { margin-bottom: 0; }
+        .recommendation strong { color: #fff; display: block; margin-bottom: 2px; font-size: 0.95rem; }
+        .recommendation em { display: inline-block; font-size: 0.7rem; color: var(--accent-sunset); background: rgba(255, 69, 58, 0.1); padding: 2px 6px; border-radius: 4px; font-style: normal; font-weight: 800; margin-top: 6px; text-transform: uppercase; }
+
+        /* Tools */
+        .tool-box { background-color: var(--bg-card); padding: 20px 16px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 16px; }
+        .tool-box-center { text-align: center; }
+        
+        /* Wheel */
+        .wheel-wrapper { position: relative; width: 260px; height: 260px; margin: 20px auto; }
+        .wheel-pointer { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 24px solid var(--accent-sunset); z-index: 30; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); }
+        .wheel-canvas-container { width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 6px var(--bg-dark), 0 0 20px rgba(245, 197, 24, 0.2); overflow: hidden; transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); }
+        #wheelCanvas { width: 100%; height: 100%; display: block; border-radius: 50%; }
+        .btn-action { background: linear-gradient(135deg, var(--accent-gold), var(--accent-sunset)); color: #000; border: none; padding: 14px 28px; border-radius: 24px; font-family: 'Anton', sans-serif; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 69, 58, 0.2); margin-top: 10px; text-transform: uppercase; display: inline-block; text-decoration: none; }
+        .btn-action:active { transform: scale(0.97); }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+        #wheelResult { margin-top: 15px; font-family: 'Anton', sans-serif; font-size: 1.2rem; min-height: 1.5rem; color: var(--accent-gold); letter-spacing: 0.5px; }
+
+        /* Biertjes Counter (Giant Button) */
+        .beer-counter-display { font-family: 'Anton', sans-serif; font-size: 4rem; color: var(--accent-gold); margin: 10px 0; line-height: 1; }
+        .btn-giant { width: 100%; max-width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(135deg, #1c1c1e, #09090b); border: 4px solid var(--accent-gold); color: var(--text-main); font-size: 3rem; font-family: 'Anton', sans-serif; display: flex; align-items: center; justify-content: center; margin: 20px auto; box-shadow: 0 0 30px rgba(245, 197, 24, 0.2), inset 0 0 20px rgba(0,0,0,0.8); cursor: pointer; transition: all 0.1s; }
+        .btn-giant:active { transform: scale(0.95); background: var(--accent-gold); color: #000; box-shadow: 0 0 50px rgba(245, 197, 24, 0.5); }
+        .btn-reset { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 8px 16px; border-radius: 12px; font-size: 0.8rem; margin-top: 10px; font-weight: bold; cursor: pointer; }
+
+        /* SOS Button */
+        .sos-box { background: rgba(206, 17, 38, 0.1); border: 1px solid var(--hungary-red); padding: 25px 16px; border-radius: 20px; text-align: center; margin-bottom: 16px; }
+        .sos-box h2 { color: var(--hungary-red); margin-bottom: 10px; font-size: 1.8rem; }
+        .sos-box p { color: var(--text-main); font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
+        .btn-sos { background: var(--hungary-red); color: white; border: none; padding: 18px 30px; border-radius: 30px; font-family: 'Anton', sans-serif; font-size: 1.3rem; box-shadow: 0 8px 25px rgba(206, 17, 38, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 10px; animation: pulse 2s infinite; }
+        .btn-sos:active { transform: scale(0.95); }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(206, 17, 38, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(206, 17, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(206, 17, 38, 0); } }
+
+        /* Calculator */
+        .calc-group { display: flex; align-items: center; gap: 12px; margin-top: 15px; background: var(--bg-dark); padding: 10px; border-radius: 14px; border: 1px solid var(--border-color); }
+        .calc-field { flex: 1; }
+        .calc-field label { font-size: 0.7rem; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 2px; text-transform: uppercase; padding-left: 8px; }
+        .calc-input { width: 100%; padding: 8px; border: none; background: transparent; color: white; font-size: 1.4rem; font-weight: 700; outline: none; }
+        .calc-icon { color: var(--accent-sunset); font-size: 1.1rem; padding: 0 4px; }
+
+        /* Survival Lexicon */
+        .survival-box { margin-top: 40px; } /* Added Extra space requested */
+        .survival-item p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; background: var(--bg-dark); padding: 12px; border-radius: 12px; margin-top: 6px; }
+        .dict-container { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+        .dict-row { display: flex; justify-content: space-between; background: var(--bg-dark); padding: 10px 12px; border-radius: 8px; font-size: 0.9rem; border: 1px solid var(--border-color); align-items: center; }
+        .dict-row .nl { color: var(--text-muted); }
+        .dict-row .hu { color: var(--accent-gold); font-weight: 700; text-align: right; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: rgba(20, 20, 23, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 12px 0 calc(12px + var(--safe-bottom)); border-top: 1px solid var(--border-color); z-index: 100; }
+        .nav-item { color: var(--text-muted); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 33%; }
+        .nav-item.active { color: var(--text-main); }
+        .nav-item i { font-size: 1.25rem; transition: transform 0.2s; }
+        .nav-item.active i { color: var(--accent-gold); transform: scale(1.1); }
+        .nav-item span { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px; }
+    </style>
+</head>
+<body>
+
+    <div class="flag-line">
+        <div class="flag-segment flag-red"></div>
+        <div class="flag-segment flag-white"></div>
+        <div class="flag-segment flag-green"></div>
+    </div>
+
+    <div class="header">
+        <h1>BUDAPEST BOYS TRIP 🇭🇺</h1>
+    </div>
+
+    <div class="maps-action-container">
+        <a href="https://maps.app.goo.gl/wRGuk1EN8hDMAX8Q8" target="_blank" class="btn-maps">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <div class="btn-maps-text">
+                <strong>NAVIGEER NAAR HUIS</strong>
+                <span>Király utca 47, Budapest</span>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="margin-left:auto; font-size:1.1rem; opacity:0.6;"></i>
+        </a>
+    </div>
+
+    <!-- TAB 1: HOME -->
+    <div id="tab-home" class="section active">
+        
+        <h2 class="section-title"><i class="fa-solid fa-fire-flame-curved"></i> De Squad & Bijnamen</h2>
+        <div class="squad-list">
+            <div class="squad-member">
+                <div class="avatar">M</div>
+                <div class="member-info">
+                    <div class="member-name">Martijn</div>
+                    <div class="member-status">De Palenrammer // Vinger op de clit en gaan</div>
+                </div>
+            </div>
+            <div class="squad-member">
+                <div class="avatar">N</div>
+                <div class="member-info">
+                    <div class="member-name">Niek Stijvers <span class="badge">Beheerder</span></div>
+                    <div class="member-status">Niek Stijfsel // Toezichthouder erecties</div>
+                </div>
+            </div>
+            <div class="squad-member">
+                <div class="avatar">B</div>
+                <div class="member-info">
+                    <div class="member-name">Bono</div>
+                    <div class="member-status">Seks-Slappeling // Verkoper van natte luchtkastelen</div>
+                </div>
+            </div>
+            <div class="squad-member">
+                <div class="avatar">J</div>
+                <div class="member-info">
+                    <div class="member-name">Jeroen Zaantje</div>
+                    <div class="member-status">Jeroen de Zaadcel // Marktonderzoek in de lokale pussy</div>
+                </div>
+            </div>
+            <div class="squad-member">
+                <div class="avatar">J</div>
+                <div class="member-info">
+                    <div class="member-name">Joep De Jong</div>
+                    <div class="member-status">Joep de Jekker // Slaat alles plat wat losloopt</div>
+                </div>
+            </div>
+            <div class="squad-member">
+                <div class="avatar">O</div>
+                <div class="member-info">
+                    <div class="member-name">Oli4 Smits</div>
+                    <div class="member-status">Duim-in-de-Bips // Gecertificeerd Budasekst-expert</div>
+                </div>
+            </div>
+            <div class="squad-member">
+                <div class="avatar">P</div>
+                <div class="member-info">
+                    <div class="member-name">Peter Pan</div>
+                    <div class="member-status">Peter de Pijper // Manager van de hardcore VIP-ruimte</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" style="margin-top: 24px;"><i class="fa-solid fa-lightbulb"></i> Wist-je-datjes (Swipe ➡️)</h2>
+        <div class="swipe-container">
+            <div class="fact-card">
+                <i class="fa-solid fa-circle-ban"></i>
+                <h3>Niet Klinken!</h3>
+                <p>Klink nooit je glazen als je proost met bier in Hongarije. Een ongeschreven regel sinds 1849 toen Oostenrijkers de executie van Hongaarse generaals vierden door met bier te proosten.</p>
+            </div>
+            <div class="fact-card">
+                <i class="fa-solid fa-whiskey-glass"></i>
+                <h3>De Pálinka Wet</h3>
+                <p>Pálinka is de fruitbrandewijn van minimaal 37.5%. Een shot weigeren als een local het aanbiedt is een directe belediging van de Hongaarse cultuur. Adten dus.</p>
+            </div>
+            <div class="fact-card">
+                <i class="fa-solid fa-house-chimney-crack"></i>
+                <h3>District VII</h3>
+                <p>De Joodse wijk (waar we zitten) heeft de hoogste bar-dichtheid van Europa. Je struikelt letterlijk vanuit je bed een kroeg of club in.</p>
+            </div>
+            <div class="fact-card">
+                <i class="fa-solid fa-city"></i>
+                <h3>Buda vs Pest</h3>
+                <p>Buda (west) is heuvelachtig, rustig en historisch. Pest (oost) is vlak en het absolute epische centrum van het nachtleven. Wij zitten in Pest.</p>
+            </div>
+            <div class="fact-card">
+                <i class="fa-solid fa-droplet"></i>
+                <h3>Antikater Bronnen</h3>
+                <p>Boedapest heeft meer dan 100 thermale bronnen. De badhuizen zijn de ultieme plek om de alcohol, kater en schaamte van de nacht eruit te zweten.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: EXPLORE -->
+    <div id="tab-explore" class="section">
+        <div class="filter-container">
+            <div class="filter-pill active" onclick="filterExplore('all')">Alles</div>
+            <div class="filter-pill" onclick="filterExplore('craft')">Beer & Craft</div>
+            <div class="filter-pill" onclick="filterExplore('ruin')">Ruin Bars</div>
+            <div class="filter-pill" onclick="filterExplore('food')">Food</div>
+            <div class="filter-pill" onclick="filterExplore('culture')">Cultuur</div>
+        </div>
+        
+        <div class="category-grid">
+            
+            <!-- FOOD (6 options) -->
+            <div class="cat-card exp-item" data-cat="food">
+                <h3><i class="fa-solid fa-burger"></i> Burgers & Solide Bodem</h3>
+                <p class="cat-desc">Essentieel voer om de groep overeind te houden. Geen fine dining, maar kneitergoed.</p>
+                <div class="recommendation">
+                    <strong>1. Bamba Marha Burger Bar</strong>
+                    Topklasse burgers, extreem populair, snel klaar. Perfect als fundament.
+                </div>
+                <div class="recommendation">
+                    <strong>2. Karaván Street Food</strong>
+                    Direct naast Szimpla Kert. Een buitensteeg vol foodtrucks. Burgers, traditionele Lángos (gefrituurd deeg) en ijskoud bier.
+                </div>
+                <div class="recommendation">
+                    <strong>3. Tuning Burger</strong>
+                    Legendarisch in de stad. Mega porties goed vlees en ambachtelijke speciaalbieren.
+                </div>
+                <div class="recommendation">
+                    <strong>4. Meatology Budapest</strong>
+                    De place-to-be voor echte carnivoren. Grote steaks, worsten en vleesgerechten.
+                </div>
+                <div class="recommendation">
+                    <strong>5. Központ</strong>
+                    Geweldige bar voor 's avonds laat, met uitstekende bar-bites, pizza's en een rauwe vibe.
+                </div>
+                <div class="recommendation">
+                    <strong>6. Zing Burger</strong>
+                    De betere, betrouwbare lokale burgerketen door de hele stad voor de snelle trek.
+                </div>
+            </div>
+
+            <!-- CRAFT BEER -->
+            <div class="cat-card exp-item" data-cat="craft">
+                <h3><i class="fa-solid fa-beer-mug-empty"></i> Craft Beer Spots</h3>
+                <p class="cat-desc">Als we een dikke NEIPA nodig hebben in plaats van lauw pils.</p>
+                <div class="recommendation">
+                    <strong>Élesztőház</strong>
+                    Oude glasfabriek getransformeerd tot binnentuin met meer dan 20 wisselende lokale kranen.
+                </div>
+                <div class="recommendation">
+                    <strong>Krak'n Town</strong>
+                    Bizarre bar met een steampunk/Victoriaanse vibe. Naast speciaalbier ook geniaal aangekleed.
+                </div>
+                <div class="recommendation">
+                    <strong>Jónás Craft Beer House</strong>
+                    Aan de Donau. Relaxed terras voor de betere middagsessies in de zon.
+                </div>
+                <div class="recommendation">
+                    <strong>First Craft Beer & BBQ</strong>
+                    Prijswinnende brouwerij met extreem goed barbecue vlees erbij.
+                </div>
+            </div>
+
+            <!-- RUIN BARS -->
+            <div class="cat-card exp-item" data-cat="ruin">
+                <h3><i class="fa-solid fa-martini-glass-citrus"></i> Ruin Bars & Clubs</h3>
+                <p class="cat-desc">De iconische, chaotische hotspots in de Joodse Wijk.</p>
+                <div class="recommendation">
+                    <strong>Szimpla Kert</strong>
+                    De moeder aller ruin bars. Bizar doolhof vol neon en retro troep. Verplichte kost.
+                </div>
+                <div class="recommendation">
+                    <strong>Instant-Fogas Complex</strong>
+                    Meerdere barren samengesmolten tot één mega uitgaans-epicentrum. Gas erop tot 06:00.
+                </div>
+                <div class="recommendation">
+                    <strong>Gozsdu Udvar</strong>
+                    Een levendige doorgang vol met clubs, restaurants en kroegen. Altijd druk en gezellig.
+                </div>
+                <div class="recommendation">
+                    <strong>Doboz</strong>
+                    Iets strakker dan een ruin bar, meer een club. Gigantische boom op de binnenplaats met een houten gorilla.
+                </div>
+            </div>
+
+            <!-- CULTURE -->
+            <div class="cat-card exp-item" data-cat="culture">
+                <h3><i class="fa-solid fa-camera"></i> Toeristische Highlights</h3>
+                <p class="cat-desc">Tussen de biertjes door even afvinken.</p>
+                <div class="recommendation">
+                    <strong>Het Parlementsgebouw</strong>
+                    Het goud verlichte symbool aan het water.
+                </div>
+                <div class="recommendation">
+                    <strong>Széchenyi Badhuis</strong>
+                    Het gigantische medicinale bad buiten. Perfect katerherstel.
+                </div>
+                <div class="recommendation">
+                    <strong>De Centrale Markthal (Nagycsarnok)</strong>
+                    De gigantische historische hal vol Hongaarse worsten, paprika's en lokale sfeer.
+                </div>
+                <div class="recommendation">
+                    <strong>Terror Háza (House of Terror)</strong>
+                    Indrukwekkend museum over de nazitijd en het communisme, voor als jullie diepgang zoeken.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: TOOLS -->
+    <div id="tab-tools" class="section">
+        
+        <!-- THE DRAMATIC SOS BUTTON -->
+        <div class="sos-box">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> SOS: RED MIJ!</h2>
+            <p>Ben je om 04:00 's nachts de weg, de rest van de groep en al je waardigheid kwijt geraakt in District VII? Druk op deze knop om Peter, de almachtige manager van deze trip, in blinde paniek een appje te sturen met je locatie.</p>
+            <a href="https://wa.me/31612250217?text=Peter%2C%20ik%20ben%20verdwaald%20en%20ik%20ben%20bang.%20Red%20me%20uit%20deze%20ellende!" target="_blank" class="btn-sos">
+                <i class="fa-brands fa-whatsapp"></i> STUUR NOODKREET
+            </a>
+        </div>
+
+        <!-- Wheel Tool -->
+        <div class="tool-box tool-box-center">
+            <h2><i class="fa-solid fa-dharmachakra"></i> Het Rad des Doods</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Geen discussie. Slingert dat rad en het lot bepaalt wie de lul is.</p>
+            <div class="wheel-wrapper">
+                <div class="wheel-pointer"></div>
+                <div class="wheel-canvas-container" id="wheelContainer">
+                    <canvas id="wheelCanvas" width="520" height="520"></canvas>
+                </div>
+            </div>
+            <button class="btn-action" id="spinBtn" onclick="spinWheel()">Slinger Het Rad</button>
+            <div id="wheelResult"></div>
+        </div>
+
+        <!-- Biertjes Counter (Local Solo Tool) -->
+        <div class="tool-box tool-box-center">
+            <h2><i class="fa-solid fa-beer-mug-empty"></i> Biertjes Counter</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Je eigen administratie. Wordt lokaal bewaard.</p>
+            <div class="beer-counter-display" id="myBeersCount">0</div>
+            <button class="btn-giant" onclick="addBeer()">+1</button>
+            <button class="btn-reset" onclick="resetBeers()">Reset Teller</button>
+        </div>
+
+        <!-- Currency Converter Pro -->
+        <div class="tool-box">
+            <h2><i class="fa-solid fa-calculator"></i> Forint-Fixer Pro</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Exact berekend op basis van: 1 EUR = 361,84 HUF</p>
+            <div class="calc-group">
+                <div class="calc-field">
+                    <label>Euro (€)</label>
+                    <input type="number" id="eurInput" class="calc-input" placeholder="0" oninput="convertCurrency('EUR')">
+                </div>
+                <i class="fa-solid fa-right-left calc-icon"></i>
+                <div class="calc-field">
+                    <label>Forint (HUF)</label>
+                    <input type="number" id="hufInput" class="calc-input" placeholder="0" oninput="convertCurrency('HUF')" style="text-align: right;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Survival Lexicon & Basics -->
+        <div class="tool-box survival-box">
+            <h2><i class="fa-solid fa-shield-halved"></i> Survival Kit</h2>
+            <div class="survival-item">
+                <h4 style="margin-top:15px; color:#fff;"><i class="fa-solid fa-taxi" style="color:var(--accent-sunset);"></i> Vervoer</h4>
+                <p><strong>Cruciaal:</strong> Uber bestaat hier niet! Gebruik uitsluitend de app <strong>Bolt</strong> om een taxi te regelen. Stap nooit zomaar in bij een straattaxi.</p>
+            </div>
+            <div class="survival-item" style="margin-top: 20px;">
+                <h4 style="color:#fff;"><i class="fa-solid fa-comments" style="color:var(--accent-sunset);"></i> Het Officiële Woordenboek</h4>
+                <div class="dict-container">
+                    <div class="dict-row"><span class="nl">Hallo / Doei</span><span class="hu">Szia! (Zie-ja)</span></div>
+                    <div class="dict-row"><span class="nl">Proost!</span><span class="hu">Egészségedre!</span></div>
+                    <div class="dict-row"><span class="nl">Twee bier aub</span><span class="hu">Két sört kérek</span></div>
+                    <div class="dict-row"><span class="nl">Nog een rondje!</span><span class="hu">Még egy kört!</span></div>
+                    <div class="dict-row"><span class="nl">Waar is de wc?</span><span class="hu">Hol van a mosdó?</span></div>
+                    <div class="dict-row"><span class="nl">Ik ben dronken</span><span class="hu">Részeg vagyok</span></div>
+                    <div class="dict-row"><span class="nl">Sorry / Pardon</span><span class="hu">Bocsánat!</span></div>
+                    <div class="dict-row"><span class="nl">Dankjewel</span><span class="hu">Köszönöm</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <div class="nav-item active" id="btn-nav-home" onclick="switchTab('home')">
+            <i class="fa-solid fa-house"></i>
+            <span>HOME</span>
+        </div>
+        <div class="nav-item" id="btn-nav-explore" onclick="switchTab('explore')">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span>EXPLORE</span>
+        </div>
+        <div class="nav-item" id="btn-nav-tools" onclick="switchTab('tools')">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span>TOOLS</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('btn-nav-' + tabId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Calculator
+        const EXACT_RATE = 361.84; 
+        function convertCurrency(source) {
+            const eurInput = document.getElementById('eurInput');
+            const hufInput = document.getElementById('hufInput');
+            if (source === 'EUR') {
+                const eurVal = parseFloat(eurInput.value);
+                if (!isNaN(eurVal)) { hufInput.value = Math.round(eurVal * EXACT_RATE); } else { hufInput.value = ''; }
+            } else if (source === 'HUF') {
+                const hufVal = parseFloat(hufInput.value);
+                if (!isNaN(hufVal)) { eurInput.value = (hufVal / EXACT_RATE).toFixed(2); } else { eurInput.value = ''; }
+            }
+        }
+
+        // Filter
+        function filterExplore(category) {
+            document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.querySelectorAll('.exp-item').forEach(item => {
+                if (category === 'all' || item.getAttribute('data-cat') === category) { item.style.display = 'block'; } else { item.style.display = 'none'; }
+            });
+        }
+
+        // Beer Counter
+        function initBeerCounter() {
+            let myBeers = localStorage.getItem('solo-beers') || 0;
+            document.getElementById('myBeersCount').innerText = myBeers;
+        }
+        function addBeer() {
+            let myBeers = parseInt(localStorage.getItem('solo-beers') || 0);
+            myBeers++;
+            localStorage.setItem('solo-beers', myBeers);
+            document.getElementById('myBeersCount').innerText = myBeers;
+        }
+        function resetBeers() {
+            if(confirm("Zeker weten dat je de teller wilt resetten?")) {
+                localStorage.setItem('solo-beers', 0);
+                document.getElementById('myBeersCount').innerText = 0;
+            }
+        }
+
+        // Wheel
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const squadNames = ['Martijn', 'Niek', 'Bono', 'Jeroen', 'Joep', 'Oli4', 'Peter'];
+        const wheelColors = ['#1c1c1e', '#2c2c2e', '#1c1c1e', '#2c2c2e', '#1c1c1e', '#2c2c2e', '#f5c518'];
+        const textColors = ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#000000'];
+        let currentAngle = 0;
+        let isSpinning = false;
+
+        function drawWheel() {
+            const numSegments = squadNames.length;
+            const arcSize = (2 * Math.PI) / numSegments;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2 - 10;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numSegments; i++) {
+                const angle = currentAngle + i * arcSize;
+                ctx.beginPath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, angle, angle + arcSize);
+                ctx.lineTo(centerX, centerY);
+                ctx.fill();
+                ctx.strokeStyle = '#38383a';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(angle + arcSize / 2);
+                ctx.fillStyle = textColors[i % textColors.length];
+                ctx.font = "bold 24px 'Outfit', sans-serif";
+                ctx.textAlign = "right";
+                ctx.fillText(squadNames[i], radius - 30, 8);
+                ctx.restore();
+            }
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ff453a';
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('wheelResult').innerText = "HET RAD DRAAIT...";
+
+            const spinAngleStart = Math.random() * 10 + 10;
+            const spinTimeTotal = Math.random() * 3000 + 4000;
+            let spinTimeElapsed = 0;
+
+            function rotateAnimation() {
+                spinTimeElapsed += 20;
+                if (spinTimeElapsed >= spinTimeTotal) {
+                    stopRotate();
+                } else {
+                    const spinAngle = spinAngleStart - easeOut(spinTimeElapsed, 0, spinAngleStart, spinTimeTotal);
+                    currentAngle += (spinAngle * Math.PI) / 180;
+                    drawWheel();
+                    requestAnimationFrame(rotateAnimation);
+                }
+            }
+
+            function easeOut(t, b, c, d) {
+                const ts = (t /= d) * t;
+                const tc = ts * t;
+                return b + c * (tc + -3 * ts + 3 * t);
+            }
+
+            function stopRotate() {
+                isSpinning = false;
+                document.getElementById('spinBtn').disabled = false;
+                const numSegments = squadNames.length;
+                let degrees = (currentAngle * 180) / Math.PI % 360;
+                let index = Math.floor((360 - degrees - 90 % 360 + 360) % 360 / (360 / numSegments));
+                index = (index + numSegments) % numSegments;
+                document.getElementById('wheelResult').innerText = "💀 DE LUL: " + squadNames[index].toUpperCase() + "!";
+            }
+            requestAnimationFrame(rotateAnimation);
+        }
+
+        window.onload = function() {
+            initBeerCounter();
+            drawWheel();
+        };
+    </script>
+</body>
+</html>
