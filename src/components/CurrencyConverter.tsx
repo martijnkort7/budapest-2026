@@ -30,7 +30,7 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
   return (
     <div className="rounded-tool border border-border bg-card px-5 py-5 shadow-ambient">
       <h2 className="font-display text-2xl uppercase tracking-wide text-ink">
-        Forint-Fixer Pro
+        HUF-Hustler Pro
       </h2>
       <p className="mt-1.5 text-sm text-ink-muted">
         Koers:{" "}
@@ -43,7 +43,7 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
       <div className="mt-4 flex items-center gap-3 rounded-card border border-border-soft bg-bg p-2.5">
         <label className="flex-1">
           <span className="block px-2 pt-0.5 text-[10px] font-extrabold uppercase tracking-wide text-ink-muted">
-            Euro (€)
+            Echte Euro's (€)
           </span>
           <input
             type="number"
@@ -59,7 +59,7 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
         </span>
         <label className="flex-1">
           <span className="block px-2 pt-0.5 text-right text-[10px] font-extrabold uppercase tracking-wide text-ink-muted">
-            Forint (HUF)
+            Monopoly-poen (HUF)
           </span>
           <input
             type="number"

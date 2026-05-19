@@ -34,10 +34,10 @@ export function BeerCounter() {
   return (
     <div className="rounded-tool border border-border bg-card px-4 pt-6 pb-7 text-center shadow-ambient">
       <h2 className="font-display text-2xl uppercase tracking-wide text-ink">
-        Biertjes Counter
+        Bier Administratie
       </h2>
       <p className="mt-2 text-sm text-ink-muted">
-        Je eigen administratie. Wordt lokaal bewaard.
+        Voor als je de tel kwijt bent. Lieg niet tegen jezelf.
       </p>
 
       <div className="my-4 font-display text-6xl leading-none text-gold tabular-nums">
@@ -63,7 +63,7 @@ export function BeerCounter() {
         </button>
       ) : (
         <div className="mt-5 flex items-center justify-center gap-2 text-xs">
-          <span className="text-ink-soft">Zeker weten?</span>
+          <span className="text-ink-soft">Zeker? Geen weg terug.</span>
           <button
             type="button"
             onClick={resetCounter}

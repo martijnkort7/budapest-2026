@@ -8,26 +8,26 @@ export const FACTS: Fact[] = [
   {
     iconName: "ban",
     title: "Niet Klinken!",
-    body: "Klink nooit je glazen als je proost met bier in Hongarije. Een ongeschreven regel sinds 1849 toen Oostenrijkers de executie van Hongaarse generaals vierden door met bier te proosten.",
+    body: "Proost je in Hongarije nooit met klinkende bierglazen. Sinds 1849 toen Oostenrijkers de executie van Hongaarse generaals vierden met een proost. Doe je het toch? Dan mag je de volgende ronde betalen.",
   },
   {
     iconName: "whiskey",
     title: "De Pálinka Wet",
-    body: "Pálinka is de fruitbrandewijn van minimaal 37.5%. Een shot weigeren als een local het aanbiedt is een directe belediging van de Hongaarse cultuur. Adten dus.",
+    body: "Fruitbrandewijn van minimaal 37.5%. Een local biedt het aan? Dan drink je. Weigeren staat gelijk aan een diplomatiek incident. Je lever is hierbij gewaarschuwd.",
   },
   {
     iconName: "house",
     title: "District VII",
-    body: "De Joodse wijk (waar we zitten) heeft de hoogste bar-dichtheid van Europa. Je struikelt letterlijk vanuit je bed een kroeg of club in.",
+    body: "De Joodse wijk heeft de hoogste bardichtheid van Europa. Je struikelt letterlijk van je bed een kroeg in. Wij zitten er middenin. Geen excuus om vroeg op bed te gaan.",
   },
   {
     iconName: "city",
     title: "Buda vs Pest",
-    body: "Buda (west) is heuvelachtig, rustig en historisch. Pest (oost) is vlak en het absolute epische centrum van het nachtleven. Wij zitten in Pest.",
+    body: "Buda = heuvelachtig, rustig, voor toeristen met een wandelschoen. Pest = vlak, rauw en het episch centrum van het nachtleven. Wij zitten uiteraard in Pest.",
   },
   {
     iconName: "droplet",
-    title: "Antikater Bronnen",
-    body: "Boedapest heeft meer dan 100 thermale bronnen. De badhuizen zijn de ultieme plek om de alcohol, kater en schaamte van de nacht eruit te zweten.",
+    title: "Katerherstel 101",
+    body: "Boedapest heeft 100+ thermale bronnen. De badhuizen zijn gebouwd om de alcohol, kater en restjes schaamte van de nacht eruit te koken. Verplicht bezoek na dag 1.",
   },
 ];

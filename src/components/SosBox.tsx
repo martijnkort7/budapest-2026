@@ -11,13 +11,12 @@ export function SosBox() {
         id="sos-title"
         className="font-display text-3xl uppercase tracking-wide text-hu-red"
       >
-        SOS: Red Mij!
+        SOS — Man Overboord
       </h2>
       <p className="mx-auto mt-3 max-w-[36ch] text-sm leading-relaxed text-ink">
-        Ben je om 04:00 's nachts de weg, de rest van de groep en al je
-        waardigheid kwijt geraakt in District VII? Druk op deze knop om Peter,
-        de almachtige manager van deze trip, in blinde paniek een appje te
-        sturen met je locatie.
+        Het is 04:00. Je staat in een steegje. Je telefoon op 3%. Je hebt
+        geen idee waar je bent en nog minder waar de groep is. Druk op deze
+        knop om Peter — jullie oppas — in blinde paniek wakker te appen.
       </p>
       <a
         href={WHATSAPP_URL}
@@ -25,7 +24,7 @@ export function SosBox() {
         rel="noreferrer"
         className="shadow-sos-ring mt-5 inline-flex items-center gap-2.5 rounded-pill bg-hu-red px-7 py-3.5 font-display text-lg uppercase tracking-wide text-white transition active:scale-[0.96]"
       >
-        <span aria-hidden="true">📱</span> Stuur Noodkreet
+        <span aria-hidden="true">🆘</span> Paniekknop
       </a>
     </section>
   );

@@ -19,37 +19,37 @@ export const VENUE_GROUPS: VenueGroup[] = [
     title: "Burgers & Solide Bodem",
     iconName: "burger",
     blurb:
-      "Essentieel voer om de groep overeind te houden. Geen fine dining, maar kneitergoed.",
+      "Zonder fundament geen nachtleven. Dit is het voer dat jullie overeind houdt als de Pálinka begint te werken.",
     venues: [
       {
         name: "Bamba Marha Burger Bar",
         blurb:
-          "Topklasse burgers, extreem populair, snel klaar. Perfect als fundament.",
+          "De burgergod van Budapest. Altijd vol, altijd goed. Begin hier voordat je begint met drinken.",
       },
       {
         name: "Karaván Street Food",
         blurb:
-          "Direct naast Szimpla Kert. Een buitensteeg vol foodtrucks. Burgers, traditionele Lángos (gefrituurd deeg) en ijskoud bier.",
+          "Een steegje vol foodtrucks direct naast Szimpla Kert. Lángos (gefrituurd deeg), vette burgers en ijskoud bier. Perfecte tussensnack.",
       },
       {
         name: "Tuning Burger",
         blurb:
-          "Legendarisch in de stad. Mega porties goed vlees en ambachtelijke speciaalbieren.",
+          "Legendarische porties, ambachtelijke speciaalbieren erbij. Hier eet je jezelf in een coma waar je blij van wordt.",
       },
       {
         name: "Meatology Budapest",
         blurb:
-          "De place-to-be voor echte carnivoren. Grote steaks, worsten en vleesgerechten.",
+          "Voor de carnivoor die serieus genomen wil worden. Dikke steaks, worsten, en nul groente in zicht.",
       },
       {
         name: "Központ",
         blurb:
-          "Geweldige bar voor 's avonds laat, met uitstekende bar-bites, pizza's en een rauwe vibe.",
+          "Rauwe late-night bar met pizza's en bites die beter zijn dan ze moeten zijn. Ideaal om 02:00 als de honger toeslaat.",
       },
       {
         name: "Zing Burger",
         blurb:
-          "De betere, betrouwbare lokale burgerketen door de hele stad voor de snelle trek.",
+          "Betrouwbare lokale keten voor als je geen plan hebt maar wel trek. Overal in de stad.",
       },
     ],
   },
@@ -57,26 +57,26 @@ export const VENUE_GROUPS: VenueGroup[] = [
     id: "craft",
     title: "Craft Beer Spots",
     iconName: "beer",
-    blurb: "Als we een dikke NEIPA nodig hebben in plaats van lauw pils.",
+    blurb: "Voor als we een dikke NEIPA willen in plaats van lauw pils van de tap.",
     venues: [
       {
         name: "Élesztőház",
         blurb:
-          "Oude glasfabriek getransformeerd tot binnentuin met meer dan 20 wisselende lokale kranen.",
+          "Oude glasfabriek omgebouwd tot biertempel met binnentuin. 20+ wisselende kranen. Hier kun je een middag verliezen.",
       },
       {
         name: "Krak'n Town",
         blurb:
-          "Bizarre bar met een steampunk/Victoriaanse vibe. Naast speciaalbier ook geniaal aangekleed.",
+          "Steampunk-bar die eruitziet als een filmset. Het bier is net zo goed als de aankleding bizar is.",
       },
       {
         name: "Jónás Craft Beer House",
         blurb:
-          "Aan de Donau. Relaxed terras voor de betere middagsessies in de zon.",
+          "Terras aan de Donau. Relaxed zondagmiddaggevoel, maar dan met serieus bier. Katerherstel in stijl.",
       },
       {
         name: "First Craft Beer & BBQ",
-        blurb: "Prijswinnende brouwerij met extreem goed barbecue vlees erbij.",
+        blurb: "Prijswinnend bier + BBQ erbij. Twee vliegen, één klap, nul spijt.",
       },
     ],
   },
@@ -84,27 +84,27 @@ export const VENUE_GROUPS: VenueGroup[] = [
     id: "ruin",
     title: "Ruin Bars & Clubs",
     iconName: "martini",
-    blurb: "De iconische, chaotische hotspots in de Joodse Wijk.",
+    blurb: "De iconische, chaotische hotspots van de Joodse Wijk. Hier wordt het smerig.",
     venues: [
       {
         name: "Szimpla Kert",
         blurb:
-          "De moeder aller ruin bars. Bizar doolhof vol neon en retro troep. Verplichte kost.",
+          "De moeder aller ruin bars. Een bizar doolhof van neon, badkuipen en retro troep. Hier moet je geweest zijn.",
       },
       {
         name: "Instant-Fogas Complex",
         blurb:
-          "Meerdere barren samengesmolten tot één mega uitgaans-epicentrum. Gas erop tot 06:00.",
+          "Meerdere bars samengesmolten tot één mega uitgaans-monster. Gas erop tot 06:00. Eenmaal binnen kom je er niet meer uit.",
       },
       {
         name: "Gozsdu Udvar",
         blurb:
-          "Een levendige doorgang vol met clubs, restaurants en kroegen. Altijd druk en gezellig.",
+          "Overdekte passage vol clubs, restaurants en kroegen. Altijd druk, altijd luid, altijd goed.",
       },
       {
         name: "Doboz",
         blurb:
-          "Iets strakker dan een ruin bar, meer een club. Gigantische boom op de binnenplaats met een houten gorilla.",
+          "Strakker dan je gemiddelde ruin bar. Mega boom op de binnenplaats, houten gorilla erbij. Vraag niet waarom.",
       },
     ],
   },
@@ -112,25 +112,25 @@ export const VENUE_GROUPS: VenueGroup[] = [
     id: "culture",
     title: "Toeristische Highlights",
     iconName: "camera",
-    blurb: "Tussen de biertjes door even afvinken.",
+    blurb: "Even afvinken tussen de biertjes door. Zo kun je thuis zeggen dat je cultuur hebt gehad.",
     venues: [
       {
         name: "Het Parlementsgebouw",
-        blurb: "Het goud verlichte symbool aan het water.",
+        blurb: "Het goudverlichte monument aan het water. Eén foto en je moeder is tevreden.",
       },
       {
         name: "Széchenyi Badhuis",
-        blurb: "Het gigantische medicinale bad buiten. Perfect katerherstel.",
+        blurb: "Het gele paleis met warme buitenbaden. Perfecte katerherstel — of pre-game opwarming.",
       },
       {
         name: "De Centrale Markthal (Nagycsarnok)",
         blurb:
-          "De gigantische historische hal vol Hongaarse worsten, paprika's en lokale sfeer.",
+          "Gigantische historische hal vol Hongaarse worsten, paprikapoeder en lokale chaos. Koop wat voor thuis.",
       },
       {
         name: "Terror Háza (House of Terror)",
         blurb:
-          "Indrukwekkend museum over de nazitijd en het communisme, voor als jullie diepgang zoeken.",
+          "Museum over de nazitijd en het communisme. Indrukwekkend, confronterend, en precies wat je nodig hebt na drie dagen zuipen.",
       },
     ],
   },

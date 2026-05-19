@@ -145,7 +145,7 @@ export function SpinWheel() {
         Het Rad des Doods
       </h2>
       <p className="mt-2 text-sm text-ink-muted">
-        Geen discussie. Slingert dat rad en het lot bepaalt wie de lul is.
+        Geen democratie. Slinger het rad en het lot bepaalt wie de lul is.
       </p>
 
       <div className="relative mx-auto mt-5 h-[260px] w-[260px]">
@@ -177,13 +177,13 @@ export function SpinWheel() {
         disabled={isSpinning}
         className="mt-6 inline-flex items-center justify-center rounded-hero bg-gradient-to-br from-gold to-sunset px-7 py-3.5 font-display text-base uppercase tracking-wide text-app shadow-hero transition-transform active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isSpinning ? "Het Rad Draait..." : "Slinger Het Rad"}
+        {isSpinning ? "Het Lot Kiest..." : "Draai Voor Je Leven"}
       </button>
 
       <div className="mt-4 min-h-[1.75rem] font-display text-lg uppercase tracking-wide text-gold">
         {winner && (
           <span key={winner} className="result-reveal inline-block">
-            De lul: {winner}!
+            De lul is: {winner}!
           </span>
         )}
       </div>
