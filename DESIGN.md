@@ -1,690 +1,390 @@
----
-version: alpha
-name: PostHog-design-analysis
-description: |
-  A playful developer-tools system rendered on a warm cream canvas with hand-drawn hedgehog mascots dotted across every page like marginalia in a sketchbook. The chrome reads like a friendly engineering blog: olive-gray ink (#4d4f46) for body, deep olive-charcoal (#23251d) for headlines, IBM Plex Sans Variable typography in tight 1.43-line-height paragraphs, and a single saturated yellow-orange CTA pill (#f7a501) carrying every primary action. The system actively rejects the genre's typical somber dark-tech aesthetic in favor of a creamy, textbook-illustration sensibility — bordered cards stack on the cream canvas with 4–6px radii, doc sidebars use rounded outline-icon mini-illustrations, and the home page leans on cartoon characters (hedgehogs in lab coats, hedgehogs at terminals, hedgehogs in lounge chairs) as its signature decoration. Code samples and product analytics charts live inside white-on-cream cards with thin olive borders; the contrast between the playful illustration and the data-dense product imagery is the brand's signature voice.
+# Budapest Boys Trip — Design Audit & Redesign Brief
 
-colors:
-  primary: "#f7a501"
-  primary-pressed: "#dd9001"
-  primary-active: "#b17816"
-  on-primary: "#23251d"
-  ink: "#23251d"
-  body: "#4d4f46"
-  charcoal: "#33342d"
-  mute: "#6c6e63"
-  ash: "#9b9c92"
-  stone: "#b6b7af"
-  hairline: "#bfc1b7"
-  hairline-soft: "#dcdfd2"
-  on-dark: "#ffffff"
-  canvas: "#eeefe9"
-  surface-soft: "#e5e7e0"
-  surface-card: "#ffffff"
-  surface-doc: "#fcfcfa"
-  surface-dark: "#23251d"
-  link-blue: "#1d4ed8"
-  link-teal: "#1078a3"
-  accent-blue: "#2c84e0"
-  accent-blue-soft: "#dceaf6"
-  accent-red: "#cd4239"
-  accent-red-soft: "#f7d6d3"
-  accent-green: "#2c8c66"
-  accent-green-soft: "#d9eddf"
-  accent-purple: "#7c44a6"
-  accent-purple-soft: "#e7d8ee"
-  focus-ring: "rgba(59,130,246,0.5)"
+**Status:** Stap 1 van design-overhaul chain (audit → redesign → polish).
+**Doel:** dit document voedt `/redesign-existing-projects` (stap 2) met concrete recepten en `/emil-design-eng` (stap 3) met de polish-laag findings.
 
-typography:
-  display-xl:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 36px
-    fontWeight: 700
-    lineHeight: 1.5
-    letterSpacing: 0
-  display-lg:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 24px
-    fontWeight: 800
-    lineHeight: 1.33
-    letterSpacing: -0.6px
-  heading-lg:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 21px
-    fontWeight: 700
-    lineHeight: 1.4
-    letterSpacing: -0.5px
-  heading-md:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 20px
-    fontWeight: 700
-    lineHeight: 1.4
-    letterSpacing: 0
-  heading-sm:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 18px
-    fontWeight: 700
-    lineHeight: 1.5
-    letterSpacing: 0
-    textTransform: uppercase
-  heading-sm-mixed:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 18px
-    fontWeight: 600
-    lineHeight: 1.56
-    letterSpacing: 0
-  body-md:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 16px
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: 0
-  body-strong:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 16px
-    fontWeight: 600
-    lineHeight: 1.5
-    letterSpacing: 0
-  body-sm:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 15px
-    fontWeight: 400
-    lineHeight: 1.71
-    letterSpacing: 0
-  body-sm-strong:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 15px
-    fontWeight: 600
-    lineHeight: 1.71
-    letterSpacing: 0
-  body-xs:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 14px
-    fontWeight: 500
-    lineHeight: 1.43
-    letterSpacing: 0
-  caption-md:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 14px
-    fontWeight: 700
-    lineHeight: 1.71
-    letterSpacing: 0
-  caption-sm:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 13px
-    fontWeight: 500
-    lineHeight: 1.5
-    letterSpacing: 0
-  caption-xs:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 12px
-    fontWeight: 600
-    lineHeight: 1.33
-    letterSpacing: 0
-    textTransform: uppercase
-  utility-xs:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 12px
-    fontWeight: 700
-    lineHeight: 1.33
-    letterSpacing: 0
-    textTransform: uppercase
-  link-md:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 16px
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: 0
-  button-md:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 14px
-    fontWeight: 700
-    lineHeight: 1.5
-    letterSpacing: 0
-  button-sm:
-    fontFamily: IBM Plex Sans Variable
-    fontSize: 13px
-    fontWeight: 500
-    lineHeight: 1
-    letterSpacing: 0
-  code-sm:
-    fontFamily: ui-monospace
-    fontSize: 14px
-    fontWeight: 400
-    lineHeight: 1.43
-    letterSpacing: 0
-  code-xs:
-    fontFamily: Source Code Pro
-    fontSize: 14px
-    fontWeight: 500
-    lineHeight: 1.43
-    letterSpacing: 0
-
-rounded:
-  none: 0px
-  xs: 2px
-  sm: 4px
-  md: 6px
-  lg: 8px
-  full: 9999px
-
-spacing:
-  xxs: 2px
-  xs: 4px
-  sm: 8px
-  md: 12px
-  lg: 16px
-  xl: 24px
-  xxl: 32px
-  section: 80px
-
-components:
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-    padding: 8px 16px
-    height: 40px
-  button-primary-pressed:
-    backgroundColor: "{colors.primary-pressed}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-  button-secondary:
-    backgroundColor: "{colors.surface-soft}"
-    textColor: "{colors.ink}"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-    padding: 8px 16px
-    height: 40px
-  button-tertiary:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink}"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-    padding: 8px 12px
-  button-disabled:
-    backgroundColor: "{colors.surface-soft}"
-    textColor: "{colors.ash}"
-    rounded: "{rounded.md}"
-  text-input:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 8px 12px
-    height: 36px
-  text-input-focused:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-  search-input:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 8px 12px
-    height: 36px
-  product-card:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 24px
-  doc-card:
-    backgroundColor: "{colors.surface-doc}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 24px
-  feature-tile:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.heading-sm-mixed}"
-    rounded: "{rounded.md}"
-    padding: 20px
-  pricing-tier-card:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 32px
-  hedgehog-mascot-card:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 24px
-  product-tab:
-    backgroundColor: "transparent"
-    textColor: "{colors.body}"
-    typography: "{typography.body-strong}"
-    rounded: "{rounded.md}"
-    padding: 8px 12px
-  product-tab-active:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-strong}"
-    rounded: "{rounded.md}"
-  pill-tab:
-    backgroundColor: "transparent"
-    textColor: "{colors.body}"
-    typography: "{typography.button-sm}"
-    rounded: "{rounded.full}"
-    padding: 6px 14px
-  pill-tab-active:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.on-dark}"
-    typography: "{typography.button-sm}"
-    rounded: "{rounded.full}"
-  badge-uppercase:
-    backgroundColor: "transparent"
-    textColor: "{colors.body}"
-    typography: "{typography.utility-xs}"
-    rounded: "{rounded.none}"
-  badge-promo:
-    backgroundColor: "{colors.accent-blue-soft}"
-    textColor: "{colors.link-blue}"
-    typography: "{typography.caption-xs}"
-    rounded: "{rounded.full}"
-    padding: 2px 8px
-  banner-tip-blue:
-    backgroundColor: "{colors.accent-blue-soft}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 16px 20px
-  banner-tip-green:
-    backgroundColor: "{colors.accent-green-soft}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 16px 20px
-  banner-tip-red:
-    backgroundColor: "{colors.accent-red-soft}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 16px 20px
-  banner-tip-purple:
-    backgroundColor: "{colors.accent-purple-soft}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 16px 20px
-  code-block:
-    backgroundColor: "{colors.surface-dark}"
-    textColor: "{colors.on-dark}"
-    typography: "{typography.code-sm}"
-    rounded: "{rounded.md}"
-    padding: 16px 20px
-  inline-code:
-    backgroundColor: "{colors.surface-soft}"
-    textColor: "{colors.ink}"
-    typography: "{typography.code-xs}"
-    rounded: "{rounded.xs}"
-    padding: 2px 6px
-  primary-nav:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-strong}"
-    rounded: "{rounded.none}"
-    height: 56px
-  sub-nav-strip:
-    backgroundColor: "{colors.surface-soft}"
-    textColor: "{colors.body}"
-    typography: "{typography.body-xs}"
-    rounded: "{rounded.none}"
-    height: 40px
-  doc-sidebar:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.body}"
-    typography: "{typography.body-xs}"
-    rounded: "{rounded.none}"
-    width: 240px
-  footer-section:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.body}"
-    typography: "{typography.body-xs}"
-    rounded: "{rounded.none}"
-    padding: 32px 24px
-  link-inline:
-    textColor: "{colors.link-teal}"
-    typography: "{typography.link-md}"
 ---
 
-## Overview
-
-PostHog's marketing system is built on the visual contradiction at the heart of the brand: a serious open-source product analytics platform rendered as if it were a friendly engineering sketchbook. The chrome runs on a warm cream canvas (`{colors.canvas}` — `#eeefe9`) — not white — and every page is dotted with hand-drawn hedgehog mascots in lab coats, lounge chairs, terminals, and reading glasses, scattered across the layout like marginalia in a textbook. Type sits in IBM Plex Sans Variable at olive-gray (`{colors.body}` — `#4d4f46`) for body and deep olive-charcoal (`{colors.ink}` — `#23251d`) for headlines, with weights stepped tightly between 400, 600, 700, and 800 to create hierarchy without color. The single saturated yellow-orange pill (`{colors.primary}` — `#f7a501`) is the brand's only loud chromatic moment; everything else is cream, olive, white card, and the occasional pastel callout band.
-
-The system has a distinctive **two-mode body layout**: marketing pages (home, workflows, pricing) lean on alternating-pastel callout bands and feature tiles in white cards on cream, while documentation pages add a sticky 240px left sidebar with a rounded outline-icon section list. Code samples are full-width dark blocks on `{colors.surface-dark}` (the same olive-charcoal that carries body ink, used inverted) inside white doc cards, creating the system's most distinctive visual moment: a dark-on-dark code island floating inside a white card on a cream canvas, with a hedgehog mascot doodled in the margin.
-
-Sections stack at `{spacing.section}` (80px) rhythm with cream canvas continuing edge-to-edge between them. The only color bands that interrupt the cream are pastel `{component.banner-tip-blue}` / `-green` / `-red` / `-purple` callout panels inside doc articles — soft tinted boxes that carry "💡 Tip", "✅ Success", "⚠️ Warning", "📘 Info" inline annotations. There are no decorative gradients, no atmospheric mesh backgrounds, and no full-bleed dark hero chapters; the cream canvas runs uninterrupted top to bottom and the hedgehogs are the entire visual identity.
-
-**Key Characteristics:**
-- Warm cream canvas (`{colors.canvas}` — #eeefe9) end-to-end with no surface alternation between sections — the page is one continuous sheet
-- Single yellow-orange CTA pill (`{colors.primary}` — #f7a501) with deep olive text (`{colors.on-primary}`) — the brand's only saturated color
-- IBM Plex Sans Variable across every text role with weights 400/500/600/700/800 — no other typeface in the system
-- Hand-drawn hedgehog mascots scattered across the layout as the entire decorative system — no gradients, no mesh, no atmospheric backgrounds
-- 4–8px radius card vocabulary: `{rounded.md}` (6px) for most components, `{rounded.lg}` (8px) for select containers, fully rounded for pill chips
-- Pastel callout banners (`{colors.accent-blue-soft}`, `{colors.accent-green-soft}`, `{colors.accent-red-soft}`, `{colors.accent-purple-soft}`) break up doc article body with soft tinted side rails for tips/warnings/info
-- Documentation pages add a sticky 240px `{component.doc-sidebar}` with rounded outline-icon section nav and an "Ask PostHog AI" CTA at the top
-
-## Colors
-
-> **Source pages:** `/` (home), `/pricing` (pricing detail), `/docs/product-analytics` (docs article), `/workflows` (product feature page). The chrome palette is identical across all four pages — only doc-specific accents (callout-banner pastels, code-block dark surface) appear exclusively inside the docs experience.
-
-### Brand & Accent
-- **PostHog Yellow** (`{colors.primary}` — `#f7a501`): the universal primary CTA. Sticky "Get started — free" pill in the top-right of every nav, hero CTAs, pricing-tier subscribe buttons, footer signup pill. The system's only saturated chromatic moment.
-- **Yellow Pressed** (`{colors.primary-pressed}` — `#dd9001`): pressed state for the primary pill.
-- **Yellow Active** (`{colors.primary-active}` — `#b17816`): deeply-pressed yellow + the system's gold-toned border accent (rare 1px gold rule on inline form elements).
-
-### Surface
-- **Canvas** (`{colors.canvas}` — `#eeefe9`): the warm cream page background. End-to-end on every page; the brand's most distinctive surface choice.
-- **Soft Surface** (`{colors.surface-soft}` — `#e5e7e0`): button-secondary fill, sub-nav strip background, inline-code chip background.
-- **Surface Card** (`{colors.surface-card}` — `#ffffff`): true white card and tile background sitting on top of the cream canvas. The dominant card surface.
-- **Surface Doc** (`{colors.surface-doc}` — `#fcfcfa`): a faintly cream-warm white used inside doc article body cards — slightly softer than pure white to keep the page tonally unified.
-- **Surface Dark** (`{colors.surface-dark}` — `#23251d`): the deep olive-charcoal used inverted as code-block background. The same hex as `{colors.ink}` — the brand uses one olive-near-black for both text and dark code surfaces.
-- **Hairline** (`{colors.hairline}` — `#bfc1b7`): 1px card border, table rule, footer column dividers.
-- **Hairline Soft** (`{colors.hairline-soft}` — `#dcdfd2`): in-card row divider, soft inset rule.
-- **On Dark** (`{colors.on-dark}` — `#ffffff`): primary text on `{colors.surface-dark}` code blocks.
-
-### Text
-- **Ink** (`{colors.ink}` — `#23251d`): headlines, button text on light, primary nav links — deep olive-charcoal that reads near-black against cream.
-- **Body** (`{colors.body}` — `#4d4f46`): default paragraph text, doc article body, inline link color before hover. The brand's most-used text color.
-- **Charcoal** (`{colors.charcoal}` — `#33342d`): emphasized body text where body is too soft.
-- **Mute** (`{colors.mute}` — `#6c6e63`): metadata, footer link text, in-list secondary annotations.
-- **Ash** (`{colors.ash}` — `#9b9c92`): disabled-state text and lowest-emphasis utility.
-- **Stone** (`{colors.stone}` — `#b6b7af`): least-emphasis caption text and disabled icon color.
-
-### Semantic
-- **Link Blue** (`{colors.link-blue}` — `#1d4ed8`): inline anchor link inside body prose. The system's primary informational link color.
-- **Link Teal** (`{colors.link-teal}` — `#1078a3`): doc-article inline link variant, paired with body text.
-- **Accent Blue** (`{colors.accent-blue}` — `#2c84e0`) + **Accent Blue Soft** (`{colors.accent-blue-soft}` — `#dceaf6`): "💡 Tip / Info" callout banner inside docs.
-- **Accent Red** (`{colors.accent-red}` — `#cd4239`) + **Accent Red Soft** (`{colors.accent-red-soft}` — `#f7d6d3`): "⚠️ Warning / Caution" callout banner.
-- **Accent Green** (`{colors.accent-green}` — `#2c8c66`) + **Accent Green Soft** (`{colors.accent-green-soft}` — `#d9eddf`): "✅ Success / Positive" callout banner.
-- **Accent Purple** (`{colors.accent-purple}` — `#7c44a6`) + **Accent Purple Soft** (`{colors.accent-purple-soft}` — `#e7d8ee`): "📘 Note / Reference" callout banner.
-- **Focus Ring** (`{colors.focus-ring}` — `rgba(59,130,246,0.5)`): translucent blue browser-default focus ring around interactive elements.
-
-## Typography
-
-### Font Family
-**IBM Plex Sans Variable** is the system's primary face — used across every text role on every page at weights 400 (regular), 500 (medium), 600 (semibold), 700 (bold), and 800 (extra-bold). Falls back through `IBM Plex Sans` → `-apple-system` → `system-ui` → broad cross-platform sans stack.
-
-**ui-monospace** + **Source Code Pro** carry code samples and inline-code chips at 14px / 1.43 line-height. Source Code Pro is the explicit display monospace; ui-monospace handles inline `<code>` chips.
-
-The brand-distinctive choice is the **mixed weight ladder** (400 / 500 / 600 / 700 / 800) — most chrome lives in the 400–700 band, with weight 800 reserved exclusively for the larger display headlines on home and pricing. This gives the system its "engineering blog" feel: hierarchy is built from weight contrast much more than from size.
-
-### Hierarchy
-
-| Token | Size | Weight | Line Height | Letter Spacing | Use |
-|---|---|---|---|---|---|
-| `{typography.display-xl}` | 36px | 700 | 1.5 | 0 | Hero headline ("The new way to build products") |
-| `{typography.display-lg}` | 24px | 800 | 1.33 | -0.6px | Section headline, pricing tier name |
-| `{typography.heading-lg}` | 21px | 700 | 1.4 | -0.5px | Sub-section heading, doc-article H2 |
-| `{typography.heading-md}` | 20px | 700 | 1.4 | 0 | Card group title, in-grid heading |
-| `{typography.heading-sm}` | 18px | 700 | 1.5 | 0 (uppercase) | Section eyebrow ("UNDERSTAND PRODUCT USAGE") |
-| `{typography.heading-sm-mixed}` | 18px | 600 | 1.56 | 0 | Card title in mixed-case (no uppercase transform) |
-| `{typography.body-md}` | 16px | 400 | 1.5 | 0 | Body copy, default paragraph |
-| `{typography.body-strong}` | 16px | 600 | 1.5 | 0 | Inline emphasis, primary nav link, in-card label |
-| `{typography.body-sm}` | 15px | 400 | 1.71 | 0 | Doc article body, marketing card description |
-| `{typography.body-sm-strong}` | 15px | 600 | 1.71 | 0 | Sub-section emphasis inside doc article |
-| `{typography.body-xs}` | 14px | 500 | 1.43 | 0 | Doc sidebar item, metadata, in-list caption |
-| `{typography.caption-md}` | 14px | 700 | 1.71 | 0 | Card eyebrow, link cluster header |
-| `{typography.caption-sm}` | 13px | 500 | 1.5 | 0 | Compact metadata caption |
-| `{typography.caption-xs}` | 12px | 600 | 1.33 | 0 (uppercase) | Inline badge label |
-| `{typography.utility-xs}` | 12px | 700 | 1.33 | 0 (uppercase) | Section-eyebrow utility text, footer category header |
-| `{typography.link-md}` | 16px | 400 | 1.5 | 0 | Inline body anchor link |
-| `{typography.button-md}` | 14px | 700 | 1.5 | 0 | Standard primary/secondary button label |
-| `{typography.button-sm}` | 13px | 500 | 1 | 0 | Pill chip / compact CTA |
-| `{typography.code-sm}` | 14px | 400 | 1.43 | 0 | Code block content |
-| `{typography.code-xs}` | 14px | 500 | 1.43 | 0 | Inline code chip |
-
-### Principles
-The hierarchy is explicitly built from weight + size + occasional uppercase transform — there is no italic style, no decorative display variant, no proprietary face. The biggest display moments use weight 800 with -0.6px tracking, and the body settles at 400 with 1.5 line-height; everything else fills the band between. Section eyebrows (`{typography.heading-sm}` and `{typography.utility-xs}`) consistently render uppercase, which gives the doc layout its textbook-chapter feel.
-
-### Note on Font Substitutes
-IBM Plex Sans Variable is open-source and Google-Fonts-hosted. There is no need for a substitute — load it directly. If a substitute is genuinely needed, **Inter** is the closest geometric match at all five weights; pair with Inter's letter-spacing -0.5 to -0.6px on display sizes to approximate Plex's display tracking. For monospace, **JetBrains Mono** is a near-perfect substitute for Source Code Pro at body sizes.
-
-## Layout
-
-### Spacing System
-- **Base unit:** 8px (with finer 2/4/6px steps for tight inline gaps in callout banners and pill buttons).
-- **Tokens (front matter):** `{spacing.xxs}` (2px) · `{spacing.xs}` (4px) · `{spacing.sm}` (8px) · `{spacing.md}` (12px) · `{spacing.lg}` (16px) · `{spacing.xl}` (24px) · `{spacing.xxl}` (32px) · `{spacing.section}` (80px).
-- **Universal section rhythm:** every page in the set uses `{spacing.section}` (80px) as the vertical gap between major content blocks. Card grids use `{spacing.lg}` (16px) gutters; card internal padding sits at `{spacing.xl}` (24px) for product cards and `{spacing.xxl}` (32px) for pricing tier cards.
-
-### Grid & Container
-- **Max width:** ~1280px content area at desktop with 24px gutters (~48px at ultrawide). Doc article body sits at ~720px max width with the 240px sidebar pushing the article column right of center.
-- **Marketing card grid:** 4-up at desktop, 3-up at 1024px, 2-up at 768px, 1-up at 480px. Cards preserve a fixed 1:1 or 4:3 ratio.
-- **Pricing tier grid:** 3-up at desktop with a left rail of plan info, collapsing to 2-up + 1 at tablet and 1-up at mobile.
-- **Doc layout:** desktop 240px sticky left sidebar + ~720px article body + (optional) 200px right TOC rail = ~1160px content width.
-- **Footer:** 6-column horizontal link grid at desktop, 3-up at tablet, 2-up at mobile.
-
-### Whitespace Philosophy
-Whitespace is generous on marketing pages and tight on doc pages. The home and workflows pages stack feature tiles with `{spacing.lg}` (16px) gutters and 24px internal padding, while doc articles tighten internal spacing to `{spacing.md}` (12px) between paragraphs to maximize information density. The cream canvas runs continuously through every section — there are no decorative dividers, no shaded section bands; only the 1px hairline beneath section eyebrows and footer column rules separate content blocks.
-
-## Elevation & Depth
-
-| Level | Treatment | Use |
-|---|---|---|
-| 0 — Flat | No border, no shadow | Default for canvas-on-canvas blocks, hero text, body sections |
-| 1 — Hairline border | 1px solid `{colors.hairline}` | Marketing cards, pricing tier cards, doc sidebar items, footer column rules |
-| 2 — Hairline soft | 1px solid `{colors.hairline-soft}` | In-card row divider between adjacent rows |
-| 3 — Inverted dark code block | `{colors.surface-dark}` fill | Code samples inside doc cards — the system's only "elevated" surface uses color, not shadow |
-
-The system has no drop-shadow elevation in marketing or product chrome. Cards sit flat on cream with thin olive borders. The single inverted moment is the dark code-block surface used inside doc article body cards.
-
-### Decorative Depth
-Depth comes entirely from illustration and the pastel callout band system, not from CSS effects:
-- **Hand-drawn hedgehog mascots** — characters in various costumes (lab coat, terminal, lounge chair, magnifying glass, hammock, hat) scattered across pages as marginalia. Always rendered as flat color illustrations, never photographs.
-- **Pastel callout banners** — `{component.banner-tip-blue}` / `-green` / `-red` / `-purple` soft tinted side-rail panels inside doc articles, each prefixed with an emoji icon (💡 ✅ ⚠️ 📘) and carrying tip/warning/note copy.
-- **Code blocks** — full-width dark olive-charcoal panels on `{colors.surface-dark}` with white code text. The system's most cinematic surface, used inside white doc cards.
-- **Outline product icons** in the doc sidebar — small rounded-square mini-illustrations (chart icon, funnel, session-replay icon) mark each major product section.
-
-## Shapes
-
-### Border Radius Scale
-
-| Token | Value | Use |
-|---|---|---|
-| `{rounded.none}` | 0px | Sub-nav strip, footer, doc sidebar, primary nav — flat structural surfaces |
-| `{rounded.xs}` | 2px | Inline `<code>` chips, micro-rule highlights |
-| `{rounded.sm}` | 4px | Inline buttons, form inputs, micro chips |
-| `{rounded.md}` | 6px | Marketing cards, pricing cards, doc cards, code blocks, every standard CTA |
-| `{rounded.lg}` | 8px | Tab top corners (`6px 6px 0 0` on active tab) and rare large containers |
-| `{rounded.full}` | 9999px | Pill chips and pill-style CTAs ("Get started — free" sticky CTA in nav) |
-
-The radius vocabulary clusters around 4–6px for nearly everything; the only fully-rounded element is the pill-style sticky nav CTA and inline pill chips.
-
-### Photography Geometry
-There is no photography. Visual elements are limited to:
-- **Hedgehog character illustrations** — flat-color cartoon hedgehogs ranging from ~80px (in-card mascot) to ~240px (hero illustration). Always at native aspect, never cropped to a frame.
-- **Outline product icons** in the doc sidebar — 20–24px rounded-square illustrations.
-- **Inline emoji** at 14–16px inside callout banners (💡 ✅ ⚠️ 📘) — used as functional iconography rather than decoration.
-- **Section illustrations** on the home page — small hedgehog vignettes paired with each "Understand product usage" / "Build sticky habits" / "Test before launch" feature row.
-
-## Components
-
-> **No hover states documented** per system policy. Each spec covers Default and Active/Pressed only.
-
-### Buttons
-
-**`button-primary`** — the universal PostHog CTA
-- Background `{colors.primary}` (yellow-orange), text `{colors.on-primary}` (deep olive), type `{typography.button-md}`, padding `8px 16px`, height `40px`, rounded `{rounded.md}`.
-- Used for "Get started — free" (sticky top-nav CTA), "Sign up", "Try it free", "Subscribe" — every primary action.
-- Pressed state lives in `button-primary-pressed` — background drops to `{colors.primary-pressed}`.
-
-**`button-secondary`** — soft alternative on cream canvas
-- Background `{colors.surface-soft}` (`#e5e7e0`), text `{colors.ink}`, type `{typography.button-md}`, padding `8px 16px`, height `40px`, rounded `{rounded.md}`.
-- "Talk to sales", "Read docs", "Watch demo" — second-tier actions paired with the yellow primary.
-
-**`button-tertiary`** — ghost text button
-- Background transparent, text `{colors.ink}`, type `{typography.button-md}`, padding `8px 12px`, rounded `{rounded.md}`.
-- Lowest-emphasis action: "See all docs →", "Browse all features".
-
-**`button-disabled`**
-- Background `{colors.surface-soft}`, text `{colors.ash}` — flat soft cream-gray.
-
-### Tabs & Chips
-
-**`product-tab`** + **`product-tab-active`** — major product section tabs
-- Default: transparent background, text `{colors.body}`, type `{typography.body-strong}`, padding `8px 12px`, rounded `{rounded.md}`.
-- Active: background flips to `{colors.surface-card}` (white), text `{colors.ink}` — the tab card lifts off the cream canvas as the visual signal of selection.
-
-**`pill-tab`** + **`pill-tab-active`** — compact filter pill
-- Default: transparent background, text `{colors.body}`, type `{typography.button-sm}`, padding `6px 14px`, rounded `{rounded.full}`.
-- Active: background flips to `{colors.ink}`, text `{colors.on-dark}` — the chip flips fully inverted on selection.
-
-**`badge-uppercase`** — text-only utility label
-- Background transparent, text `{colors.body}` in `{typography.utility-xs}` (uppercase) — used as in-list category prefix ("FEATURE FLAG", "EXPERIMENT", "HEATMAP").
-
-**`badge-promo`** — small inline pill chip
-- Background `{colors.accent-blue-soft}`, text `{colors.link-blue}`, type `{typography.caption-xs}`, padding `2px 8px`, rounded `{rounded.full}`.
-- "New", "Beta", "Coming soon" pill labels overlaid on cards.
-
-### Inputs & Forms
-
-**`text-input`** + **`text-input-focused`**
-- Default: background `{colors.surface-card}`, text `{colors.ink}`, 1px solid `{colors.hairline}`, type `{typography.body-md}`, padding `8px 12px`, height `36px`, rounded `{rounded.md}`.
-- Focused: same surface; 2px solid `{colors.accent-blue}` border replaces the 1px hairline + a translucent `{colors.focus-ring}` outline.
-
-**`search-input`** — utility search field (doc sidebar, "Ask PostHog AI")
-- Same dimensions as `text-input` with a magnifier glyph at the left edge in `{colors.mute}`.
-
-### Cards & Containers
-
-**`product-card`** — marketing tile / feature card
-- Container: background `{colors.surface-card}` (white), 1px solid `{colors.hairline}`, padding `{spacing.xl}` (24px), rounded `{rounded.md}`.
-- Layout: small hedgehog illustration at top-left, `{typography.heading-sm-mixed}` title, `{typography.body-sm}` description, optional `{component.button-tertiary}` "Learn more →" link.
-
-**`doc-card`** — doc article body card
-- Container: background `{colors.surface-doc}` (`#fcfcfa` warm-white), 1px solid `{colors.hairline}`, padding `{spacing.xl}` (24px), rounded `{rounded.md}`.
-- Carries article body sections, code blocks, callout banners, and tables inside doc pages.
-
-**`feature-tile`** — small marketing feature tile
-- Container: background `{colors.surface-card}`, 1px solid `{colors.hairline}`, padding `{spacing.lg}` (20px), rounded `{rounded.md}`.
-- Used in 3-up or 4-up grids on home and workflows pages — paired with a small icon and a 1-line description.
-
-**`pricing-tier-card`** — pricing plan card
-- Container: background `{colors.surface-card}`, 1px solid `{colors.hairline}`, padding `{spacing.xxl}` (32px), rounded `{rounded.md}`.
-- Layout: tier name in `{typography.display-lg}` (24px / 800 / -0.6px), large price + period, feature checklist with check-icon bullets, primary or secondary CTA at bottom.
-
-**`hedgehog-mascot-card`** — feature card with margin-anchored hedgehog
-- Same chrome as `{component.product-card}` but with a hand-drawn hedgehog illustration anchored in the right margin or top-right corner — the brand's signature card variant.
-
-### Callout Banners
-
-**`banner-tip-blue`** + **`banner-tip-green`** + **`banner-tip-red`** + **`banner-tip-purple`**
-- Background `{colors.accent-blue-soft}` / `{colors.accent-green-soft}` / `{colors.accent-red-soft}` / `{colors.accent-purple-soft}`, text `{colors.ink}`, type `{typography.body-md}`, padding `16px 20px`, rounded `{rounded.md}`.
-- Each prefixed with an inline emoji icon (💡 / ✅ / ⚠️ / 📘) followed by an inline label and body copy.
-- Only appear inside doc article body. The four-color callout family is the brand's information-architecture vocabulary for inline tips/warnings/info inside long-form documentation.
-
-### Code
-
-**`code-block`** — dark code sample inside doc card
-- Container: background `{colors.surface-dark}` (deep olive-charcoal), text `{colors.on-dark}` in `{typography.code-sm}`, padding `16px 20px`, rounded `{rounded.md}`.
-- Syntax highlighting uses muted accent colors (blue for keywords, green for strings, purple for numbers) — never the bright accent colors used in callout banners.
-
-**`inline-code`** — small inline `<code>` chip
-- Background `{colors.surface-soft}`, text `{colors.ink}` in `{typography.code-xs}`, padding `2px 6px`, rounded `{rounded.xs}` (2px).
-- Used inside body prose to mark code snippets and identifiers.
-
-### Navigation
-
-**`primary-nav`**
-- Background `{colors.canvas}` (cream — same as the page), text `{colors.ink}`, height `56px`, type `{typography.body-strong}`, rounded `{rounded.none}`.
-- Layout (desktop): PostHog wordmark + hedgehog logo at left, nav menu cluster ("Pricing · Docs · Community · Company"), right cluster with a search-glyph, "Login" link, and the always-yellow `{component.button-primary}` "Get started — free" pill anchored to the far right.
-
-**`sub-nav-strip`** — secondary nav bar (under primary)
-- Background `{colors.surface-soft}`, text `{colors.body}` in `{typography.body-xs}`, height `40px`, rounded `{rounded.none}`.
-- Sits directly below the primary nav on workflows / product pages with section anchor links and a contextual "Get started →" link at the right.
-
-**`doc-sidebar`** — sticky doc-page left sidebar
-- Background `{colors.canvas}`, text `{colors.body}` in `{typography.body-xs}`, width `240px`, rounded `{rounded.none}`.
-- Layout: search-input "Ask PostHog AI" at top, then a vertical list of section headers each with a small rounded outline-icon mini-illustration, then nested item links indented under the active header.
-
-**Top Nav (Mobile)**
-- Hamburger menu icon at left, PostHog wordmark + hedgehog at center, search + sticky yellow "Get started — free" CTA at right. Primary nav collapses into a full-height drawer that slides from the left.
-
-### Footer
-
-**`footer-section`**
-- Background `{colors.canvas}`, text `{colors.body}` in `{typography.body-xs}`, padding `32px 24px`, rounded `{rounded.none}`, with a 1px `{colors.hairline}` top rule.
-- Layout: 6-column horizontal link grid (Product · Resources · Company · Community · Pricing · Legal), each column with a `{typography.utility-xs}` (uppercase) header and a vertical list of links in `{typography.body-xs}` `{colors.body}`.
-- Bottom row: PostHog wordmark + small hedgehog illustration, copyright in `{typography.caption-xs}` `{colors.mute}`, social-icon row at far-right.
-
-### Inline
-
-**`link-inline`** — body-prose anchor link
-- `{colors.link-teal}` (`#1078a3`) in body prose with no underline by default; underline appears on focus. The brand's primary inline link color.
-
-## Do's and Don'ts
-
-### Do
-- Use `{colors.canvas}` (cream — `#eeefe9`) as the page body. Never substitute pure white as the canvas.
-- Reserve `{colors.primary}` (yellow-orange) for the primary CTA pill only. The "Get started — free" treatment is the brand's anchor.
-- Render the brand wordmark with the hedgehog illustration alongside it, not as a stand-alone wordmark. The hedgehog IS the brand identity.
-- Use IBM Plex Sans Variable across every text role — body 400, emphasis 600/700, display 800.
-- Stack content sections at `{spacing.section}` (80px) rhythm with no decorative dividers between them; let the cream canvas continue uninterrupted.
-- Use `{component.banner-tip-blue}` / `-green` / `-red` / `-purple` only inside doc article body for tip/warning/note panels — keep marketing chrome out of the four-color callout family.
-- Pair every code sample with the dark `{component.code-block}` surface; inline `<code>` chips use `{component.inline-code}` (cream surface-soft chip).
-- Anchor a hedgehog mascot illustration in feature tile margins on home and workflows pages — the system's signature decoration.
-
-### Don't
-- Don't introduce drop shadows on cards. Cards sit flat on cream with thin olive borders only.
-- Don't add a second saturated chromatic CTA. Yellow-orange is the only loud color in the system.
-- Don't replace the cream canvas with pure white or full-bleed dark hero bands. The cream is the brand.
-- Don't use the four-color callout banner pastels (`{colors.accent-blue-soft}`, `-green`, `-red`, `-purple`) as marketing-card backgrounds. They belong to inline doc content only.
-- Don't substitute the hedgehog illustration with a generic icon set. The character system is the brand.
-- Don't use uppercase transform outside of `{typography.heading-sm}`, `{typography.utility-xs}`, and `{typography.caption-xs}`. Uppercase is reserved for eyebrows and footer category headers.
-- Don't pad cards with 32px+ on all sides except for `{component.pricing-tier-card}`. Standard cards sit at 24px internal padding.
-
-## Responsive Behavior
-
-### Breakpoints
-
-| Name | Width | Key Changes |
-|---|---|---|
-| ultrawide | 1920px+ | Content max-width holds at 1280px; outer gutters grow to ~80px |
-| desktop-large | 1440px | Default — 4-up feature tile grid, 240px sticky doc sidebar visible |
-| desktop | 1280px | Same layout with narrower outer gutters |
-| desktop-small | 1024px | 4-up tiles collapse to 3-up; doc sidebar remains visible |
-| tablet | 768px | 3-up tiles collapse to 2-up; doc sidebar collapses into a top accordion; primary nav becomes hamburger |
-| mobile | 480px | Single-column everything; hero `{typography.display-xl}` scales 36px → ~28px |
-| mobile-narrow | 320px | Section padding tightens to 32px |
-
-### Touch Targets
-All interactive elements meet WCAG AA (≥ 40×40px). `{component.button-primary}` and `{component.button-secondary}` sit at 40px height with 16px padding. `{component.text-input}` sits at 36px (just under AAA but above AA at this size). `{component.pill-tab}` is ~32–36px height with 14px padding extending to ~44px tappable via inline padding. Doc-sidebar items use 14px text with ~32px line-height + 6px vertical padding for ~44px tap rows.
-
-### Collapsing Strategy
-- **Primary nav:** desktop horizontal cluster → tablet hamburger drawer at 768px. The yellow "Get started — free" CTA stays visible at every breakpoint.
-- **Sub-nav strip:** desktop horizontal anchor row → tablet horizontal scroll → mobile select dropdown.
-- **Marketing card grid:** 4-up → 3-up → 2-up → 1-up at 1024, 768, and 480px; gutters drop from 16px to 12px on mobile.
-- **Pricing grid:** 3-up → 2+1 → 1-up stacked at tablet and below.
-- **Doc layout:** desktop 240px sidebar + 720px article → tablet sidebar collapses to a top accordion → mobile fully collapsed accordion.
-- **Footer:** 6-up link columns → 3-up at tablet → 2-up at mobile.
-- **Section padding:** `{spacing.section}` (80px) desktop → 64px tablet → 48px mobile.
-- **Hero headline:** `{typography.display-xl}` (36px) at desktop, scaling to ~28px at mobile, line-height holding at 1.5.
-
-### Image Behavior
-The only "imagery" in the system is hand-drawn hedgehog illustrations rendered as inline SVG. They preserve their natural aspect at every breakpoint and scale via CSS `width: auto; max-width: 100%`. There is no responsive art-direction needed because there is no photography.
-
-## Iteration Guide
-
-1. Focus on ONE component at a time. Pull its YAML entry and verify every property resolves.
-2. Reference component names and tokens directly (`{colors.primary}`, `{component.button-primary-pressed}`, `{rounded.md}`) — do not paraphrase.
-3. Run `npx @google/design.md lint DESIGN.md` after edits — `broken-ref`, `contrast-ratio`, and `orphaned-tokens` warnings flag issues automatically.
-4. Add new variants as separate component entries (`-pressed`, `-disabled`, `-focused`) — do not bury them inside prose.
-5. Default body to `{typography.body-md}` (16px / 400 / 1.5); reach for `{typography.body-strong}` for emphasis; reserve `{typography.display-lg}` (24px / 800) strictly for marketing display moments.
-6. Keep `{colors.primary}` scarce per viewport — at most one yellow-orange pill per fold.
-7. When introducing a new component, ask whether it can be expressed with the existing card + 6px-radius + cream-canvas vocabulary before adding new tokens. The system's strength is that it almost never needs new ones.
-
-## Known Gaps
-
-- **Mobile screenshots not captured** — responsive behavior synthesizes PostHog's mobile pattern (hamburger drawer, single-column grid, doc sidebar accordion) from desktop evidence and the breakpoint stack.
-- **Hover states not documented** by system policy.
-- **In-product app chrome** (PostHog dashboard, charts, session replay player) not in the captured set — the marketing site is documented here, not the in-product analytics interface.
-- **Authenticated chrome** (login modal, account dashboard, billing settings) not in the captured pages.
-- **Form validation states** beyond the focused-state input not present in the captured surfaces.
-- **Marketing illustration set** — the full library of hedgehog character poses is not enumerated here; specific poses (lab coat hedgehog, terminal hedgehog, hammock hedgehog) are noted as visible in screenshots but the full asset library is page-specific.
+## Constraints (vast, niet aanraken)
+
+- **Mobile-only**, max-w 480px. Geen desktop-uitbouw.
+- **Nederlandse copy**, informele "boys trip" toon. Geen Engelse strings, geen formele toon.
+- Alle bestaande **functionaliteit** blijft werken: tab-routing, localStorage beer-counter, spin wheel canvas, fx-rate fetch, SOS WhatsApp-link, venue filter.
+
+Alles anders (kleuren, fonts, emoji-iconen, Hongaarse vlag-accenten, complete component-rewrites, tab-architectuur) **mag op tafel** als het naar 10/10 brengt.
+
+---
+
+## Executive Summary
+
+| Score | Detail |
+|---|---|
+| **Nielsen heuristics** | **24 / 40** — Acceptable, no fatal sins, clustered op "no system, just patterns" |
+| **Technical audit** | **15 / 20** — Solid foundation, fix a11y + viewport-lock voor production-ready |
+| **AI Slop verdict** | **6/10 slop** — "competent dark mobile dashboard" silhouette |
+
+**Top 5 blocking + major problemen:**
+1. SOS-knop deelt geen locatie en zit 3 taps diep — pretendeert een safety feature te zijn.
+2. Geen `focus-visible` state op één enkel interactief element.
+3. Viewport zoom is hardcoded uitgeschakeld (`maximumScale: 1`, `userScalable: false`) — WCAG-overtreding.
+4. Emoji-iconen (TabNav 🛠️ leest als "settings", FactsCarousel, ExploreTab) — single grootste AI-tell.
+5. Geen type-scale: 6 Anton sizes ad-hoc, geen ratio. Microcopy (de soul van het product) wordt dimmed weergegeven.
+
+**Biggest opportunity:** de NL boys-trip voice is sterk maar visueel gedimd. De redesign moet de copy luider maken, niet quieter — het is het product.
+
+---
+
+## AI Slop Verdict
+
+De UI ontwijkt de meeste klassieke AI-tells (geen gradient-text, geen glassmorphism overal, geen Tailwind default blue/slate, geen identieke card grids, geen modal-first denken). Twee blijvende tells + structurele uniformiteit zakken de score:
+
+**Specifieke tells:**
+- **Card-uniformiteit.** `rounded-tool border border-border bg-card px-4 pt-6 pb-7 text-center shadow-ambient` herhaalt door SpinWheel, BeerCounter, CurrencyConverter, Lexicon. Vijf tools, één silhouet.
+- **`shadow-ambient` everywhere** (6+ keer per scherm) — niet ambient, wallpaper.
+- **Sunset→gold gradient op elke primary CTA** (MapsButton, SpinWheel knop). Klassieke "warme gradient = primary" reflex.
+- **Emoji als icoonsysteem.** TabNav 🏠🗺️🛠️, FactsCarousel 🥃🏚️💧🏆, ExploreTab 🍔🍺🍸📸. Wisselend per OS, ondergraaft Hongaarse identiteit.
+- **Side-stripe border** op venues: `border-l-2 border-gold` (`ExploreTab.tsx:98`). Exact het patroon dat de design-laws verbieden. 15× herhaald.
+- **Pure `#000`** als `--color-app` zonder tint (`globals.css:5`). Inconsistent met de rest van de palette die wel getint is.
+- **4px tricolor Hongaarse vlag-stripe** bovenaan — decoratief tax, geen systeem.
+
+**Wat NIET slop is:** NL informele copy in de data files (`Het Rad des Doods`, `Stijve Neansen`, `Monopoly-poen`), het `result-reveal` `@starting-style` trick, de `sos-pulse` keyframe. Echte craft pockets — begraven onder uniform card grids.
+
+---
+
+## Heuristic Scores
+
+| # | Heuristic | Score | Key Issue |
+|---|---|---|---|
+| 1 | Visibility of system status | 3 | Mist: aantal venues na filter, beer-counter session vs trip-totaal, FX "fallback" is microscopisch |
+| 2 | Match real world | **4** | NL boys-trip tone is de soul, dit is de win |
+| 3 | User control & freedom | 2 | Geen beer-counter undo, geen multi-filter, geen swipe-between-tabs |
+| 4 | Consistency & standards | 2 | Heading sizes driften: text-2xl, text-3xl, text-xl, text-lg — geen ladder |
+| 5 | Error prevention | 3 | Beer-reset confirm OK; mist: negative-guard currency, FX-offline state, overflow huge HUF |
+| 6 | Recognition vs recall | 2 | Emoji-iconen niet als systeem herkenbaar, filter-pills missen icoon-affordance |
+| 7 | Flexibility / efficiency | 2 | Geen quick-add (+5 beers), geen copy-tap op lexicon, geen swipe-tab, haptic alleen op 2 plekken |
+| 8 | Aesthetic & minimalist | 2 | Minimalist ja, aesthetic generic. Hongaarse identiteit alleen in 4px stripe + SOS rood |
+| 9 | Error recovery | 2 | FX-fallback bestaat maar onleesbaar. Geen "spin opnieuw". WhatsApp-fallback ontbreekt |
+| 10 | Help & documentation | 2 | Lexicon = doc-laag maar verstopt onderaan Tools. Geen first-run hint |
+| **Totaal** | | **24 / 40** | **Acceptable** — fundament staat, structureel werk nodig |
+
+## Technical Audit Scores
+
+| # | Dimension | Score | Key Finding |
+|---|---|---|---|
+| 1 | Accessibility | **2/4** | Geen `focus-visible` anywhere. Canvas wheel mist tekst-alt. `ink-muted` op `bg-card` ≈ 3.9:1 (faalt WCAG AA). |
+| 2 | Performance | 3/4 | next/font swap OK, transform/opacity-only animaties. Maar SpinWheel canvas niet DPR-scaled, missing useEffect dep. |
+| 3 | Theming | **4/4** | Sterk token-systeem in `@theme`. Hex buiten globals.css is canvas-paint of platform-meta — gerechtvaardigd. |
+| 4 | Responsive | 3/4 | Safe-area helpers OK, max-w 480 OK, touch targets vaak ruim. Reset-rij breekt op 320px, viewport-lock blokkeert zoom. |
+| 5 | Anti-Patterns | 3/4 | Geen em-dashes, geen glassmorphism, geen generic blues. Wel side-stripe op venues + pure #000. |
+| **Totaal** | | **15 / 20** | **Good** — fix a11y + viewport voor production |
+
+---
+
+## Priority Issues
+
+### P0 — Blocking (fix immediately)
+
+1. **SOS-knop deelt geen locatie + zit 3 taps diep.**
+   - Location: `src/components/SosBox.tsx` + `src/components/AppShell.tsx`
+   - Impact: het is een safety feature die pretendeert te functioneren. Dronken Alex om 4:30 moet eerst Home → Explore → Tools om hem te vinden. Pete krijgt een NL-tekstje zonder locatie.
+   - Fix: capture `navigator.geolocation` bij klik, append `https://maps.google.com/?q=lat,lng` aan het WhatsApp bericht. Promote SOS naar persistent floating action button (rechterhoek, alle tabs), of header-icon. Verkort body copy tot ≤12 woorden.
+
+2. **Geen `focus-visible` op ANY interactive element.**
+   - Location: alle componenten. `grep focus-visible|focus:` in `src/` = 0 hits.
+   - Impact: combineer met globale `-webkit-tap-highlight-color: transparent` (`globals.css:104,109`) en je hebt een UI die niet keyboard-navigable is.
+   - Fix: één globale rule in `globals.css`:
+     ```css
+     *:focus-visible {
+       outline: 2px solid var(--color-gold);
+       outline-offset: 2px;
+       border-radius: var(--radius-pill);
+     }
+     ```
+     Plus per-component `focus-visible:ring-2 focus-visible:ring-gold` op interactive elements.
+
+3. **Viewport zoom geblokkeerd.**
+   - Location: `src/app/layout.tsx:46-47` (`maximumScale: 1`, `userScalable: false`)
+   - Impact: slechtziende gebruikers kunnen niet inzoomen. WCAG 1.4.4 + 1.4.10 overtreding.
+   - Fix: verwijder beide. iOS double-tap-zoom op inputs is opgelost zolang inputs `font-size ≥ 16px` zijn (CurrencyConverter inputs zijn al `text-2xl`).
+
+### P1 — Major (fix before ship)
+
+4. **Emoji-iconen vervangen door SVG-set.**
+   - Location: `TabNav.tsx`, `FactsCarousel.tsx`, `ExploreTab.tsx` (venue group icons), `SosBox.tsx`, mogelijk `Lexicon.tsx`.
+   - Impact: TabNav 🛠️ leest als "settings" → dronken Alex tapt verkeerd. Emoji rendert wisselend per OS, ondergraaft Hongaarse identiteit.
+   - Fix: design een custom 8-icon set (home, map, tools, beer, ruin-bar, food, culture, alarm) in Lucide-stijl 1.5px stroke, of leentje uit Lucide met overrides. Hou de Hongaarse vlag-kleuren in de filled-versies.
+
+5. **Type-scale ontbreekt — definieer en enforce.**
+   - Locations: alle component-files. 6 Anton-sizes ad-hoc gebruikt (text-lg, text-xl, text-2xl, text-3xl, text-6xl).
+   - Impact: visual hierarchy is plat; aliases/copy worden gedimd terwijl ze het luidste deel van het product zijn.
+   - Fix: definieer named utilities in `globals.css`:
+     ```
+     display-xl   Anton  44 / 44   tracking -0.02em  uppercase   — tab hero only
+     display-lg   Anton  32 / 36   tracking  0.00em  uppercase   — section headers
+     display-md   Anton  22 / 26   tracking  0.04em  uppercase   — sub-section
+     label-xs     Outfit 600 11/14 tracking  0.12em  uppercase   — tab labels, kicker
+     body-md      Outfit 400 15/22 tracking  0.00em              — paragraph body
+     body-sm      Outfit 400 13/19                               — captions, blurbs
+     mono-data    Outfit 600 28/28 tabular-nums                  — beer count, currency value
+     ```
+     Strip `text-xl/2xl/3xl/6xl` ad-hoc gebruik. Tools tab titles → `display-lg`. Venue card titles → `display-md`. Aliases → `body-md` (niet meer `text-sm italic ink-muted`).
+
+6. **Tools tab cognitive overload — 5 cards stacked.**
+   - Location: `TabContent` Tools rendering.
+   - Impact: dronken Alex landt op heaviest tab. SOS, wheel, counter, currency, lexicon allemaal claimen aandacht.
+   - Fix opties (kies bij stap 2):
+     - A) Groepeer in 3 sectie-headers: "Survival" (SOS prominent), "Drink" (wheel + counter), "Wallet" (currency + lexicon).
+     - B) Promote SOS naar persistent FAB (zie P0 #1) + maak Tools een 2×2 grid van resterende tools.
+     - C) Splits in 4 tabs: Home / Explore / Drink / Survival.
+
+7. **`MapsButton` is globaal persistent — architecturaal mis.**
+   - Location: `src/components/AppShell.tsx` — gerenderd boven elke tab.
+   - Impact: gradient CTA "Király utca 47" verschijnt op elk scherm zonder context. Dominantste UI-element wordt structureel genegeerd.
+   - Fix: verplaats naar Home-tab, label als "Onze Airbnb". Vervang de persistent slot door SOS-FAB.
+
+8. **Lexicon zit begraven onderaan Tools.**
+   - Location: `src/components/Lexicon.tsx`
+   - Impact: het is de Hongaars-NL phrasebook, hoort niet onder "tools".
+   - Fix: maak het een bottom-sheet trigger 🇭🇺 in de header (in dynamische tab-titel), tikbaar van elk scherm. Of voeg "Lekker wijf" → "Szép nő" prominently in de header zelf.
+
+9. **CurrencyConverter mist quick-chip amounts.**
+   - Location: `CurrencyConverter.tsx:44-72`
+   - Impact: drunk users converteren altijd dezelfde amounts ("hoeveel is een biertje, hoeveel is dat menu").
+   - Fix: voeg een rij chips toe: €5 / €10 / €20 / €50 / 500 HUF / 2000 HUF. Tap = vul input.
+
+10. **Hongaarse groen (`#008751`) is gedefinieerd maar nergens gebruikt.**
+    - Location: `globals.css` — `--color-hu-green`.
+    - Impact: Hongaarse identiteit valt terug naar "rood + goud". Groen is the freshest token in de palette.
+    - Fix: gebruik groen semantisch — "live/open/safe" indicators: FX live-badge, venue "open now" (toekomst), spin wheel result chip, currency input "submitted" feedback. Definieer een role.
+
+11. **Tab nav indicator-stijl + tab labels te klein (10px).**
+    - Location: `TabNav.tsx`
+    - Impact: 10px is onder iOS HIG (11pt minimum voor tab labels). Plus emoji-icon probleem (zie #4).
+    - Fix: labels naar `label-xs` (11px met 0.12em tracking — readbaar door tracking). SVG-icons via #4.
+
+12. **Header repeats "Budapest Boys Trip" op elke tab.**
+    - Location: `src/components/AppShell.tsx:20-26`
+    - Impact: 56px vertical wasted × 100% sessions. User weet de app-naam.
+    - Fix: dynamic per tab: "De Line-up · 7 dudes" / "Spots · 15 in totaal" / "Survival Kit". Of helemaal weg op Home en alleen tab-naam tonen.
+
+13. **`text-ink-muted` (#71717a) onder WCAG AA op card-background.**
+    - Location: token in `globals.css:10`, gebruikt in 8+ plekken.
+    - Impact: 3.9:1 contrast — faalt WCAG AA voor normale text. Affects: venue blurbs, facts body, SpinWheel blurb, Lexicon entries, SosBox subtext.
+    - Fix: shift token naar `#8a8a93` of `#9090a0` (≈ 5.5:1). Behoud `--color-ink-soft` voor extra-subtle.
+
+14. **SpinWheel canvas niet DPR-scaled.**
+    - Location: `SpinWheel.tsx:8, 167-169`
+    - Impact: op DPR-3 phones (iPhone 14 Pro) wordt het wiel blurry. Plus huidige 6-grays palette ziet eruit als een gebroken wiel.
+    - Fix: `canvas.width = 260 * window.devicePixelRatio; ctx.scale(dpr, dpr)`, CSS-size 260. Plus segment-palette rotatie door `hu-red`, `hu-green`, `gold`, getinte neutrals — niet 6 grays.
+
+### P2 — Minor
+
+15. ExploreTab venue numbering "1. Bamba Marha" suggereert ranking — kill nummers OF maak van #1 een echte hero (groter, hu-red badge).
+16. SpinWheel post-result: geen "Draai Opnieuw" button — dezelfde disabled CTA blijft staan.
+17. FactsCarousel: geen scroll affordance (geen dots, geen peek, geen "1/6" counter).
+18. BeerCounter: geen `-1` of undo. Long-press = -1 zou logisch zijn.
+19. FX fallback indicator (`· fallback` in 12px ink-soft) onleesbaar.
+20. SquadList avatars zijn lazy initials in cirkels — 7 known guys, deserve meer.
+21. ExploreTab filter pills `py-1.5` ≈ 32px hoog — onder WCAG 2.5.5 44px target.
+22. BeerCounter reset-bevestiging breekt op 320px (iPhone SE) — geen flex-wrap.
+23. CurrencyConverter ⇌ glyph in sunset color → leest als destructive, moet neutral of hu-green.
+24. SOS body copy: 60+ woorden. Kort naar ≤12 voor crisis-readability.
+25. SpinWheel canvas mist tekst-alternatief en aria-live op winner reveal.
+
+### P3 — Polish (emil-domein)
+
+26. `flag-wipe` keyframe gedefinieerd in `globals.css` en **nooit aangeroepen**. Chekhov's gun — invoke op tab switch als 1-frame red→green sweep.
+27. Subtle haptic op tab change (haptic is al gewired in BeerCounter + SpinWheel).
+28. SOS pulse pausen wanneer off-screen (IntersectionObserver) voor battery.
+29. Long venue name `(Nagycsarnok)` wrap looks broken — wrap als `<small>` of break-after.
+30. Reuse `result-reveal` motion idiom op beer-milestones (elke 10 beers = flash) en filter-changes.
+31. `useEffect` missing dep in `SpinWheel.tsx:26-28`.
+32. CurrencyConverter rounding-jitter bij snel typen (debounce of formatteer-pas-op-blur).
+33. `pb-28` op main → krap met safe-area + nav-height op tekstvergroting. Naar `pb-32` of `pb-[calc(112px+env(safe-area-inset-bottom))]`.
+34. Pure `#000` voor `--color-app` → tint naar `#050507` voor consistentie met rest palette.
+35. CurrencyConverter inputs missen `aria-label`.
+36. Heading hierarchy: section-headings (`De Line-up`, `Nutteloze Feiten`) zijn h2 maar visueel lichter dan h3 venue titles — promote of switch.
+
+---
+
+## Per-Section Findings
+
+### Globals (`src/app/globals.css`)
+- Werkt: Tokens well-named, 5-radius systeem intentioneel, custom easing curves deliberate, `prefers-reduced-motion` correct geïmplementeerd.
+- Werkt niet: 3 hu-* kleuren maar groen nergens gebruikt. `flag-wipe` keyframe never invoked. Twee shadow tiers gedefinieerd maar één (`ambient`) uniform gebruikt. Pure `#000` zonder tint.
+
+### Layout (`src/app/layout.tsx`)
+- Viewport-lock (P0). 4px tricolor stripe is decoratief tax — commit als systeem (border-top op section headers, of focus-ring patterns) of kill.
+
+### AppShell (`src/components/AppShell.tsx`)
+- Statische header "Budapest Boys Trip" (P1 #12). MapsButton structureel mis-geplaatst (P1 #7).
+
+### TabNav (`src/components/TabNav.tsx`)
+- Werkt: Indicator-bar (2px gold top) subtiel en goed. Animatie 380ms ease-drawer correct.
+- Werkt niet: Emoji-icons (P1 #4). Labels 10px (P1 #11). Geen focus-visible (P0 #2).
+
+### ExploreTab (`src/components/ExploreTab.tsx`) — PRIORITY TARGET
+- Card-ception (venue sub-card inside group card). Side-stripe gold border (P2). Numbering implies ranking. Filter pills te klein touch target. Default state `Alles` = worst cognition. Geen venue metadata (afstand van Airbnb, open hours, prijs-tier). Voelt als blog-post, niet als gids.
+- **Redesign-direction:** Verwijder de geneste cards. Venue-list = horizontal cards met:
+  - **Display-md** venue name in Anton, hu-red number-badge als ranking bedoeld is, anders weglaten.
+  - **Body-md** blurb (niet meer dimmed muted).
+  - Optional metadata row: "8 min van Airbnb · €€ · open til 04:00" (echte icons, niet emoji).
+  - Geen left-border accent — laat ze chrome-loos, scheid met `border-b border-hairline-soft`.
+  - Group titles als `display-lg` met hu-flag color per categorie (rood=ruin, groen=cultuur, goud=craft, wit=food).
+
+### SpinWheel (`src/components/SpinWheel.tsx`)
+- Werkt: Best-engineered component. Canvas easing + haptic tick on point.
+- Werkt niet: 6 grays + 1 gold = looks broken. Geen "draai opnieuw". Canvas niet DPR. Geen aria. Spinning state = zelfde knop-positie.
+
+### BeerCounter (`src/components/BeerCounter.tsx`)
+- Werkt: 200×200 circular +1 button is **het beste UI-moment in de app**. Drunk-proof, tactiel, satisfying. **Replicate dit pattern in andere tabs.**
+- Werkt niet: Count nummer boven competeert met button. Geen undo. Geen session vs trip-totaal. Reset-rij breekt op 320px.
+
+### SosBox (`src/components/SosBox.tsx`)
+- Werkt: Pulse-animatie goed. Voice on point.
+- Werkt niet: Geen locatie in WhatsApp bericht (P0). Body copy te lang voor crisis. Eén fallback contact (wat als Pete's phone dood is?).
+
+### CurrencyConverter (`src/components/CurrencyConverter.tsx`)
+- Werkt: Bi-directional input goed. "HUF-Hustler Pro" copy lands.
+- Werkt niet: Geen quick chips. ⇌ in sunset (looks destructive). Fallback-indicator onleesbaar.
+
+### FactsCarousel (`src/components/FactsCarousel.tsx`)
+- Werkt: Horizontal scroll = goeie progressive disclosure.
+- Werkt niet: Geen scroll affordance. 6 cards × 270px = 1620px scroll zonder counter/dots. Identiek-uitziende cards.
+
+### SquadList (`src/components/SquadList.tsx`)
+- Initials-in-cirkel = lazy. Aliases zijn de funniest copy en staan in `text-sm italic ink-muted` (dimmed!). Statussen ook gedimd. Make the funny loud.
+
+### Lexicon (`src/components/Lexicon.tsx`)
+- Verstopt onderaan Tools. Geen tap-to-copy. "Lekker wijf → Szép nő" is most-used entry, ziet er identiek uit als "Hallo → Szia". Pronunciation in `()` moet eigen styling.
+
+### MapsButton (`src/components/MapsButton.tsx`)
+- Persistent across tabs = mistake. Label "Király utca 47" pre-arrival = opaque (label als "Onze Airbnb").
+
+---
+
+## Concrete Design Recipes (voor stap 2)
+
+### Type scale (definieer in globals.css)
+```css
+.text-display-xl  { font-family: var(--font-anton); font-size: 44px; line-height: 44px; letter-spacing: -0.02em; text-transform: uppercase; }
+.text-display-lg  { font-family: var(--font-anton); font-size: 32px; line-height: 36px; text-transform: uppercase; }
+.text-display-md  { font-family: var(--font-anton); font-size: 22px; line-height: 26px; letter-spacing: 0.04em; text-transform: uppercase; }
+.text-label-xs    { font-family: var(--font-outfit); font-weight: 600; font-size: 11px; line-height: 14px; letter-spacing: 0.12em; text-transform: uppercase; }
+.text-body-md     { font-family: var(--font-outfit); font-weight: 400; font-size: 15px; line-height: 22px; }
+.text-body-sm     { font-family: var(--font-outfit); font-weight: 400; font-size: 13px; line-height: 19px; }
+.text-mono-data   { font-family: var(--font-outfit); font-weight: 600; font-size: 28px; line-height: 28px; font-variant-numeric: tabular-nums; }
+```
+Strip `text-xl/2xl/3xl/6xl` ad-hoc gebruik. Replace door named utilities.
+
+### Color semantics
+```
+hu-red       → SOS, errors, "destructive only"  (NIET op CTAs)
+hu-green     → "live/open/safe/go" — FX live-badge, venue open-now, spin wheel result chip, currency submit feedback
+gold         → beer-context only — counter, wheel winner, pálinka fact, "this is the answer"
+sunset       → micro highlight accent — NIET als primary CTA
+ink/card/bg  → surfaces
+```
+**Kill** de `from-sunset to-gold` gradient op MapsButton en SpinWheel CTA. Pick één:
+- Solid `hu-green` voor "go" actions (Maps, "Draai")
+- Solid `gold` voor beer-actions (counter +1)
+- Solid `hu-red` voor SOS (al goed)
+
+### Shadow tiers (gebruik by role, niet by gut)
+```css
+.shadow-surface { box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 4px 8px -2px rgba(0,0,0,0.4); }
+.shadow-card    { box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 12px 24px -8px rgba(0,0,0,0.5); }
+.shadow-hero    { box-shadow: above + 0 0 40px rgba(245,197,24,0.25); }  /* MAX 1 per screen */
+.shadow-sos     { box-shadow: 0 0 0 4px rgba(220,20,60,0.5); animation: sos-pulse 2.4s; }
+```
+Currently `shadow-ambient` is 6+ keer per screen — vervang door role-aware tier.
+
+### Spacing rhythm
+```
+--space-section: 40px;   /* tussen top-level blocks */
+--space-card:    16px;   /* tussen stacked cards */
+--space-row:     8px;    /* lijst-items binnen card */
+--space-pill:    6px;    /* inline chips */
+```
+
+### Microcopy hierarchy
+**Promote** de aliases en tool titles. Stop dimmen van de funny. Aliases in `body-md` (niet `text-sm italic`). Statussen in `label-xs hu-green` als "live status indicator". Venue blurbs in `body-md`, geen `text-sm muted`.
+
+### Focus state (één globale rule)
+```css
+*:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius-pill);
+}
+```
+
+---
+
+## Strategic Decisions (vastgelegd door user — gebruik deze als gegeven in stap 2)
+
+1. **Tab-architectuur: SOS als persistent FAB, Tools blijft 1 tab als 2×2 grid.**
+   - SOS-knop wordt floating action button rechtsonder, zichtbaar op ALLE tabs. 1 tap altijd.
+   - SOS verdwijnt uit Tools-tab content (geen dubbel) — alleen de FAB.
+   - Tools-tab houdt: SpinWheel, BeerCounter, CurrencyConverter, Lexicon → 2×2 grid layout op desktop-ish wide, of 1-col stack op smaller — maar visueel paired (Drink-pair: wheel+counter, Wallet-pair: currency+lexicon).
+   - FAB design: 56×56 cirkel, hu-red fill, witte alarm-icon, `shadow-sos` met pulse op idle, scale-down op press. Positioneer respecting `safe-area-inset-bottom` zodat het boven de TabNav zit. Tap opent een bottom-sheet met de huidige SOS body + verzendknop, NIET direct WhatsApp (geeft drunk-user 1 secondary check).
+
+2. **Hongaarse vlag: semantisch (kleur-roles), niet decoratief.**
+   - `hu-red` → destructive/error/SOS only.
+   - `hu-green` → live/open/safe/go state — FX live-badge, venue open-now hints, currency submit feedback, "Draai" CTA in spin wheel, spin result chip.
+   - `hu-white` → neutral text accent, tab-indicator highlight.
+   - `gold` → beer-context only (counter, wheel winner, pálinka fact).
+   - `sunset` → micro accent, NIET als primary.
+   - 4px tricolor stripe in `layout.tsx`: behoud als systeem-anchor — gebruik als focus-ring color rotation (red→white→green op repeat focus cycles), OF als section-divider border-top op section headers.
+
+3. **Squad: per-person color-coding.**
+   - 7 unieke accent kleuren, één per squad-member, gedefinieerd in `src/data/squad.ts` als nieuw veld `accentColor` (hex string).
+   - Pas toe op: SpinWheel segments (vervangt de 6 grays met de 7 squad-kleuren — echt persoonlijk), SquadList avatar-cirkels (kleur per persoon ipv generic), eventueel BeerCounter cycling (kleur wijzigt per beer-milestone als easter egg).
+   - Palette: kies kleuren die tegen donkere bg pop'en, ≥4.5:1 contrast voor witte text overlay. Suggested seed (mag bijgesteld):
+     - Martijn: `#f5c518` (gold) — Beheerder krijgt brand-gold
+     - Niek: `#d72638` (hu-red shade)
+     - Bono: `#008751` (hu-green)
+     - Jeroen: `#3a86ff` (electric blue)
+     - Joep: `#ff6b35` (sunset)
+     - Oli4: `#9d4edd` (purple)
+     - Peter Pan: `#06d6a0` (mint)
+
+### Open beslissingen (niet blocking — stap 2 mag zelf kiezen, fallback defaults hieronder)
+
+- **Shared state via trip-code:** STATUS QUO (individueel, localStorage-only). Geen backend. Een eventuele "we zijn hier geweest" venue-toggle is een nice-to-have voor toekomst, niet voor deze chain.
+- **Default Explore filter:** stap 2 kiest. Aanrader: "Tap een categorie" empty-state met alle 4 pills prominent (smart default zonder content-overload). Fallback: "Ruin Bars" als default (eerlijke interest reflectie).
+
+---
+
+## What WORKS (keep & replicate)
+
+1. **De NL voice.** `Het Rad des Doods`, `Slinger het rad en het lot bepaalt wie de lul is`, `Monopoly-poen`, `Stijve Neansen`, `Lieg niet tegen jezelf`. Dit is het product. Elke visuele beslissing moet deze copy luider maken.
+2. **Het 200×200 BeerCounter button.** Drunk-proof, tactiel, fun. Repliceer dit pattern: elke tab krijgt ONE "hero interaction". Explore mist er een, Tools heeft er 3 die vechten.
+3. **`result-reveal` via `@starting-style`.** Moderne CSS-only entrance animatie, no JS. Gebruik dit idioom op tab-change, beer-milestones, filter-changes — maak het system motion.
+4. **Token-systeem in Tailwind v4 @theme.** Volwassen design-engineering. Bouwen we op.
+5. **Server-rendered FX-rate met `revalidate = 3600` + fallback flag.** Pragmatisch, snel, geen waterfall.
+6. **`prefers-reduced-motion` correct geïmplementeerd** (`globals.css:170-179`). Behouden.
+
+---
+
+## Recommended Actions (chain progression)
+
+**Stap 2 — `/redesign-existing-projects`** voert uit (volgorde):
+
+1. **First — globals.css upgrade:** type-scale utilities, color semantics, shadow tiers, focus-visible rule, ink-muted contrast-fix, viewport-lock weghalen.
+2. **Second — shared chrome:** SOS persistent FAB design + locatie-share, dynamic header per tab, SVG icon-set (8 icons), MapsButton verplaatsen naar Home.
+3. **Third — per-tab redesigns:**
+   - Tools: kies architectuur uit Strategic Question #1, herontwerp accordingly.
+   - Explore: kill card-ception, kill side-stripe, kill default-Alles, voeg metadata-rows, group-titles per hu-color.
+   - Home: SquadList prominenter (aliases als `body-md`, statussen als `label-xs hu-green`), FactsCarousel met scroll-counter, MapsButton geïntegreerd als "Onze Airbnb" card.
+4. **Fourth — components:** SpinWheel DPR-fix + brand-palette segments + spin-again button; BeerCounter long-press undo + session/trip-totaal; CurrencyConverter quick-chips + ⇌ neutral; Lexicon bottom-sheet promotion.
+
+**Stap 3 — `/emil-design-eng`** pakt de P3-laag:
+- `flag-wipe` keyframe invoken op tab-change.
+- Haptic op tab-change + filter-change.
+- `result-reveal` reuse op beer-milestones en filter-changes.
+- SOS pulse off-screen pauseren.
+- Loading-state polish op CurrencyConverter fetch.
+- Empty-state polish op filter "geen resultaten".
+- Micro-press-feedback op alle taps (venue-cards, pills, tool-cards).
+- Easing-curves finetunen op tab-transitions (huidige 380ms = good base, mogelijk 320–360ms voor snappier).

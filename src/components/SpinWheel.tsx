@@ -1,20 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { WHEEL_NAMES } from "@/data/squad";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { WHEEL_NAMES, WHEEL_COLORS } from "@/data/squad";
+import { IconRefresh } from "./Icons";
 
 const TAU = Math.PI * 2;
-const CANVAS_SIZE = 520;
+const CSS_SIZE = 260;
 
-const SEGMENT_PALETTE = [
-  { bg: "#141417", text: "#fafaf9" },
-  { bg: "#1f1f23", text: "#fafaf9" },
-  { bg: "#141417", text: "#fafaf9" },
-  { bg: "#1f1f23", text: "#fafaf9" },
-  { bg: "#141417", text: "#fafaf9" },
-  { bg: "#1f1f23", text: "#fafaf9" },
-  { bg: "#f5c518", text: "#0a0a0c" },
-];
+function contrastInkOn(color: string): string {
+  // crude luminance check — yellow/mint pick dark ink, dark colors pick white
+  const hex = color.replace("#", "");
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.6 ? "#050507" : "#fafaf9";
+}
 
 export function SpinWheel() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -23,70 +24,83 @@ export function SpinWheel() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
 
-  useEffect(() => {
-    drawWheel();
-  }, []);
-
-  function drawWheel() {
+  const drawWheel = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    const targetW = CSS_SIZE * dpr;
+    if (canvas.width !== targetW) {
+      canvas.width = targetW;
+      canvas.height = targetW;
+    }
+
+    ctx.save();
+    ctx.scale(dpr, dpr);
+
     const numSegments = WHEEL_NAMES.length;
     const arc = TAU / numSegments;
-    const cx = CANVAS_SIZE / 2;
-    const cy = CANVAS_SIZE / 2;
-    const radius = CANVAS_SIZE / 2 - 10;
+    const cx = CSS_SIZE / 2;
+    const cy = CSS_SIZE / 2;
+    const radius = CSS_SIZE / 2 - 6;
 
-    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.clearRect(0, 0, CSS_SIZE, CSS_SIZE);
 
     for (let i = 0; i < numSegments; i++) {
       const segStart = angleRef.current + i * arc;
-      const palette = SEGMENT_PALETTE[i % SEGMENT_PALETTE.length];
+      const segColor = WHEEL_COLORS[i % WHEEL_COLORS.length];
       const isWinner = winnerIdxRef.current === i;
 
       ctx.beginPath();
-      ctx.fillStyle = isWinner ? "#f5c518" : palette.bg;
+      ctx.fillStyle = segColor;
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, radius, segStart, segStart + arc);
       ctx.lineTo(cx, cy);
       ctx.fill();
-      ctx.strokeStyle = "#27272a";
-      ctx.lineWidth = 2;
+
+      // Winner highlight overlay
+      if (isWinner) {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.18)";
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = "rgba(5, 5, 7, 0.5)";
+      ctx.lineWidth = 1.5;
       ctx.stroke();
 
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(segStart + arc / 2);
-      ctx.fillStyle = isWinner ? "#0a0a0c" : palette.text;
-      ctx.font = "bold 26px Outfit, system-ui, sans-serif";
+      ctx.fillStyle = contrastInkOn(segColor);
+      ctx.font = "600 14px Outfit, system-ui, sans-serif";
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
-      ctx.fillText(WHEEL_NAMES[i], radius - 24, 0);
+      ctx.fillText(WHEEL_NAMES[i], radius - 14, 0);
       ctx.restore();
     }
 
     // Center hub
     ctx.beginPath();
-    ctx.arc(cx, cy, 22, 0, TAU);
-    ctx.fillStyle = "#ff453a";
+    ctx.arc(cx, cy, 18, 0, TAU);
+    ctx.fillStyle = "#050507";
     ctx.fill();
     ctx.strokeStyle = "#fafaf9";
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2;
     ctx.stroke();
-  }
+
+    ctx.restore();
+  }, []);
+
+  useEffect(() => {
+    drawWheel();
+  }, [drawWheel]);
 
   function pickWinnerIndex(): number {
     const numSegments = WHEEL_NAMES.length;
     const arc = TAU / numSegments;
-    // Pointer is at top (-PI/2). We want the segment whose midpoint is closest
-    // to the pointer after rotation. Normalize current angle into [0, TAU).
     const normalized = ((angleRef.current % TAU) + TAU) % TAU;
-    // Pointer is at angle 1.5 * PI (top of circle in canvas coords means -PI/2,
-    // but our segments start at 0 = right of circle and rotate CW with angleRef).
-    // The segment under the pointer satisfies: pointerAngle - normalized maps
-    // into segment i's [i*arc, (i+1)*arc) range.
     const pointerAngle = ((1.5 * Math.PI - normalized) % TAU + TAU) % TAU;
     return Math.floor(pointerAngle / arc) % numSegments;
   }
@@ -107,12 +121,10 @@ export function SpinWheel() {
     function frame(now: number) {
       const elapsed = now - startTime;
       const t = Math.min(elapsed / totalDuration, 1);
-      // ease-out quint with slight overshoot dampening
       const eased = 1 - Math.pow(1 - t, 4);
       angleRef.current = startAngle + totalRotation * eased;
       drawWheel();
 
-      // Haptic-feel tick on segment passes during final 40%
       if (t > 0.6 && typeof navigator !== "undefined" && "vibrate" in navigator) {
         const idx = pickWinnerIndex();
         if (idx !== lastTickSegment) {
@@ -140,15 +152,14 @@ export function SpinWheel() {
   }
 
   return (
-    <div className="rounded-tool border border-border bg-card px-4 pt-6 pb-7 text-center shadow-ambient">
-      <h2 className="font-display text-2xl tracking-wide uppercase text-ink">
-        Het Rad des Doods
-      </h2>
-      <p className="mt-2 text-sm text-ink-muted">
-        Geen democratie. Slinger het rad en het lot bepaalt wie de lul is.
+    <div className="rounded-tool border border-border bg-card px-5 pt-6 pb-7 text-center shadow-card">
+      <span className="text-label-xs text-hu-red">Geen democratie</span>
+      <h2 className="mt-1 text-display-lg text-ink">Het Rad des Doods</h2>
+      <p className="mx-auto mt-2 max-w-[34ch] text-body-sm text-ink-soft">
+        Slinger het rad en het lot bepaalt wie de lul is.
       </p>
 
-      <div className="relative mx-auto mt-5 h-[260px] w-[260px]">
+      <div className="relative mx-auto mt-5 size-[260px]">
         <div
           aria-hidden="true"
           className="absolute left-1/2 -top-3 z-30 -translate-x-1/2"
@@ -157,16 +168,17 @@ export function SpinWheel() {
             height: 0,
             borderLeft: "12px solid transparent",
             borderRight: "12px solid transparent",
-            borderTop: "24px solid #ff453a",
-            filter: "drop-shadow(0 2px 5px rgba(0,0,0,0.5))",
+            borderTop: "22px solid var(--color-hu-red)",
+            filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6))",
           }}
         />
-        <div className="size-full overflow-hidden rounded-full bg-bg ring-1 ring-border shadow-[0_0_0_6px_var(--color-bg),0_0_24px_rgba(245,197,24,0.15)]">
+        <div className="size-full overflow-hidden rounded-full bg-bg shadow-[0_0_0_6px_var(--color-bg),0_0_32px_-4px_rgba(245,197,24,0.15)]">
           <canvas
             ref={canvasRef}
-            width={CANVAS_SIZE}
-            height={CANVAS_SIZE}
-            className="block size-full rounded-full"
+            role="img"
+            aria-label={`Rad met namen: ${WHEEL_NAMES.join(", ")}`}
+            style={{ width: CSS_SIZE, height: CSS_SIZE }}
+            className="block size-full"
           />
         </div>
       </div>
@@ -175,12 +187,26 @@ export function SpinWheel() {
         type="button"
         onClick={spin}
         disabled={isSpinning}
-        className="mt-6 inline-flex items-center justify-center rounded-hero bg-gradient-to-br from-gold to-sunset px-7 py-3.5 font-display text-base uppercase tracking-wide text-app shadow-hero transition-transform active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50"
+        className={`mt-6 inline-flex items-center justify-center gap-2 rounded-pill px-7 py-3.5 text-display-md text-white shadow-go transition-transform active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60 ${
+          winner ? "bg-card text-ink border border-border" : "bg-hu-green"
+        }`}
       >
-        {isSpinning ? "Het Lot Kiest..." : "Draai Voor Je Leven"}
+        {winner ? (
+          <>
+            <IconRefresh size={18} /> Draai Opnieuw
+          </>
+        ) : isSpinning ? (
+          "Het Lot Kiest…"
+        ) : (
+          "Draai Voor Je Leven"
+        )}
       </button>
 
-      <div className="mt-4 min-h-[1.75rem] font-display text-lg uppercase tracking-wide text-gold">
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className="mt-4 min-h-[1.75rem] text-display-md text-gold"
+      >
         {winner && (
           <span key={winner} className="result-reveal inline-block">
             De lul is: {winner}!

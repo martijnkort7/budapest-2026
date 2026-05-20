@@ -1,24 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand colors - Hungary signature */
-  --color-app: #000000;
+  /* Brand colors - Hungary signature, tinted neutrals */
+  --color-app: #050507;
   --color-bg: #0a0a0c;
   --color-card: #141417;
   --color-card-hover: #1f1f23;
   --color-ink: #fafaf9;
-  --color-ink-muted: #71717a;
-  --color-ink-soft: #a1a1aa;
+  --color-ink-muted: #8a8a93;
+  --color-ink-soft: #b6b7bf;
   --color-border: #27272a;
   --color-border-soft: #1c1c1f;
+  --color-hairline-soft: #1f1f24;
 
   --color-gold: #f5c518;
   --color-gold-dim: #c9a214;
   --color-sunset: #ff453a;
   --color-sunset-dim: #cc372e;
 
+  /* Hungary tricolor - used semantically:
+     red    = destructive / error / SOS
+     green  = live / safe / open / go
+     white  = neutral accent / typographic */
   --color-hu-red: #ce1126;
+  --color-hu-red-dim: #a30f1f;
   --color-hu-green: #008751;
+  --color-hu-green-dim: #006b41;
   --color-hu-white: #ffffff;
 
   /* Fonts (set in layout.tsx via next/font) */
@@ -33,8 +40,11 @@
   --radius-hero: 24px;
   --radius-pill: 9999px;
 
-  /* Spacing system */
-  --spacing-section: 24px;
+  /* Spacing rhythm tokens (use by role, not by gut) */
+  --spacing-section: 40px;
+  --spacing-card: 16px;
+  --spacing-row: 8px;
+  --spacing-pill: 6px;
 
   /* Easing - Emil's strong curves, custom > built-in */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
@@ -42,28 +52,114 @@
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* Layered shadow system - kills generic single-direction drops */
+/* ------------------------------------------------------------------
+   Type scale - named utilities, ratio 1.25-ish, intentional
+   Use these instead of ad-hoc text-xl/2xl/3xl/6xl.
+   ------------------------------------------------------------------ */
 @layer utilities {
-  .shadow-ambient {
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 0.04) inset,
-      0 8px 24px -12px rgb(0 0 0 / 0.6);
+  .text-display-xl {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 44px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
   }
-  .shadow-hero {
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 0.06) inset,
-      0 12px 32px -16px rgb(0 0 0 / 0.8),
-      0 0 40px -8px rgb(245 197 24 / 0.18);
+  .text-display-lg {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 34px;
+    letter-spacing: 0;
+    text-transform: uppercase;
   }
-  .shadow-sos-ring {
-    box-shadow: 0 0 0 0 rgb(206 17 38 / 0.55);
-    animation: sos-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  .text-display-md {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 26px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .text-display-sm {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .text-label-xs {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .text-body-md {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .text-body-sm {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 19px;
+  }
+  .text-mono-data {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 28px;
+    font-variant-numeric: tabular-nums;
   }
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
 }
 
+/* ------------------------------------------------------------------
+   Shadow tiers - used by role
+   surface = listed items, sub-cards
+   card    = primary cards
+   hero    = MAX 1 per screen (gold-glow CTA)
+   sos     = SOS-only pulse
+   ------------------------------------------------------------------ */
+@layer utilities {
+  .shadow-surface {
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.04) inset,
+      0 4px 10px -4px rgb(0 0 0 / 0.5);
+  }
+  .shadow-card {
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.06) inset,
+      0 12px 28px -12px rgb(0 0 0 / 0.7);
+  }
+  .shadow-hero {
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.06) inset,
+      0 14px 36px -16px rgb(0 0 0 / 0.8),
+      0 0 48px -8px rgb(245 197 24 / 0.22);
+  }
+  .shadow-go {
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.06) inset,
+      0 14px 32px -14px rgb(0 0 0 / 0.7),
+      0 0 36px -10px rgb(0 135 81 / 0.4);
+  }
+  .shadow-sos-ring {
+    box-shadow: 0 0 0 0 rgb(206 17 38 / 0.55);
+    animation: sos-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Keyframes
+   ------------------------------------------------------------------ */
 @keyframes sos-pulse {
   0% {
     box-shadow: 0 0 0 0 rgb(206 17 38 / 0.55);
@@ -82,6 +178,15 @@
   }
   to {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 
@@ -109,6 +214,24 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ------------------------------------------------------------------
+   Focus state - one global rule, gold ring, pill-rounded
+   Replaces the missing focus-visible across every component.
+   ------------------------------------------------------------------ */
+*:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius-pill);
+}
+
+/* Inputs need a non-pill outline since they're rectangular */
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  border-radius: var(--radius-data);
+}
+
 /* Hide scrollbars on horizontal swipe containers */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -134,6 +257,11 @@ body {
 }
 .safe-bottom {
   padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* Floating-action-button anchor - respects nav height + safe area */
+.fab-slot {
+  bottom: calc(72px + env(safe-area-inset-bottom));
 }
 
 /* Wheel result reveal - text pops up from below with subtle scale */
@@ -164,6 +292,111 @@ body {
     opacity: 0;
     transform: translateY(6px);
   }
+}
+
+/* Press-feedback class - applies a subtle scale-down on active.
+   Only applies on devices that can hover/precise-point (no touch),
+   so iOS doesn't briefly hold a press state from accidental taps. */
+.press-feedback {
+  transition: transform 160ms var(--ease-out-strong);
+  will-change: transform;
+}
+.press-feedback:active {
+  transform: scale(0.97);
+}
+
+/* Staggered entry — set `--i` per child for cascade.
+   Example: <li style={{ "--i": idx }} className="stagger-item">…</li> */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: stagger-in 420ms var(--ease-out-strong) forwards;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+@keyframes stagger-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Milestone flash — one-shot gold pulse on BeerCounter +1 button at %10 */
+.milestone-flash {
+  animation: milestone-flash 900ms var(--ease-out-strong);
+}
+@keyframes milestone-flash {
+  0% {
+    box-shadow:
+      0 0 36px rgb(245 197 24 / 0.22),
+      inset 0 0 24px rgb(0 0 0 / 0.8);
+  }
+  35% {
+    box-shadow:
+      0 0 96px rgb(245 197 24 / 0.85),
+      inset 0 0 24px rgb(0 0 0 / 0.5);
+  }
+  100% {
+    box-shadow:
+      0 0 36px rgb(245 197 24 / 0.22),
+      inset 0 0 24px rgb(0 0 0 / 0.8);
+  }
+}
+
+/* Soft pulse — used on "Cached" indicator dot to suggest "out of date" */
+.pulse-soft {
+  animation: pulse-soft 2.4s var(--ease-in-out-strong) infinite;
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+/* Flag-wipe overlay — one-shot tricolor sweep across the top edge on tab change.
+   Mount with `key={tab}` so it re-runs on every change. */
+.flag-wipe-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 101;
+  height: 4px;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  pointer-events: none;
+  transform: translateX(-50%);
+  animation: flag-wipe-sweep 480ms var(--ease-out-strong) forwards;
+  transform-origin: top center;
+}
+.flag-wipe-overlay > span {
+  flex: 1;
+}
+@keyframes flag-wipe-sweep {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    transform: translateX(-50%) scaleY(2.6);
+    opacity: 0.85;
+  }
+  55% {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(-50%) scaleY(2.6);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(-50%) scaleY(1);
+    opacity: 0;
+  }
+}
+
+/* TabNav indicator overshoot — uses `scale` property which composes with
+   the indicator's inline `transform: translateX(...)`. Modern CSS only. */
+.indicator-pop {
+  animation: indicator-pop 380ms var(--ease-out-strong);
+}
+@keyframes indicator-pop {
+  0%   { scale: 1 1;     }
+  45%  { scale: 1.18 1;  }
+  100% { scale: 1 1;     }
 }
 
 /* Reduced motion - keep opacity, kill movement (Emil's framework) */

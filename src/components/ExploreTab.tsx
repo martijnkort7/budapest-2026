@@ -2,12 +2,33 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import { FILTER_PILLS, VENUE_GROUPS, type VenueCategory } from "@/data/venues";
+import { IconBurger, IconBeer, IconMartini, IconCamera } from "./Icons";
 
-const ICON: Record<string, string> = {
-  burger: "🍔",
-  beer: "🍺",
-  martini: "🍸",
-  camera: "📸",
+const CATEGORY_THEME: Record<VenueCategory, { color: string; bg: string; Icon: typeof IconBurger; label: string }> = {
+  food: {
+    color: "var(--color-ink)",
+    bg: "rgb(255 255 255 / 0.08)",
+    Icon: IconBurger,
+    label: "Food",
+  },
+  craft: {
+    color: "var(--color-gold)",
+    bg: "rgb(245 197 24 / 0.12)",
+    Icon: IconBeer,
+    label: "Craft",
+  },
+  ruin: {
+    color: "var(--color-hu-red)",
+    bg: "rgb(206 17 38 / 0.14)",
+    Icon: IconMartini,
+    label: "Ruin",
+  },
+  culture: {
+    color: "var(--color-hu-green)",
+    bg: "rgb(0 135 81 / 0.14)",
+    Icon: IconCamera,
+    label: "Cultuur",
+  },
 };
 
 export function ExploreTab() {
@@ -15,6 +36,14 @@ export function ExploreTab() {
   const railRef = useRef<HTMLDivElement | null>(null);
   const pillRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const [indicator, setIndicator] = useState({ x: 0, w: 0, ready: false });
+
+  function setActiveWithHaptic(id: VenueCategory | "all") {
+    if (id === active) return;
+    try {
+      navigator.vibrate?.(8);
+    } catch {}
+    setActive(id);
+  }
 
   useLayoutEffect(() => {
     const btn = pillRefs.current.get(active);
@@ -32,16 +61,17 @@ export function ExploreTab() {
   const visible = VENUE_GROUPS.filter(
     (g) => active === "all" || g.id === active,
   );
+  const totalVenues = visible.reduce((sum, g) => sum + g.venues.length, 0);
 
   return (
-    <section className="px-4 pt-2 pb-4">
+    <section className="px-4 pt-3 pb-4">
       <div
         ref={railRef}
-        className="no-scrollbar relative -mx-4 mb-3 flex gap-2 overflow-x-auto px-4 pb-2"
+        className="no-scrollbar relative -mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1"
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute top-0 left-0 h-8 rounded-pill bg-ink will-change-transform"
+          className="pointer-events-none absolute top-0 left-0 h-11 rounded-pill bg-ink will-change-transform"
           style={{
             transform: `translateX(${indicator.x}px)`,
             width: `${indicator.w}px`,
@@ -60,15 +90,16 @@ export function ExploreTab() {
                 else pillRefs.current.delete(pill.id);
               }}
               type="button"
-              onClick={() => setActive(pill.id)}
-              className={`relative z-10 whitespace-nowrap rounded-pill border px-4 py-1.5 text-sm font-semibold ${
+              onClick={() => setActiveWithHaptic(pill.id)}
+              className={`press-feedback relative z-10 inline-flex min-h-11 items-center whitespace-nowrap rounded-pill border px-5 text-label-xs ${
                 isActive
                   ? "border-transparent text-app"
-                  : "border-border bg-card text-ink"
+                  : "border-border bg-card text-ink-soft"
               }`}
               style={{
                 transition: "color 220ms var(--ease-out-strong)",
               }}
+              aria-pressed={isActive}
             >
               {pill.label}
             </button>
@@ -76,38 +107,92 @@ export function ExploreTab() {
         })}
       </div>
 
-      <div className="flex flex-col gap-3">
-        {visible.map((group) => (
-          <article
-            key={group.id}
-            className="rounded-card border border-border bg-card p-4 shadow-ambient"
-          >
-            <h3 className="flex items-center gap-2 font-display text-xl uppercase tracking-wide text-ink">
-              <span aria-hidden="true" className="text-gold">
-                {ICON[group.iconName] ?? "📍"}
-              </span>
-              {group.title}
-            </h3>
-            <p className="mt-1 text-sm text-ink-muted leading-relaxed">
-              {group.blurb}
+      <p className="mb-5 px-1 text-label-xs text-ink-muted">
+        {totalVenues} {totalVenues === 1 ? "spot" : "spots"} ·{" "}
+        {visible.length === 1 ? visible[0].title : "Alles op een rij"}
+      </p>
+
+      <div key={active} className="flex flex-col gap-8">
+        {visible.length === 0 ? (
+          <div className="flex flex-col items-center gap-2 rounded-tool border border-border bg-card px-6 py-10 text-center shadow-surface">
+            <span className="text-display-md text-ink">Nog niets hier</span>
+            <p className="max-w-[24ch] text-body-sm text-ink-soft">
+              Tap een andere categorie hierboven.
             </p>
-            <ul className="mt-3 flex flex-col gap-2">
-              {group.venues.map((venue, idx) => (
-                <li
-                  key={venue.name}
-                  className="rounded-card border-l-2 border-gold bg-bg px-3 py-2.5"
+          </div>
+        ) : (
+          visible.map((group, groupIdx) => {
+            const theme = CATEGORY_THEME[group.id];
+            const Icon = theme.Icon;
+            const venueBase = visible
+              .slice(0, groupIdx)
+              .reduce((acc, g) => acc + g.venues.length + 1, 0);
+            return (
+              <article key={group.id} className="flex flex-col gap-3">
+                <header
+                  className="stagger-item flex items-start gap-3"
+                  style={{ "--i": venueBase } as React.CSSProperties}
                 >
-                  <div className="text-sm font-semibold text-ink">
-                    {idx + 1}. {venue.name}
+                  <span
+                    aria-hidden="true"
+                    className="grid size-10 shrink-0 place-items-center rounded-card"
+                    style={{ backgroundColor: theme.bg, color: theme.color }}
+                  >
+                    <Icon size={22} />
+                  </span>
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <span
+                      className="text-label-xs"
+                      style={{ color: theme.color }}
+                    >
+                      {theme.label}
+                    </span>
+                    <h3
+                      className="mt-0.5 text-display-md text-ink"
+                      style={{ textWrap: "balance" } as React.CSSProperties}
+                    >
+                      {group.title}
+                    </h3>
+                    <p className="mt-1 text-body-sm text-ink-soft">{group.blurb}</p>
                   </div>
-                  <p className="mt-0.5 text-sm leading-relaxed text-ink-muted">
-                    {venue.blurb}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
+                </header>
+
+                <ul className="flex flex-col">
+                  {group.venues.map((venue, idx) => (
+                    <li
+                      key={venue.name}
+                      className={`stagger-item press-feedback flex flex-col gap-1.5 py-3.5 ${
+                        idx === group.venues.length - 1
+                          ? ""
+                          : "border-b border-hairline-soft"
+                      }`}
+                      style={{
+                        "--i": venueBase + idx + 1,
+                      } as React.CSSProperties}
+                    >
+                      <div className="flex items-baseline justify-between gap-3">
+                        <h4
+                          className="text-display-sm text-ink"
+                          style={{ textWrap: "balance" } as React.CSSProperties}
+                        >
+                          {venue.name}
+                        </h4>
+                        <span
+                          aria-hidden="true"
+                          className="text-label-xs"
+                          style={{ color: theme.color }}
+                        >
+                          0{idx + 1}
+                        </span>
+                      </div>
+                      <p className="text-body-md text-ink-soft">{venue.blurb}</p>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            );
+          })
+        )}
       </div>
     </section>
   );

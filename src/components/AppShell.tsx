@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { TabNav, type TabId } from "./TabNav";
-import { MapsButton } from "./MapsButton";
+import { SosFab } from "./SosFab";
 
 type Props = {
   home: ReactNode;
@@ -10,27 +10,38 @@ type Props = {
   tools: ReactNode;
 };
 
+const HEADERS: Record<TabId, { kicker: string; title: string }> = {
+  home: { kicker: "Boys Trip · 2026", title: "De Line-up" },
+  explore: { kicker: "15 spots gecureerd", title: "Spots" },
+  tools: { kicker: "Het kit voor de nacht", title: "Survival Kit" },
+};
+
 export function AppShell({ home, explore, tools }: Props) {
   const [tab, setTab] = useState<TabId>("home");
 
   const active = tab === "home" ? home : tab === "explore" ? explore : tools;
+  const header = HEADERS[tab];
 
   return (
     <>
-      <header className="safe-top sticky top-0 z-50 border-b border-border bg-bg/90 px-5 pt-4 pb-3 text-center backdrop-blur-md">
-        <h1 className="font-display text-2xl uppercase tracking-[0.04em] text-ink">
-          <span style={{ letterSpacing: "-0.02em" }}>Budapest</span>{" "}
-          <span style={{ letterSpacing: "0.06em" }}>Boys</span>{" "}
-          <span style={{ letterSpacing: "-0.01em" }}>Trip</span>
-        </h1>
+      <div key={`wipe-${tab}`} className="flag-wipe-overlay" aria-hidden="true">
+        <span style={{ background: "var(--color-hu-red)" }} />
+        <span style={{ background: "var(--color-hu-white)" }} />
+        <span style={{ background: "var(--color-hu-green)" }} />
+      </div>
+
+      <header className="safe-top sticky top-0 z-50 border-b border-border bg-bg/85 px-5 pt-4 pb-3 backdrop-blur-md">
+        <div key={tab} className="result-reveal flex items-baseline justify-between gap-3">
+          <h1 className="text-display-lg text-ink">{header.title}</h1>
+          <span className="text-label-xs text-hu-green">{header.kicker}</span>
+        </div>
       </header>
 
-      <MapsButton />
-
-      <main key={tab} className="tab-enter pb-28">
+      <main key={tab} className="tab-enter pb-32">
         {active}
       </main>
 
+      <SosFab />
       <TabNav active={tab} onSelect={setTab} />
     </>
   );

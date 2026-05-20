@@ -1,27 +1,32 @@
+import { IconMapPin, IconChevronRight } from "./Icons";
+
 export function MapsButton() {
   return (
-    <div className="px-4 pt-4 pb-2">
-      <a
-        href="https://maps.app.goo.gl/wRGuk1EN8hDMAX8Q8"
-        target="_blank"
-        rel="noreferrer"
-        className="shadow-hero flex items-center justify-center gap-3 rounded-hero bg-gradient-to-br from-sunset to-gold px-4 py-4 text-app transition active:scale-[0.97]"
+    <a
+      href="https://maps.app.goo.gl/wRGuk1EN8hDMAX8Q8"
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Open Google Maps voor Király utca 47"
+      className="press-feedback group relative flex items-center gap-4 overflow-hidden rounded-tool border border-hu-green/30 bg-card px-4 py-4 shadow-go"
+    >
+      <span
+        aria-hidden="true"
+        className="grid size-12 shrink-0 place-items-center rounded-full bg-hu-green/15 text-hu-green"
       >
-        <span aria-hidden="true" className="text-2xl">
-          📍
+        <IconMapPin size={24} />
+      </span>
+
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="text-label-xs text-hu-green">Onze Airbnb</span>
+        <strong className="mt-0.5 text-display-md text-ink">Király utca 47</strong>
+        <span className="mt-0.5 truncate text-body-sm text-ink-muted">
+          District VII · Joodse Wijk
         </span>
-        <span className="flex flex-1 flex-col items-start">
-          <strong className="font-display text-base leading-tight tracking-wide">
-            Navigeer naar Huis
-          </strong>
-          <span className="text-[13px] font-semibold opacity-80">
-            Király utca 47, Budapest
-          </span>
-        </span>
-        <span aria-hidden="true" className="text-base opacity-60">
-          ›
-        </span>
-      </a>
-    </div>
+      </span>
+
+      <span aria-hidden="true" className="text-ink-muted transition-transform group-hover:translate-x-1">
+        <IconChevronRight size={22} />
+      </span>
+    </a>
   );
 }
