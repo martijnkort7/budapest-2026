@@ -13,6 +13,11 @@ type Props = {
 export function AppShell({ home, explore, tools }: Props) {
   const [tab, setTab] = useState<TabId>("home");
 
+  function handleTabChange(id: TabId) {
+    setTab(id);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
   const active = tab === "home" ? home : tab === "explore" ? explore : tools;
 
   return (
@@ -42,7 +47,7 @@ export function AppShell({ home, explore, tools }: Props) {
       </main>
 
       <SosFab />
-      <TabNav active={tab} onSelect={setTab} />
+      <TabNav active={tab} onSelect={handleTabChange} />
     </>
   );
 }
