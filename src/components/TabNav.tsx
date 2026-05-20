@@ -11,8 +11,8 @@ type Props = {
 
 const TABS: { id: TabId; label: string; Icon: typeof IconHome }[] = [
   { id: "home", label: "Home", Icon: IconHome },
-  { id: "explore", label: "Spots", Icon: IconCompass },
   { id: "tools", label: "Kit", Icon: IconSatchel },
+  { id: "explore", label: "Spots", Icon: IconCompass },
 ];
 
 export function TabNav({ active, onSelect }: Props) {
