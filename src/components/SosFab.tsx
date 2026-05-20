@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { IconAlarm, IconClose } from "./Icons";
 
 const PETE_NUMBER = "31612250217";
-const BASE_TEXT = "Peter, ik ben verdwaald en ik ben bang. Red me uit deze ellende!";
+const BASE_TEXT =
+  "PETER. HET IS MIS.\n\nIk dwaal hier rond als een volledig kansloos mens. Verdwaald in een stad van 2 miljoen mensen. Niet in staat mezelf te redden.\n\nIk schaam me kapot. Maar ik ben te zielig om het zelf op te lossen.\n\nDit is het absolute dieptepunt van mijn bestaan en jij mag hier getuige van zijn.\n\nKom. Nu. Mijn locatie:";
 
 type Status = "idle" | "locating" | "ready" | "no-location";
 
@@ -118,7 +119,7 @@ export function SosFab() {
             </h2>
 
             <p className="mt-2 text-body-md text-ink">
-              BadPete wordt wakker gebeld. Bericht inclusief jouw GPS-locatie.
+              BadPete wordt wakker gebeld. Jij bent de reden.
             </p>
 
             <div className="mt-4 rounded-card border border-border-soft bg-card px-4 py-3">
