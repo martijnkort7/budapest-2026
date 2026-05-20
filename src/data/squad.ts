@@ -16,7 +16,7 @@ export const SQUAD: SquadMember[] = [
     accentColor: "#f5c518",
   },
   {
-    name: "Niek Stijvers",
+    name: "Niek",
     initial: "N",
     alias: "Stijve Neansen",
     status: "Bedacht Budapest, pakte extra beenruimte, en won €375 op schaatsgoud - de man levert",
@@ -30,21 +30,21 @@ export const SQUAD: SquadMember[] = [
     accentColor: "#008751",
   },
   {
-    name: "Jeroen Zaantje",
+    name: "Jeroen",
     initial: "J",
     alias: "Zaadcel",
     status: "Boekte ieders vlucht, deelt handbagage met Joep - slaapt alleen absoluut niet op die bank",
     accentColor: "#3a86ff",
   },
   {
-    name: "Joep De Jong",
+    name: "Joep",
     initial: "J",
     alias: "De Sloopkogel",
     status: "Johannes Gradus scoorde de VIP-tickets en verast de groep elk jaar met een mystery cadeau",
     accentColor: "#ff6b35",
   },
   {
-    name: "Oli4 Smits",
+    name: "Oli4",
     initial: "O",
     alias: "Olijke Oli",
     status: "Dry Januari voor z'n lever, ketting van zijn vriendin om - maar Vollie wint het altijd",
