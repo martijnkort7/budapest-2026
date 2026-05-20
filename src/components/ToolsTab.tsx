@@ -1,6 +1,5 @@
 import { SpinWheel } from "./SpinWheel";
 import { BeerCounter } from "./BeerCounter";
-import { PromilleMeter } from "./PromilleMeter";
 import { CurrencyConverter } from "./CurrencyConverter";
 import { Lexicon } from "./Lexicon";
 import { Limericks } from "./Limericks";
@@ -20,7 +19,6 @@ export function ToolsTab({ rate, isFallback }: Props) {
         </header>
         <SpinWheel />
         <BeerCounter />
-        <PromilleMeter />
       </div>
 
       <div className="flex flex-col gap-4">
