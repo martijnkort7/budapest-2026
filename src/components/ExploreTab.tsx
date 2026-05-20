@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import { FILTER_PILLS, VENUE_GROUPS, type VenueCategory } from "@/data/venues";
-import { IconBurger, IconBeer, IconMartini, IconCamera } from "./Icons";
+import { IconBurger, IconBeer, IconMartini, IconCamera, IconMapPin } from "./Icons";
 
 const CATEGORY_THEME: Record<VenueCategory, { color: string; bg: string; Icon: typeof IconBurger; label: string }> = {
   food: {
@@ -171,12 +171,26 @@ export function ExploreTab() {
                       } as React.CSSProperties}
                     >
                       <div className="flex items-baseline justify-between gap-3">
-                        <h4
-                          className="text-display-sm text-ink"
-                          style={{ textWrap: "balance" } as React.CSSProperties}
-                        >
-                          {venue.name}
-                        </h4>
+                        <div className="flex items-center gap-2">
+                          <h4
+                            className="text-display-sm text-ink"
+                            style={{ textWrap: "balance" } as React.CSSProperties}
+                          >
+                            {venue.name}
+                          </h4>
+                          {venue.mapsUrl && (
+                            <a
+                              href={venue.mapsUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-ink-soft hover:text-ink transition-colors"
+                              aria-label={`Open ${venue.name} in Google Maps`}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <IconMapPin size={18} />
+                            </a>
+                          )}
+                        </div>
                         <span
                           aria-hidden="true"
                           className="text-label-xs"
