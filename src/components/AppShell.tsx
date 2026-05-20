@@ -17,11 +17,17 @@ export function AppShell({ home, explore, tools }: Props) {
 
   return (
     <>
-      <header className="safe-top sticky top-0 z-50 border-b border-border bg-bg/90 px-5 pt-4 pb-3 text-center backdrop-blur-md">
-        <h1 className="font-display text-2xl uppercase tracking-[0.04em] text-ink">
-          <span style={{ letterSpacing: "-0.02em" }}>Budapest</span>{" "}
-          <span style={{ letterSpacing: "0.06em" }}>Boys</span>{" "}
-          <span style={{ letterSpacing: "-0.01em" }}>Trip</span>
+      <header className="safe-top header-glow sticky top-0 z-50 border-b border-gold/20 px-5 pt-3 pb-3 text-center backdrop-blur-md">
+        <p className="font-display text-[11px] uppercase tracking-[0.3em] text-gold-dim mb-0.5">
+          22–25 MEI 2026
+        </p>
+        <h1 className="font-display leading-none uppercase">
+          <span className="block text-4xl text-gold" style={{ letterSpacing: "-0.02em" }}>
+            Budapest
+          </span>
+          <span className="block text-xl tracking-[0.18em] text-ink/80">
+            Boys Trip
+          </span>
         </h1>
       </header>
 
