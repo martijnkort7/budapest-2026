@@ -23,7 +23,7 @@ export function AppShell({ home, explore, tools }: Props) {
         <span style={{ background: "var(--color-hu-green)" }} />
       </div>
 
-      <header className="safe-top header-glow sticky top-0 z-50 border-b border-gold/20 px-5 pt-3 pb-3 text-center backdrop-blur-md">
+      <header className="safe-top header-glow sticky top-0 z-50 border-b border-gold/20 px-5 pt-5 pb-4 text-center backdrop-blur-md">
         <p className="font-display text-[11px] uppercase tracking-[0.3em] text-gold-dim mb-0.5">
           22–25 MEI 2026
         </p>

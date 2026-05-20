@@ -260,7 +260,7 @@ textarea:focus-visible {
 
 /* iOS safe-area helpers */
 .safe-top {
-  padding-top: max(env(safe-area-inset-top), 0px);
+  padding-top: max(env(safe-area-inset-top), 16px);
 }
 .safe-bottom {
   padding-bottom: max(env(safe-area-inset-bottom), 0px);
