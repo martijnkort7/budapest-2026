@@ -1,5 +1,7 @@
 "use client";
 
+import { IconHome, IconCompass, IconSatchel } from "./Icons";
+
 export type TabId = "home" | "explore" | "tools";
 
 type Props = {
@@ -7,10 +9,10 @@ type Props = {
   onSelect: (id: TabId) => void;
 };
 
-const TABS: { id: TabId; label: string; icon: string }[] = [
-  { id: "home", label: "Home", icon: "🏠" },
-  { id: "explore", label: "Explore", icon: "🗺️" },
-  { id: "tools", label: "Tools", icon: "🛠️" },
+const TABS: { id: TabId; label: string; Icon: typeof IconHome }[] = [
+  { id: "home", label: "Home", Icon: IconHome },
+  { id: "explore", label: "Spots", Icon: IconCompass },
+  { id: "tools", label: "Kit", Icon: IconSatchel },
 ];
 
 export function TabNav({ active, onSelect }: Props) {
@@ -29,13 +31,13 @@ export function TabNav({ active, onSelect }: Props) {
           transition: "transform 380ms var(--ease-drawer)",
         }}
       />
-      {TABS.map((tab, idx) => {
+      {TABS.map(({ id, label, Icon }, idx) => {
         const isActive = idx === activeIdx;
         return (
           <button
-            key={tab.id}
+            key={id}
             type="button"
-            onClick={() => onSelect(tab.id)}
+            onClick={() => onSelect(id)}
             className={`flex w-1/3 flex-col items-center gap-1 py-1 transition-colors duration-200 ${
               isActive ? "text-ink" : "text-ink-muted"
             }`}
@@ -43,18 +45,15 @@ export function TabNav({ active, onSelect }: Props) {
             aria-current={isActive ? "page" : undefined}
           >
             <span
-              aria-hidden="true"
-              className="text-xl will-change-transform"
+              className="will-change-transform"
               style={{
-                transform: isActive ? "scale(1.1)" : "scale(1)",
+                transform: isActive ? "scale(1.08)" : "scale(1)",
                 transition: "transform 220ms var(--ease-out-strong)",
               }}
             >
-              {tab.icon}
+              <Icon size={24} strokeWidth={isActive ? 1.9 : 1.6} />
             </span>
-            <span className="text-[10px] font-bold uppercase tracking-wider">
-              {tab.label}
-            </span>
+            <span className="text-label-xs">{label}</span>
           </button>
         );
       })}

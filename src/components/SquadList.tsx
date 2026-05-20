@@ -2,36 +2,39 @@ import { SQUAD } from "@/data/squad";
 
 export function SquadList() {
   return (
-    <ul className="rounded-card border border-border bg-card overflow-hidden">
+    <ul className="overflow-hidden rounded-tool border border-border bg-card shadow-card">
       {SQUAD.map((member, idx) => (
         <li
           key={member.name}
-          className="flex items-center gap-3 px-3.5 py-3"
-          style={{
-            borderBottom:
-              idx === SQUAD.length - 1 ? "none" : "1px solid var(--color-border)",
-          }}
+          className={`flex items-start gap-3.5 px-4 py-3.5 ${
+            idx === SQUAD.length - 1
+              ? ""
+              : "border-b border-hairline-soft"
+          }`}
         >
           <span
-            className="grid size-11 place-items-center rounded-full border border-border bg-bg font-display text-lg lowercase text-gold"
             aria-hidden="true"
+            className="grid size-11 shrink-0 place-items-center rounded-full text-display-md text-app"
+            style={{ backgroundColor: member.accentColor }}
           >
-            {member.initial.toLowerCase()}
+            {member.initial}
           </span>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-ink truncate">
-                {member.name}
+          <div className="flex min-w-0 flex-1 flex-col">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <span className="text-display-sm text-ink">{member.name}</span>
+              <span
+                className="text-label-xs"
+                style={{ color: member.accentColor }}
+              >
+                {member.alias}
               </span>
               {member.isBeheerder && (
-                <span className="rounded-data bg-ink-soft/10 px-1.5 py-0.5 font-mono text-[10px] font-extrabold uppercase tracking-wide text-sunset">
+                <span className="ml-auto rounded-data bg-hu-green/15 px-1.5 py-0.5 text-label-xs text-hu-green">
                   Beheerder
                 </span>
               )}
             </div>
-            <div className="text-sm italic text-ink-muted">
-              {member.alias} // {member.status}
-            </div>
+            <p className="mt-1 text-body-sm text-ink-soft">{member.status}</p>
           </div>
         </li>
       ))}

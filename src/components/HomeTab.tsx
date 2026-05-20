@@ -1,18 +1,27 @@
 import { SquadList } from "./SquadList";
 import { FactsCarousel } from "./FactsCarousel";
+import { MapsButton } from "./MapsButton";
 
 export function HomeTab() {
   return (
-    <section className="px-4 pt-2 pb-4">
-      <h2 className="mt-4 mb-2.5 flex items-center gap-1.5 text-base font-semibold text-ink-muted">
-        <span aria-hidden="true">🔥</span> De Line-up
-      </h2>
-      <SquadList />
+    <section className="flex flex-col gap-7 px-4 pt-4 pb-4">
+      <MapsButton />
 
-      <h2 className="mt-6 mb-2.5 flex items-center gap-1.5 text-base font-semibold text-ink-muted">
-        <span aria-hidden="true">💡</span> Nutteloze Feiten
-      </h2>
-      <FactsCarousel />
+      <div className="flex flex-col gap-3">
+        <header className="flex items-baseline justify-between gap-3 px-1">
+          <h2 className="text-display-md text-ink">De Boys</h2>
+          <span className="text-label-xs text-hu-green">7 dudes · 1 missie</span>
+        </header>
+        <SquadList />
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <header className="flex items-baseline justify-between gap-3 px-1">
+          <h2 className="text-display-md text-ink">Nutteloze Feiten</h2>
+          <span className="text-label-xs text-gold">Swipe →</span>
+        </header>
+        <FactsCarousel />
+      </div>
     </section>
   );
 }
