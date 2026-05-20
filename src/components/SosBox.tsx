@@ -11,12 +11,13 @@ export function SosBox() {
         id="sos-title"
         className="font-display text-3xl uppercase tracking-wide text-hu-red"
       >
-        SOS — Man Overboord
+        SOS - Man Overboord
       </h2>
       <p className="mx-auto mt-3 max-w-[36ch] text-sm leading-relaxed text-ink">
-        Het is 04:00. Je staat in een steegje. Je telefoon op 3%. Je hebt
-        geen idee waar je bent en nog minder waar de groep is. Druk op deze
-        knop om Peter — jullie oppas — in blinde paniek wakker te appen.
+        Het is 04:00. Je staat in een steegje in District VII. Je telefoon op
+        3%. Geen idee waar je bent en nog minder waar de rest is. Druk op deze
+        knop om BadPete - 35, vrijgezel, en ooit de wildste van allemaal - in
+        blinde paniek wakker te appen.
       </p>
       <a
         href={WHATSAPP_URL}

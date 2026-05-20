@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand colors — Hungary signature */
+  /* Brand colors - Hungary signature */
   --color-app: #000000;
   --color-bg: #0a0a0c;
   --color-card: #141417;
@@ -25,7 +25,7 @@
   --font-display: var(--font-anton);
   --font-sans: var(--font-outfit);
 
-  /* Custom radii — varied rhythm */
+  /* Custom radii - varied rhythm */
   --radius-sharp: 0px;
   --radius-data: 4px;
   --radius-card: 10px;
@@ -36,13 +36,13 @@
   /* Spacing system */
   --spacing-section: 24px;
 
-  /* Easing — Emil's strong curves, custom > built-in */
+  /* Easing - Emil's strong curves, custom > built-in */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* Layered shadow system — kills generic single-direction drops */
+/* Layered shadow system - kills generic single-direction drops */
 @layer utilities {
   .shadow-ambient {
     box-shadow:
@@ -117,7 +117,7 @@ body {
   scrollbar-width: none;
 }
 
-/* Subtle SVG grain overlay — breaks the digital flatness */
+/* Subtle SVG grain overlay - breaks the digital flatness */
 .grain-overlay {
   position: fixed;
   inset: 0;
@@ -136,7 +136,7 @@ body {
   padding-bottom: max(env(safe-area-inset-bottom), 0px);
 }
 
-/* Wheel result reveal — text pops up from below with subtle scale */
+/* Wheel result reveal - text pops up from below with subtle scale */
 .result-reveal {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -150,7 +150,7 @@ body {
   }
 }
 
-/* Tab enter animation — CSS-only via @starting-style.
+/* Tab enter animation - CSS-only via @starting-style.
    Active tab fades + lifts 6px on each mount. No JS, hardware-accelerated,
    off the main thread. Graceful degradation: older browsers just snap. */
 .tab-enter {
@@ -166,7 +166,7 @@ body {
   }
 }
 
-/* Reduced motion — keep opacity, kill movement (Emil's framework) */
+/* Reduced motion - keep opacity, kill movement (Emil's framework) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

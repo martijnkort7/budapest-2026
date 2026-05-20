@@ -6,6 +6,7 @@ const ICON: Record<string, string> = {
   house: "🏚️",
   city: "🌆",
   droplet: "💧",
+  trophy: "🏆",
 };
 
 export function FactsCarousel() {

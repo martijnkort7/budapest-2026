@@ -10,7 +10,7 @@ export function ServiceWorkerRegistration() {
 
     const register = () => {
       navigator.serviceWorker.register("/sw.js").catch(() => {
-        // intentionally swallow — PWA install is best-effort
+        // intentionally swallow - PWA install is best-effort
       });
     };
 

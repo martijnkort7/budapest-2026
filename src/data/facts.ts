@@ -30,4 +30,9 @@ export const FACTS: Fact[] = [
     title: "Katerherstel 101",
     body: "Boedapest heeft 100+ thermale bronnen. De badhuizen zijn gebouwd om de alcohol, kater en restjes schaamte van de nacht eruit te koken. Verplicht bezoek na dag 1.",
   },
+  {
+    iconName: "trophy",
+    title: "Waterpolo Religie",
+    body: "Hongarije heeft meer Olympische gouden medailles in waterpolo dan alle andere landen bij elkaar opgeteld. Joep regelde VIP-tickets voor de finale. Jullie kijken naar nationale religie in levenden lijve.",
+  },
 ];
