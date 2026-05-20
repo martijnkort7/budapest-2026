@@ -119,6 +119,13 @@
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
+  .header-glow {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg) 90%, var(--color-gold) 10%) 0%,
+      var(--color-bg) 100%
+    );
+  }
 }
 
 /* ------------------------------------------------------------------
