@@ -21,7 +21,6 @@ export const SQUAD: SquadMember[] = [
     alias: "Stijve Neansen",
     status: "Bedacht Budapest, pakte extra beenruimte, en won €375 op schaatsgoud - de man levert",
     accentColor: "#d72638",
-    isBeheerder: true,
   },
   {
     name: "Bono",
