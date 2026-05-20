@@ -24,32 +24,22 @@ export const VENUE_GROUPS: VenueGroup[] = [
       {
         name: "Bamba Marha Burger Bar",
         blurb:
-          "De burgergod van Budapest. Altijd vol, altijd goed. Begin hier voordat je begint met drinken.",
+          "De burger-God van Boedapest. Altijd vol, altijd goed door lokale ingrediënten. Zorg dat je hier tenminste één keer een bodem legt.",
+      },
+      {
+        name: "Gettó Gulyás",
+        blurb:
+          "Essentiële Hongaarse stop voor een échte solide bodem. Bekend om de beste pörkölt (stoof) en gulyás in de Zsidó Negyed (Joodse wijk). Reserveren is een must.",
       },
       {
         name: "Karaván Street Food",
         blurb:
-          "Een steegje vol foodtrucks direct naast Szimpla Kert. Lángos (gefrituurd deeg), vette burgers en ijskoud bier. Perfecte tussensnack.",
-      },
-      {
-        name: "Tuning Burger",
-        blurb:
-          "Legendarische porties, ambachtelijke speciaalbieren erbij. Hier eet je jezelf in een coma waar je blij van wordt.",
+          "Een steegje vol foodtrucks direct naast Szimpla Kert. Ideaal voor groepen: de één pakt Lángos, de ander een vette burger en koud bier. Perfect als tussensnack.",
       },
       {
         name: "Meatology Budapest",
         blurb:
-          "Voor de carnivoor die serieus genomen wil worden. Dikke steaks, worsten, en nul groente in zicht.",
-      },
-      {
-        name: "Központ",
-        blurb:
-          "Rauwe late-night bar met pizza's en bites die beter zijn dan ze moeten zijn. Ideaal om 02:00 als de honger toeslaat.",
-      },
-      {
-        name: "Zing Burger",
-        blurb:
-          "Betrouwbare lokale keten voor als je geen plan hebt maar wel trek. Overal in de stad.",
+          "Voor de carnivoor die sit-down wil dineren met goede steaks, worstjes en burgers. Handig gelegen vlak bij de Basiliek.",
       },
     ],
   },
@@ -62,21 +52,17 @@ export const VENUE_GROUPS: VenueGroup[] = [
       {
         name: "Élesztőház",
         blurb:
-          "Oude glasfabriek omgebouwd tot biertempel met binnentuin. 20+ wisselende kranen. Hier kun je een middag verliezen.",
+          "Oude glasfabriek omgebouwd tot hét biertempel met binnenplaats. 20+ wisselende kranen verdeeld over de ruimtes. Hier kun je makkelijk een middag verliezen.",
       },
       {
-        name: "Krak'n Town",
+        name: "Gravity Brewing",
         blurb:
-          "Steampunk-bar die eruitziet als een filmset. Het bier is net zo goed als de aankleding bizar is.",
-      },
-      {
-        name: "Jónás Craft Beer House",
-        blurb:
-          "Terras aan de Donau. Relaxed zondagmiddaggevoel, maar dan met serieus bier. Katerherstel in stijl.",
+          "Eén van de best beoordeelde micro-breweries in de stad. Gelegen in een toffe kelder waar je direct op de brouwketels kijkt. 12 taps en topkwaliteit.",
       },
       {
         name: "First Craft Beer & BBQ",
-        blurb: "Prijswinnend bier + BBQ erbij. Twee vliegen, één klap, nul spijt.",
+        blurb:
+          "Toplocatie in de Dob utca. Combineert een enorme taplijst (20 taps) van eigen en internationale bieren met hele goede BBQ-gerechten en een showkeuken.",
       },
     ],
   },
@@ -89,22 +75,22 @@ export const VENUE_GROUPS: VenueGroup[] = [
       {
         name: "Szimpla Kert",
         blurb:
-          "De moeder aller ruin bars. Een bizar doolhof van neon, badkuipen en retro troep. Hier moet je geweest zijn.",
+          "De moeder aller ruin bars. Een bizar doolhof van neon, badkuipen en retro troep. Ga hier 's middags of vroeg in de avond heen, later staat er een enorme rij.",
       },
       {
-        name: "Instant-Fogas Complex",
+        name: "Központ",
         blurb:
-          "Meerdere bars samengesmolten tot één mega uitgaans-monster. Gas erop tot 06:00. Eenmaal binnen kom je er niet meer uit.",
-      },
-      {
-        name: "Gozsdu Udvar",
-        blurb:
-          "Overdekte passage vol clubs, restaurants en kroegen. Altijd druk, altijd luid, altijd goed.",
+          "Overdag meer café/culturele spot, 's avonds dé plek waar de lokale jeugd zich verzamelt met dj's. Een perfecte schakel tussen je eerste biertje en de nachtclubs.",
       },
       {
         name: "Doboz",
         blurb:
-          "Strakker dan je gemiddelde ruin bar. Mega boom op de binnenplaats, houten gorilla erbij. Vraag niet waarom.",
+          "Strakker dan je gemiddelde ruin bar, met een mega boom op de binnenplaats inclusief houten gorilla. Uitstekende spot als je clubbing zoekt met ruin-bar vibes.",
+      },
+      {
+        name: "Instant-Fogas Complex",
+        blurb:
+          "Meerdere bars samengesmolten tot één mega uitgaans-monster. Gratis entree en gas erop tot 06:00. Dé eindbestemming van de nacht.",
       },
     ],
   },
@@ -115,22 +101,24 @@ export const VENUE_GROUPS: VenueGroup[] = [
     blurb: "Even afvinken tussen de biertjes door. Zo kun je thuis zeggen dat je cultuur hebt gehad.",
     venues: [
       {
-        name: "Het Parlementsgebouw",
-        blurb: "Het goudverlichte monument aan het water. Eén foto en je moeder is tevreden.",
-      },
-      {
         name: "Széchenyi Badhuis",
-        blurb: "Het gele paleis met warme buitenbaden. Perfecte katerherstel — of pre-game opwarming.",
+        blurb:
+          "Het gigantische gele paleis met warme buitenbaden. Perfect voor pre-game opwarming of om de kater weg te weken na een lange nacht.",
       },
       {
         name: "De Centrale Markthal (Nagycsarnok)",
         blurb:
-          "Gigantische historische hal vol Hongaarse worsten, paprikapoeder en lokale chaos. Koop wat voor thuis.",
+          "Gigantische historische hal. Boven haal je streetfood, beneden paprika en lokale worst. Let op: gesloten op zondag.",
       },
       {
         name: "Terror Háza (House of Terror)",
         blurb:
-          "Museum over de nazitijd en het communisme. Indrukwekkend, confronterend, en precies wat je nodig hebt na drie dagen zuipen.",
+          "Indrukwekkend museum in het voormalige hoofdkwartier van de nazi- en communistische geheime diensten. Confronterend, maar essentieel voor wat cultuur.",
+      },
+      {
+        name: "Het Parlementsgebouw",
+        blurb:
+          "Het waanzinnig verlichte monument aan het water. Een snelle foto vanaf de overkant van de Donau is al indrukwekkend genoeg.",
       },
     ],
   },
