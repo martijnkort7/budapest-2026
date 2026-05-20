@@ -1,5 +1,14 @@
 import { SQUAD } from "@/data/squad";
 
+function inkOn(hex: string): string {
+  const h = hex.replace("#", "");
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.6 ? "#050507" : "#fafaf9";
+}
+
 export function SquadList() {
   return (
     <ul className="overflow-hidden rounded-tool border border-border bg-card shadow-card">
@@ -14,8 +23,11 @@ export function SquadList() {
         >
           <span
             aria-hidden="true"
-            className="grid size-11 shrink-0 place-items-center rounded-full text-display-md text-app"
-            style={{ backgroundColor: member.accentColor }}
+            className="grid size-11 shrink-0 place-items-center rounded-full text-display-md"
+            style={{
+              backgroundColor: member.accentColor,
+              color: inkOn(member.accentColor),
+            }}
           >
             {member.initial}
           </span>
