@@ -24,6 +24,12 @@ export function AppShell({ home, explore, tools }: Props) {
 
   return (
     <>
+      <div key={`wipe-${tab}`} className="flag-wipe-overlay" aria-hidden="true">
+        <span style={{ background: "var(--color-hu-red)" }} />
+        <span style={{ background: "var(--color-hu-white)" }} />
+        <span style={{ background: "var(--color-hu-green)" }} />
+      </div>
+
       <header className="safe-top sticky top-0 z-50 border-b border-border bg-bg/85 px-5 pt-4 pb-3 backdrop-blur-md">
         <div key={tab} className="result-reveal flex items-baseline justify-between gap-3">
           <h1 className="text-display-lg text-ink">{header.title}</h1>

@@ -9,6 +9,7 @@ export function BeerCounter() {
   const [count, setCount] = useState(0);
   const [confirmReset, setConfirmReset] = useState(false);
   const [flashUndo, setFlashUndo] = useState(false);
+  const [milestoneKey, setMilestoneKey] = useState(0);
   const longPressTimer = useRef<number | null>(null);
   const didLongPress = useRef(false);
 
@@ -27,9 +28,11 @@ export function BeerCounter() {
     setCount((c) => {
       const next = c + 1;
       persist(next);
+      const isMilestone = next > 0 && next % 10 === 0;
       try {
-        navigator.vibrate?.(15);
+        navigator.vibrate?.(isMilestone ? [25, 40, 25, 40, 25] : 15);
       } catch {}
+      if (isMilestone) setMilestoneKey((k) => k + 1);
       return next;
     });
   }
@@ -85,6 +88,7 @@ export function BeerCounter() {
       </div>
 
       <button
+        key={milestoneKey}
         type="button"
         onClick={addBeer}
         onPointerDown={pressStart}
@@ -93,12 +97,13 @@ export function BeerCounter() {
         onPointerCancel={pressEnd}
         className={`mx-auto flex size-[200px] items-center justify-center rounded-full border-4 bg-gradient-to-br from-card to-bg text-display-xl text-ink transition-all active:scale-[0.95] active:bg-gold active:text-app ${
           flashUndo ? "border-hu-red" : "border-gold"
-        }`}
+        } ${milestoneKey > 0 ? "milestone-flash" : ""}`}
         style={{
           boxShadow: flashUndo
             ? "0 0 40px rgb(206 17 38 / 0.35), inset 0 0 24px rgb(0 0 0 / 0.8)"
             : "0 0 36px rgb(245 197 24 / 0.22), inset 0 0 24px rgb(0 0 0 / 0.8)",
-          transition: "border-color 220ms var(--ease-out-strong), box-shadow 220ms var(--ease-out-strong), transform 120ms var(--ease-out-strong)",
+          transition:
+            "border-color 220ms var(--ease-out-strong), transform 120ms var(--ease-out-strong)",
         }}
         aria-label="Tel een biertje — houd vast om er één af te halen"
       >

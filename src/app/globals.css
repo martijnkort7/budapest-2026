@@ -294,12 +294,109 @@ textarea:focus-visible {
   }
 }
 
-/* Press-feedback class - applies a subtle scale-down on active */
+/* Press-feedback class - applies a subtle scale-down on active.
+   Only applies on devices that can hover/precise-point (no touch),
+   so iOS doesn't briefly hold a press state from accidental taps. */
 .press-feedback {
-  transition: transform 180ms var(--ease-out-strong);
+  transition: transform 160ms var(--ease-out-strong);
+  will-change: transform;
 }
 .press-feedback:active {
   transform: scale(0.97);
+}
+
+/* Staggered entry — set `--i` per child for cascade.
+   Example: <li style={{ "--i": idx }} className="stagger-item">…</li> */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: stagger-in 420ms var(--ease-out-strong) forwards;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+@keyframes stagger-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Milestone flash — one-shot gold pulse on BeerCounter +1 button at %10 */
+.milestone-flash {
+  animation: milestone-flash 900ms var(--ease-out-strong);
+}
+@keyframes milestone-flash {
+  0% {
+    box-shadow:
+      0 0 36px rgb(245 197 24 / 0.22),
+      inset 0 0 24px rgb(0 0 0 / 0.8);
+  }
+  35% {
+    box-shadow:
+      0 0 96px rgb(245 197 24 / 0.85),
+      inset 0 0 24px rgb(0 0 0 / 0.5);
+  }
+  100% {
+    box-shadow:
+      0 0 36px rgb(245 197 24 / 0.22),
+      inset 0 0 24px rgb(0 0 0 / 0.8);
+  }
+}
+
+/* Soft pulse — used on "Cached" indicator dot to suggest "out of date" */
+.pulse-soft {
+  animation: pulse-soft 2.4s var(--ease-in-out-strong) infinite;
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+/* Flag-wipe overlay — one-shot tricolor sweep across the top edge on tab change.
+   Mount with `key={tab}` so it re-runs on every change. */
+.flag-wipe-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 101;
+  height: 4px;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  pointer-events: none;
+  transform: translateX(-50%);
+  animation: flag-wipe-sweep 480ms var(--ease-out-strong) forwards;
+  transform-origin: top center;
+}
+.flag-wipe-overlay > span {
+  flex: 1;
+}
+@keyframes flag-wipe-sweep {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    transform: translateX(-50%) scaleY(2.6);
+    opacity: 0.85;
+  }
+  55% {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(-50%) scaleY(2.6);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(-50%) scaleY(1);
+    opacity: 0;
+  }
+}
+
+/* TabNav indicator overshoot — uses `scale` property which composes with
+   the indicator's inline `transform: translateX(...)`. Modern CSS only. */
+.indicator-pop {
+  animation: indicator-pop 380ms var(--ease-out-strong);
+}
+@keyframes indicator-pop {
+  0%   { scale: 1 1;     }
+  45%  { scale: 1.18 1;  }
+  100% { scale: 1 1;     }
 }
 
 /* Reduced motion - keep opacity, kill movement (Emil's framework) */

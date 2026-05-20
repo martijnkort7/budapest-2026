@@ -49,11 +49,12 @@ export function Lexicon() {
             return (
               <li
                 key={nl}
-                className={`group flex flex-col gap-1 py-3 ${
+                className={`stagger-item group flex flex-col gap-1 py-3 ${
                   idx === DICTIONARY.length - 1
                     ? ""
                     : "border-b border-hairline-soft"
                 }`}
+                style={{ "--i": idx } as React.CSSProperties}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 flex-1 flex-col">
@@ -69,7 +70,7 @@ export function Lexicon() {
                     type="button"
                     onClick={() => copyPhrase(phrase, nl)}
                     aria-label={`Kopieer ${phrase}`}
-                    className="grid size-11 shrink-0 place-items-center rounded-pill text-ink-muted hover:text-ink"
+                    className="press-feedback grid size-11 shrink-0 place-items-center rounded-pill text-ink-muted hover:text-ink"
                   >
                     {isCopied ? (
                       <IconCheck size={20} aria-hidden="true" />

@@ -15,11 +15,12 @@ export function SquadList() {
       {SQUAD.map((member, idx) => (
         <li
           key={member.name}
-          className={`flex items-start gap-3.5 px-4 py-3.5 ${
+          className={`stagger-item press-feedback flex items-start gap-3.5 px-4 py-3.5 ${
             idx === SQUAD.length - 1
               ? ""
               : "border-b border-hairline-soft"
           }`}
+          style={{ "--i": idx } as React.CSSProperties}
         >
           <span
             aria-hidden="true"

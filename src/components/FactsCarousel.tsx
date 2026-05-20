@@ -57,7 +57,7 @@ export function FactsCarousel() {
           return (
             <article
               key={fact.title}
-              className="flex min-w-[270px] snap-center flex-col gap-2 rounded-tool border border-border bg-card p-4 shadow-surface"
+              className="press-feedback flex min-w-[270px] snap-center flex-col gap-2 rounded-tool border border-border bg-card p-4 shadow-surface"
             >
               <span
                 aria-hidden="true"

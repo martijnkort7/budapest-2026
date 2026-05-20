@@ -71,6 +71,7 @@ export function SosFab() {
         aria-label="SOS — paniekknop"
         onClick={handleOpen}
         className="fab-slot fixed right-4 z-[120] grid size-14 place-items-center rounded-full bg-hu-red text-white shadow-sos-ring transition-transform active:scale-[0.92]"
+        style={{ animationPlayState: open ? "paused" : "running" }}
       >
         <IconAlarm size={26} />
       </button>

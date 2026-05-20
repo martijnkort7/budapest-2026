@@ -35,6 +35,20 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
     }
   }
 
+  function tapChipEur(amount: number) {
+    try {
+      navigator.vibrate?.(8);
+    } catch {}
+    setFromEur(String(amount));
+  }
+
+  function tapChipHuf(amount: number) {
+    try {
+      navigator.vibrate?.(8);
+    } catch {}
+    setFromHuf(String(amount));
+  }
+
   return (
     <div className="rounded-tool border border-border bg-card px-5 pt-6 pb-6 shadow-card">
       <div className="flex items-baseline justify-between gap-3">
@@ -53,7 +67,9 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
           >
             <span
               aria-hidden="true"
-              className="inline-block size-2 rounded-full"
+              className={`inline-block size-2 rounded-full ${
+                isFallback ? "pulse-soft" : ""
+              }`}
               style={{
                 backgroundColor: isFallback
                   ? "var(--color-ink-muted)"
@@ -106,8 +122,8 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
             <button
               key={`eur-${amount}`}
               type="button"
-              onClick={() => setFromEur(String(amount))}
-              className="inline-flex min-h-9 items-center rounded-pill border border-border bg-bg px-3 text-label-xs text-ink-soft hover:text-ink"
+              onClick={() => tapChipEur(amount)}
+              className="press-feedback inline-flex min-h-9 items-center rounded-pill border border-border bg-bg px-3 text-label-xs text-ink-soft hover:text-ink"
             >
               €{amount}
             </button>
@@ -116,8 +132,8 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
             <button
               key={`huf-${amount}`}
               type="button"
-              onClick={() => setFromHuf(String(amount))}
-              className="inline-flex min-h-9 items-center rounded-pill border border-border bg-bg px-3 text-label-xs text-ink-soft hover:text-ink"
+              onClick={() => tapChipHuf(amount)}
+              className="press-feedback inline-flex min-h-9 items-center rounded-pill border border-border bg-bg px-3 text-label-xs text-ink-soft hover:text-ink"
             >
               {amount.toLocaleString("nl-NL")} Ft
             </button>
