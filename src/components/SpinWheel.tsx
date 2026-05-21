@@ -105,6 +105,18 @@ export function SpinWheel() {
     return Math.floor(pointerAngle / arc) % numSegments;
   }
 
+  function pickBiasedWinner(): number {
+    // Jeroen krijgt 2× het gewicht — hij is de lul
+    const weights = WHEEL_NAMES.map((name) => (name === "Jeroen" ? 2 : 1));
+    const total = weights.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < weights.length; i++) {
+      r -= weights[i];
+      if (r <= 0) return i;
+    }
+    return WHEEL_NAMES.length - 1;
+  }
+
   function spin() {
     if (isSpinning) return;
     setIsSpinning(true);
@@ -112,8 +124,19 @@ export function SpinWheel() {
     winnerIdxRef.current = null;
 
     const totalDuration = 4200 + Math.random() * 1500;
-    const totalRotation = TAU * (6 + Math.random() * 4);
     const startAngle = angleRef.current;
+    const numSegments = WHEEL_NAMES.length;
+    const arc = TAU / numSegments;
+
+    // Pre-pick winner met bias; bereken de eindhoek zodat het wiel daar landt
+    const targetIdx = pickBiasedWinner();
+    const segOffset = (0.3 + Math.random() * 0.4) * arc;
+    const targetPointerAngle = targetIdx * arc + segOffset;
+    const targetNormalized = ((1.5 * Math.PI - targetPointerAngle) % TAU + TAU) % TAU;
+    const currentNormalized = ((startAngle % TAU) + TAU) % TAU;
+    const delta = ((targetNormalized - currentNormalized) % TAU + TAU) % TAU;
+    const fullRotations = 6 + Math.floor(Math.random() * 4);
+    const totalRotation = fullRotations * TAU + delta;
     const startTime = performance.now();
 
     let lastTickSegment = -1;
