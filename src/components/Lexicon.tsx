@@ -49,7 +49,9 @@ export function Lexicon() {
             return (
               <li
                 key={nl}
-                className={`stagger-item group flex flex-col gap-1 py-3 ${
+                className={`stagger-item lexicon-row group flex flex-col gap-1 px-1 py-3 ${
+                  isCopied ? "lexicon-row--flash" : ""
+                } ${
                   idx === DICTIONARY.length - 1
                     ? ""
                     : "border-b border-hairline-soft"
@@ -59,7 +61,17 @@ export function Lexicon() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 flex-1 flex-col">
                     <span className="text-label-xs text-ink-muted">{nl}</span>
-                    <span className="mt-0.5 text-display-sm text-ink">{phrase}</span>
+                    <div className="mt-0.5 flex flex-wrap items-baseline gap-x-2">
+                      <span className="text-display-sm text-ink">{phrase}</span>
+                      {isCopied && (
+                        <span
+                          key={`chip-${nl}`}
+                          className="result-reveal inline-flex items-center rounded-pill bg-hu-green/15 px-2 py-0.5 text-label-xs text-hu-green"
+                        >
+                          Gekopieerd
+                        </span>
+                      )}
+                    </div>
                     {pronunciation && (
                       <span className="mt-0.5 text-body-sm italic text-gold">
                         {pronunciation}

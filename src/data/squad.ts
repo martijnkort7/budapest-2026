@@ -61,3 +61,30 @@ export const SQUAD: SquadMember[] = [
 
 export const WHEEL_NAMES = SQUAD.map((m) => m.name.split(" ")[0]);
 export const WHEEL_COLORS = SQUAD.map((m) => m.accentColor);
+
+export type BeerTier = {
+  threshold: number;
+  label: string;
+  color: string;
+};
+
+export const BEER_TIERS: BeerTier[] = [
+  { threshold: 0, label: "Nog Nuchter", color: "#b6b7bf" },
+  { threshold: 2, label: "Warming Up", color: "#fafaf9" },
+  { threshold: 5, label: "MC Shorty Niveau", color: "#f5c518" },
+  { threshold: 8, label: "Ballenbek Mode", color: "#3a86ff" },
+  { threshold: 12, label: "Brullen als Niek", color: "#d72638" },
+  { threshold: 16, label: "Volie's Tweede Adem", color: "#9d4edd" },
+  { threshold: 20, label: "Stijve Neansen", color: "#008751" },
+  { threshold: 25, label: "BadPete Territory", color: "#06d6a0" },
+  { threshold: 30, label: "De Lul (definitief)", color: "#ce1126" },
+];
+
+export function getTier(count: number): BeerTier {
+  let current = BEER_TIERS[0];
+  for (const tier of BEER_TIERS) {
+    if (count >= tier.threshold) current = tier;
+    else break;
+  }
+  return current;
+}

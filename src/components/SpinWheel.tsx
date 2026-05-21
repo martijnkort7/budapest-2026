@@ -151,8 +151,18 @@ export function SpinWheel() {
     requestAnimationFrame(frame);
   }
 
+  const winnerColor =
+    winnerIdxRef.current !== null
+      ? WHEEL_COLORS[winnerIdxRef.current % WHEEL_COLORS.length]
+      : "var(--color-gold)";
+
+  const isIdle = !isSpinning && !winner;
+
   return (
-    <div className="rounded-tool border border-border bg-card px-5 pt-6 pb-7 text-center shadow-card">
+    <div
+      className="rounded-tool border border-border bg-card px-5 pt-6 pb-7 text-center shadow-card"
+      style={{ "--winner-color": winnerColor } as React.CSSProperties}
+    >
       <span className="text-label-xs text-hu-red">Geen democratie</span>
       <h2 className="mt-1 text-display-lg text-ink">Het Rad des Doods</h2>
       <p className="mx-auto mt-2 max-w-[34ch] text-body-sm text-ink-soft">
@@ -160,6 +170,13 @@ export function SpinWheel() {
       </p>
 
       <div className="relative mx-auto mt-5 size-[260px]">
+        {winner && (
+          <span
+            key={`glow-${winner}`}
+            aria-hidden="true"
+            className="winner-glow pointer-events-none absolute inset-0 -z-0 rounded-full"
+          />
+        )}
         <div
           aria-hidden="true"
           className="absolute left-1/2 -top-3 z-30 -translate-x-1/2"
@@ -172,7 +189,7 @@ export function SpinWheel() {
             filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6))",
           }}
         />
-        <div className="size-full overflow-hidden rounded-full bg-bg shadow-[0_0_0_6px_var(--color-bg),0_0_32px_-4px_rgba(245,197,24,0.15)]">
+        <div className="relative size-full overflow-hidden rounded-full bg-bg shadow-[0_0_0_6px_var(--color-bg),0_0_32px_-4px_rgba(245,197,24,0.15)]">
           <canvas
             ref={canvasRef}
             role="img"
@@ -187,9 +204,13 @@ export function SpinWheel() {
         type="button"
         onClick={spin}
         disabled={isSpinning}
-        className={`mt-6 inline-flex items-center justify-center gap-2 rounded-pill px-7 py-3.5 text-display-md text-white shadow-go transition-transform active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60 ${
+        className={`press-feedback mt-6 inline-flex items-center justify-center gap-2 rounded-pill px-7 py-3.5 text-display-md text-white shadow-go disabled:cursor-not-allowed disabled:opacity-60 ${
           winner ? "bg-card text-ink border border-border" : "bg-hu-green"
-        }`}
+        } ${isIdle ? "breathe" : ""}`}
+        style={{
+          transition:
+            "background-color 280ms var(--ease-out-strong), color 280ms var(--ease-out-strong), transform 160ms var(--ease-out-strong)",
+        }}
       >
         {winner ? (
           <>

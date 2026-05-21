@@ -15,16 +15,21 @@ export function SquadList() {
       {SQUAD.map((member, idx) => (
         <li
           key={member.name}
-          className={`stagger-item press-feedback flex items-start gap-3.5 px-4 py-3.5 ${
+          className={`stagger-item press-feedback squad-row flex items-start gap-3.5 px-4 py-3.5 ${
             idx === SQUAD.length - 1
               ? ""
               : "border-b border-hairline-soft"
           }`}
-          style={{ "--i": idx } as React.CSSProperties}
+          style={
+            {
+              "--i": idx,
+              "--accent": member.accentColor,
+            } as React.CSSProperties
+          }
         >
           <span
             aria-hidden="true"
-            className="grid size-11 shrink-0 place-items-center rounded-full text-display-md"
+            className="squad-avatar grid size-11 shrink-0 place-items-center rounded-full text-display-md"
             style={{
               backgroundColor: member.accentColor,
               color: inkOn(member.accentColor),

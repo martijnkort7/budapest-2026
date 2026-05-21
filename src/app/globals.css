@@ -301,6 +301,17 @@ textarea:focus-visible {
   }
 }
 
+/* Tab-enter variant — fires 80ms after the parent header.
+   Used on the main content so header and content arrive layered. */
+.tab-enter--late {
+  transition-delay: 80ms;
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
 /* Press-feedback class - applies a subtle scale-down on active.
    Only applies on devices that can hover/precise-point (no touch),
    so iOS doesn't briefly hold a press state from accidental taps. */
@@ -317,8 +328,8 @@ textarea:focus-visible {
 .stagger-item {
   opacity: 0;
   transform: translateY(8px);
-  animation: stagger-in 420ms var(--ease-out-strong) forwards;
-  animation-delay: calc(var(--i, 0) * 55ms);
+  animation: stagger-in 360ms var(--ease-out-strong) forwards;
+  animation-delay: calc(var(--i, 0) * 48ms);
 }
 @keyframes stagger-in {
   to {
@@ -406,7 +417,210 @@ textarea:focus-visible {
   100% { scale: 1 1;     }
 }
 
-/* Reduced motion - keep opacity, kill movement (Emil's framework) */
+/* ------------------------------------------------------------------
+   Phase B micro-interactions
+   ------------------------------------------------------------------ */
+
+/* Count digit pop — BeerCounter session number on every change.
+   Triggered via key={count} on the inner <span>. */
+.count-pop {
+  animation: count-pop 240ms var(--ease-out-strong);
+}
+@keyframes count-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+/* Float-up — Twitter-style +1/−1 chip that drifts up and fades.
+   Used in BeerCounter via key={floaterKey}. */
+.float-up {
+  animation: float-up 620ms var(--ease-out-strong) forwards;
+}
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 4px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -28px) scale(0.96);
+  }
+}
+
+/* Tier glow — radial halo behind BeerCounter count using --tier-color.
+   The container sets --tier-color via inline style; the pseudo paints it. */
+.tier-glow {
+  background: radial-gradient(
+    circle at center,
+    color-mix(in oklch, var(--tier-color, var(--color-gold)) 35%, transparent) 0%,
+    transparent 65%
+  );
+  opacity: 0.55;
+  transition: background 480ms var(--ease-out-strong);
+}
+
+/* Cross-input flash — CurrencyConverter receiving side gets a 140ms wash
+   when the debounced value lands. Backed by --color-card-hover. */
+.cross-flash {
+  background-color: var(--color-card-hover) !important;
+}
+
+/* Swap glyph rotate — gently rotates toward the active side.
+   data-active is set from the React side to "eur" / "huf" / "none". */
+.swap-glyph {
+  transition: transform 280ms var(--ease-drawer);
+}
+.swap-glyph[data-active="huf"] {
+  transform: rotate(180deg);
+}
+.swap-glyph[data-active="eur"] {
+  transform: rotate(0deg);
+}
+
+/* Idle breathe — SpinWheel "Draai" button before first interaction.
+   Loops endlessly, stops when class is removed (state-driven from React). */
+.breathe {
+  animation: breathe 2800ms var(--ease-in-out-strong) infinite;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.025); }
+}
+
+/* Winner radial glow — SpinWheel pseudo behind canvas in winner's accent.
+   Container sets --winner-color via inline style. */
+.winner-glow {
+  background: radial-gradient(
+    circle at center,
+    color-mix(in oklch, var(--winner-color, var(--color-gold)) 55%, transparent) 0%,
+    transparent 70%
+  );
+  animation: winner-glow 1400ms var(--ease-out-strong) forwards;
+  will-change: opacity, transform;
+}
+@keyframes winner-glow {
+  0%   { opacity: 0; transform: scale(0.9); }
+  35%  { opacity: 0.45; transform: scale(1.04); }
+  100% { opacity: 0; transform: scale(1.08); }
+}
+
+/* Active-tab icon bounce — TabNav icons that just became active.
+   Keyed via key={tab} on the icon wrapper so it re-runs on each switch. */
+.icon-pop {
+  animation: icon-pop 320ms var(--ease-drawer);
+}
+@keyframes icon-pop {
+  0%   { transform: scale(0.88); }
+  55%  { transform: scale(1.12); }
+  100% { transform: scale(1.06); }
+}
+
+/* Filter pill press physics — sharper than the global press-feedback. */
+.pill-press {
+  transition:
+    color 220ms var(--ease-out-strong),
+    background-color 220ms var(--ease-out-strong),
+    transform 160ms var(--ease-out-strong);
+  will-change: transform;
+}
+.pill-press:active {
+  transform: scale(0.94);
+}
+
+/* Venue underline — bottom 2px line in category color, scaleX on press.
+   --cat-color is set per-row via inline style. */
+.venue-press::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: var(--cat-color, var(--color-gold));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 280ms var(--ease-out-strong);
+  pointer-events: none;
+}
+.venue-press:active::after,
+.venue-press:focus-within::after {
+  transform: scaleX(1);
+}
+
+/* Lexicon row flash — 320ms green wash after copy. */
+.lexicon-row {
+  transition: background-color 320ms var(--ease-out-strong);
+  border-radius: var(--radius-card);
+}
+.lexicon-row--flash {
+  background-color: color-mix(in oklch, var(--color-card) 82%, var(--color-hu-green) 18%);
+}
+
+/* Squad avatar ring-pulse — fires on row press in the member's accent.
+   --accent is set per-row via inline style. */
+.squad-row .squad-avatar {
+  transition: transform 220ms var(--ease-out-strong);
+  position: relative;
+}
+.squad-row:active .squad-avatar {
+  animation: ring-pulse 480ms var(--ease-out-strong);
+}
+@keyframes ring-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent, var(--color-gold)) 60%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 10px color-mix(in oklch, var(--accent, var(--color-gold)) 0%, transparent);
+  }
+}
+
+/* FactsCarousel edge fade — subtle scrollability hint, no extra DOM. */
+.carousel-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 20px,
+    black calc(100% - 20px),
+    transparent 100%
+  );
+          mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 20px,
+    black calc(100% - 20px),
+    transparent 100%
+  );
+}
+
+/* SOS Fab — anticipation scale on press (counter-intuitive: grows for crisis). */
+.sos-fab {
+  transition: transform 180ms var(--ease-out-strong);
+}
+.sos-fab:active {
+  transform: scale(1.08);
+}
+
+/* SOS send button — subtle opacity breathe inside the crisis sheet. */
+.sos-send-beat {
+  animation: pulse-soft 1800ms var(--ease-in-out-strong) infinite;
+}
+
+/* MapsButton chevron — slides 6px right on press, snaps back on release. */
+.maps-chevron {
+  display: inline-flex;
+}
+.press-feedback:active .maps-chevron {
+  transform: translateX(6px);
+}
+
+/* Reduced motion - keep opacity, kill movement (Emil's framework).
+   Generic rule clamps animation-duration; the explicit overrides below
+   silence loops that should never run under reduced-motion. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -415,5 +629,28 @@ textarea:focus-visible {
     animation-iteration-count: 1 !important;
     transition-duration: 150ms !important;
     transition-property: opacity, color, background-color !important;
+  }
+
+  .breathe,
+  .sos-send-beat,
+  .pulse-soft,
+  .shadow-sos-ring {
+    animation: none !important;
+  }
+
+  .winner-glow,
+  .float-up,
+  .icon-pop,
+  .count-pop,
+  .stagger-item,
+  .milestone-flash,
+  .flag-wipe-overlay,
+  .indicator-pop {
+    animation: none !important;
+  }
+
+  .stagger-item {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

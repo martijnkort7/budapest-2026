@@ -54,9 +54,10 @@ export function TabNav({ active, onSelect }: Props) {
             aria-current={isActive ? "page" : undefined}
           >
             <span
-              className="will-change-transform"
+              key={isActive ? `icon-${active}` : `icon-idle-${id}`}
+              className={`will-change-transform ${isActive ? "icon-pop" : ""}`}
               style={{
-                transform: isActive ? "scale(1.08)" : "scale(1)",
+                transform: isActive ? "scale(1.06)" : "scale(1)",
                 transition: "transform 220ms var(--ease-out-strong)",
               }}
             >

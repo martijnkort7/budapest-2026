@@ -3,11 +3,33 @@
 import { useState, type ReactNode } from "react";
 import { TabNav, type TabId } from "./TabNav";
 import { SosFab } from "./SosFab";
+import { SQUAD } from "@/data/squad";
+import { VENUE_GROUPS } from "@/data/venues";
 
 type Props = {
   home: ReactNode;
   explore: ReactNode;
   tools: ReactNode;
+};
+
+const TOTAL_VENUES = VENUE_GROUPS.reduce((sum, g) => sum + g.venues.length, 0);
+
+const HEADERS: Record<TabId, { kicker: string; title: string; subtitle: string }> = {
+  home: {
+    kicker: "21 - 24 mei 2026",
+    title: "De Line-up",
+    subtitle: `${SQUAD.length} dudes · klaar voor de slacht`,
+  },
+  explore: {
+    kicker: "Boys-trip Atlas",
+    title: "Spots",
+    subtitle: `${TOTAL_VENUES} venues · 4 categorieën`,
+  },
+  tools: {
+    kicker: "Drunk-Proof Kit",
+    title: "Survival Kit",
+    subtitle: "Drink · Wallet · Talk",
+  },
 };
 
 export function AppShell({ home, explore, tools }: Props) {
@@ -19,6 +41,7 @@ export function AppShell({ home, explore, tools }: Props) {
   }
 
   const active = tab === "home" ? home : tab === "explore" ? explore : tools;
+  const header = HEADERS[tab];
 
   return (
     <>
@@ -29,20 +52,16 @@ export function AppShell({ home, explore, tools }: Props) {
       </div>
 
       <header className="safe-top header-glow sticky top-0 z-50 border-b border-gold/20 px-5 pt-5 pb-4 text-center backdrop-blur-md">
-        <p className="font-display text-[11px] uppercase tracking-[0.3em] text-gold-dim mb-0.5">
-          21 - 24 mei 2026
-        </p>
-        <h1 className="font-display leading-none uppercase">
-          <span className="block text-4xl text-gold" style={{ letterSpacing: "-0.02em" }}>
-            Budapest
-          </span>
-          <span className="block text-xl tracking-[0.18em] text-ink/80">
-            Boys Trip
-          </span>
-        </h1>
+        <div key={`hdr-${tab}`} className="tab-enter">
+          <p className="font-display text-[11px] uppercase tracking-[0.3em] text-gold-dim mb-1">
+            {header.kicker}
+          </p>
+          <h1 className="text-display-lg text-ink leading-none">{header.title}</h1>
+          <p className="mt-1.5 text-label-xs text-ink-soft">{header.subtitle}</p>
+        </div>
       </header>
 
-      <main key={tab} className="tab-enter pb-32">
+      <main key={tab} className="tab-enter tab-enter--late pb-32">
         {active}
       </main>
 

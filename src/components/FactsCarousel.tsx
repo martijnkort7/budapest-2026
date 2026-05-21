@@ -49,7 +49,7 @@ export function FactsCarousel() {
       <div
         ref={railRef}
         onScroll={onScroll}
-        className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1"
+        className="no-scrollbar carousel-mask -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1"
       >
         {FACTS.map((fact) => {
           const Icon = ICON_MAP[fact.iconName] ?? IconCheck;
@@ -85,13 +85,15 @@ export function FactsCarousel() {
             <span
               key={idx}
               aria-hidden="true"
-              className="h-1 rounded-pill bg-border transition-all"
+              className="h-1 rounded-pill"
               style={{
                 width: position === idx + 1 ? 18 : 6,
                 backgroundColor:
                   position === idx + 1
                     ? "var(--color-gold)"
                     : "var(--color-border)",
+                transition:
+                  "width 240ms var(--ease-out-strong), background-color 240ms var(--ease-out-strong)",
               }}
             />
           ))}

@@ -91,13 +91,14 @@ export function ExploreTab() {
               }}
               type="button"
               onClick={() => setActiveWithHaptic(pill.id)}
-              className={`press-feedback relative z-10 inline-flex min-h-11 items-center whitespace-nowrap rounded-pill border px-5 text-label-xs ${
+              className={`pill-press relative z-10 inline-flex min-h-11 items-center whitespace-nowrap rounded-pill border px-5 text-label-xs ${
                 isActive
                   ? "border-transparent text-app"
                   : "border-border bg-card text-ink-soft"
               }`}
               style={{
-                transition: "color 220ms var(--ease-out-strong)",
+                transition:
+                  "color 220ms var(--ease-out-strong), transform 160ms var(--ease-out-strong)",
               }}
               aria-pressed={isActive}
             >
@@ -114,7 +115,7 @@ export function ExploreTab() {
 
       <div key={active} className="flex flex-col gap-8">
         {visible.length === 0 ? (
-          <div className="flex flex-col items-center gap-2 rounded-tool border border-border bg-card px-6 py-10 text-center shadow-surface">
+          <div className="result-reveal flex flex-col items-center gap-2 rounded-tool border border-border bg-card px-6 py-10 text-center shadow-surface">
             <span className="text-display-md text-ink">Nog niets hier</span>
             <p className="max-w-[24ch] text-body-sm text-ink-soft">
               Tap een andere categorie hierboven.
@@ -158,50 +159,61 @@ export function ExploreTab() {
                 </header>
 
                 <ul className="flex flex-col">
-                  {group.venues.map((venue, idx) => (
-                    <li
-                      key={venue.name}
-                      className={`stagger-item press-feedback flex flex-col gap-1.5 py-3.5 ${
-                        idx === group.venues.length - 1
-                          ? ""
-                          : "border-b border-hairline-soft"
-                      }`}
-                      style={{
-                        "--i": venueBase + idx + 1,
-                      } as React.CSSProperties}
-                    >
-                      <div className="flex items-baseline justify-between gap-3">
-                        <div className="flex items-center gap-2">
-                          <h4
-                            className="text-display-sm text-ink"
-                            style={{ textWrap: "balance" } as React.CSSProperties}
-                          >
-                            {venue.name}
-                          </h4>
-                          {venue.mapsUrl && (
-                            <a
-                              href={venue.mapsUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-ink-soft hover:text-ink transition-colors"
-                              aria-label={`Open ${venue.name} in Google Maps`}
-                              onClick={(e) => e.stopPropagation()}
+                  {group.venues.map((venue, idx) => {
+                    const parenMatch = venue.name.match(/^(.*?)\s+\(([^)]+)\)\s*$/);
+                    const mainName = parenMatch ? parenMatch[1].trim() : venue.name;
+                    const subName = parenMatch ? parenMatch[2].trim() : null;
+                    return (
+                      <li
+                        key={venue.name}
+                        className={`stagger-item venue-press press-feedback relative flex flex-col gap-1.5 py-3.5 ${
+                          idx === group.venues.length - 1
+                            ? ""
+                            : "border-b border-hairline-soft"
+                        }`}
+                        style={{
+                          "--i": venueBase + idx + 1,
+                          "--cat-color": theme.color,
+                        } as React.CSSProperties}
+                      >
+                        <div className="flex items-baseline justify-between gap-3">
+                          <div className="flex min-w-0 items-center gap-2">
+                            <h4
+                              className="text-display-sm text-ink"
+                              style={{ textWrap: "balance" } as React.CSSProperties}
                             >
-                              <IconMapPin size={18} />
-                            </a>
-                          )}
+                              {mainName}
+                              {subName && (
+                                <span className="ml-1.5 text-body-sm font-sans normal-case tracking-normal text-ink-muted">
+                                  ({subName})
+                                </span>
+                              )}
+                            </h4>
+                            {venue.mapsUrl && (
+                              <a
+                                href={venue.mapsUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="press-feedback shrink-0 text-ink-soft hover:text-ink transition-colors"
+                                aria-label={`Open ${mainName} in Google Maps`}
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <IconMapPin size={18} />
+                              </a>
+                            )}
+                          </div>
+                          <span
+                            aria-hidden="true"
+                            className="text-label-xs shrink-0"
+                            style={{ color: theme.color }}
+                          >
+                            0{idx + 1}
+                          </span>
                         </div>
-                        <span
-                          aria-hidden="true"
-                          className="text-label-xs"
-                          style={{ color: theme.color }}
-                        >
-                          0{idx + 1}
-                        </span>
-                      </div>
-                      <p className="text-body-md text-ink-soft">{venue.blurb}</p>
-                    </li>
-                  ))}
+                        <p className="text-body-md text-ink-soft">{venue.blurb}</p>
+                      </li>
+                    );
+                  })}
                 </ul>
               </article>
             );

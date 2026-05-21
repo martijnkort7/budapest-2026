@@ -24,7 +24,13 @@ export function MapsButton() {
         </span>
       </span>
 
-      <span aria-hidden="true" className="text-ink-muted transition-transform group-hover:translate-x-1">
+      <span
+        aria-hidden="true"
+        className="maps-chevron text-ink-muted"
+        style={{
+          transition: "transform 200ms var(--ease-out-strong)",
+        }}
+      >
         <IconChevronRight size={22} />
       </span>
     </a>

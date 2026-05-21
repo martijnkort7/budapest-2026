@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IconArrowSwap } from "./Icons";
 
 type Props = {
@@ -10,43 +10,77 @@ type Props = {
 
 const EUR_CHIPS = [5, 10, 20, 50];
 const HUF_CHIPS = [500, 2000, 5000];
+const CROSS_DEBOUNCE_MS = 120;
+
+type Side = "eur" | "huf" | null;
 
 export function CurrencyConverter({ rate, isFallback }: Props) {
   const [eur, setEur] = useState("");
   const [huf, setHuf] = useState("");
+  const [activeSide, setActiveSide] = useState<Side>(null);
+  const [flashSide, setFlashSide] = useState<Side>(null);
+  const debounceTimer = useRef<number | null>(null);
+  const flashTimer = useRef<number | null>(null);
 
-  function setFromEur(value: string) {
-    setEur(value);
-    const parsed = parseFloat(value);
-    if (Number.isFinite(parsed) && parsed >= 0) {
-      setHuf(String(Math.round(parsed * rate)));
-    } else {
-      setHuf("");
-    }
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) window.clearTimeout(debounceTimer.current);
+      if (flashTimer.current) window.clearTimeout(flashTimer.current);
+    };
+  }, []);
+
+  function triggerCrossFlash(side: Side) {
+    setFlashSide(side);
+    if (flashTimer.current) window.clearTimeout(flashTimer.current);
+    flashTimer.current = window.setTimeout(() => setFlashSide(null), 160);
   }
 
-  function setFromHuf(value: string) {
+  function setFromEur(value: string, instant = false) {
+    setEur(value);
+    setActiveSide("eur");
+    if (debounceTimer.current) window.clearTimeout(debounceTimer.current);
+    const update = () => {
+      const parsed = parseFloat(value);
+      if (Number.isFinite(parsed) && parsed >= 0) {
+        setHuf(String(Math.round(parsed * rate)));
+      } else {
+        setHuf("");
+      }
+      triggerCrossFlash("huf");
+    };
+    if (instant) update();
+    else debounceTimer.current = window.setTimeout(update, CROSS_DEBOUNCE_MS);
+  }
+
+  function setFromHuf(value: string, instant = false) {
     setHuf(value);
-    const parsed = parseFloat(value);
-    if (Number.isFinite(parsed) && parsed >= 0) {
-      setEur((parsed / rate).toFixed(2));
-    } else {
-      setEur("");
-    }
+    setActiveSide("huf");
+    if (debounceTimer.current) window.clearTimeout(debounceTimer.current);
+    const update = () => {
+      const parsed = parseFloat(value);
+      if (Number.isFinite(parsed) && parsed >= 0) {
+        setEur((parsed / rate).toFixed(2));
+      } else {
+        setEur("");
+      }
+      triggerCrossFlash("eur");
+    };
+    if (instant) update();
+    else debounceTimer.current = window.setTimeout(update, CROSS_DEBOUNCE_MS);
   }
 
   function tapChipEur(amount: number) {
     try {
       navigator.vibrate?.(8);
     } catch {}
-    setFromEur(String(amount));
+    setFromEur(String(amount), true);
   }
 
   function tapChipHuf(amount: number) {
     try {
       navigator.vibrate?.(8);
     } catch {}
-    setFromHuf(String(amount));
+    setFromHuf(String(amount), true);
   }
 
   return (
@@ -82,7 +116,11 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
       </div>
 
       <div className="mt-5 flex items-stretch gap-2 rounded-tool border border-border-soft bg-bg p-2">
-        <label className="flex-1 rounded-card px-3 py-2.5 focus-within:bg-card">
+        <label
+          className={`flex-1 rounded-card px-3 py-2.5 transition-colors duration-150 focus-within:bg-card ${
+            flashSide === "eur" ? "cross-flash" : ""
+          }`}
+        >
           <span className="block text-label-xs text-ink-muted">Echte Euro&apos;s €</span>
           <input
             type="number"
@@ -99,9 +137,18 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
           aria-hidden="true"
           className="grid w-9 shrink-0 place-items-center text-ink-muted"
         >
-          <IconArrowSwap size={20} />
+          <span
+            className="swap-glyph inline-flex"
+            data-active={activeSide ?? "none"}
+          >
+            <IconArrowSwap size={20} />
+          </span>
         </span>
-        <label className="flex-1 rounded-card px-3 py-2.5 text-right focus-within:bg-card">
+        <label
+          className={`flex-1 rounded-card px-3 py-2.5 text-right transition-colors duration-150 focus-within:bg-card ${
+            flashSide === "huf" ? "cross-flash" : ""
+          }`}
+        >
           <span className="block text-label-xs text-ink-muted">Monopoly-poen HUF</span>
           <input
             type="number"
