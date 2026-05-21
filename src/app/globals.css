@@ -482,6 +482,16 @@ textarea:focus-visible {
   transform: rotate(0deg);
 }
 
+/* Rate-strip pulse — brief gold glow when the FX rate updates.
+   Triggered via `key` change on the rate-strip wrapper. */
+.rate-pulse {
+  animation: rate-pulse 600ms var(--ease-out-strong) 1;
+}
+@keyframes rate-pulse {
+  0%   { color: var(--color-gold); }
+  100% { color: var(--color-ink-soft); }
+}
+
 /* Idle breathe — SpinWheel "Draai" button before first interaction.
    Loops endlessly, stops when class is removed (state-driven from React). */
 .breathe {
@@ -645,7 +655,8 @@ textarea:focus-visible {
   .stagger-item,
   .milestone-flash,
   .flag-wipe-overlay,
-  .indicator-pop {
+  .indicator-pop,
+  .rate-pulse {
     animation: none !important;
   }
 

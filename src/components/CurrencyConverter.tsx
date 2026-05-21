@@ -8,17 +8,37 @@ type Props = {
   isFallback: boolean;
 };
 
-const EUR_CHIPS = [5, 10, 20, 50];
-const HUF_CHIPS = [500, 2000, 5000];
+type Chip = { side: "eur" | "huf"; amount: number; label: string };
+
+const CHIPS: Chip[] = [
+  { side: "eur", amount: 10, label: "€10" },
+  { side: "eur", amount: 20, label: "€20" },
+  { side: "huf", amount: 1000, label: "1.000 Ft" },
+  { side: "huf", amount: 5000, label: "5.000 Ft" },
+];
+
 const CROSS_DEBOUNCE_MS = 120;
 
-type Side = "eur" | "huf" | null;
+type Side = "eur" | "huf";
+
+const eurFmt = new Intl.NumberFormat("nl-NL", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+const hufFmt = new Intl.NumberFormat("nl-NL", { maximumFractionDigits: 0 });
+
+function parseNL(raw: string): number {
+  const cleaned = raw.replace(/\s|\./g, "").replace(",", ".");
+  const parsed = parseFloat(cleaned);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : NaN;
+}
 
 export function CurrencyConverter({ rate, isFallback }: Props) {
   const [eur, setEur] = useState("");
   const [huf, setHuf] = useState("");
-  const [activeSide, setActiveSide] = useState<Side>(null);
-  const [flashSide, setFlashSide] = useState<Side>(null);
+  const [activeSide, setActiveSide] = useState<Side>("eur");
+  const [flashSide, setFlashSide] = useState<Side | null>(null);
+  const [swapSpin, setSwapSpin] = useState(0);
   const debounceTimer = useRef<number | null>(null);
   const flashTimer = useRef<number | null>(null);
 
@@ -37,12 +57,11 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
 
   function setFromEur(value: string, instant = false) {
     setEur(value);
-    setActiveSide("eur");
     if (debounceTimer.current) window.clearTimeout(debounceTimer.current);
     const update = () => {
-      const parsed = parseFloat(value);
-      if (Number.isFinite(parsed) && parsed >= 0) {
-        setHuf(String(Math.round(parsed * rate)));
+      const parsed = parseNL(value);
+      if (Number.isFinite(parsed)) {
+        setHuf(hufFmt.format(Math.round(parsed * rate)));
       } else {
         setHuf("");
       }
@@ -54,12 +73,11 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
 
   function setFromHuf(value: string, instant = false) {
     setHuf(value);
-    setActiveSide("huf");
     if (debounceTimer.current) window.clearTimeout(debounceTimer.current);
     const update = () => {
-      const parsed = parseFloat(value);
-      if (Number.isFinite(parsed) && parsed >= 0) {
-        setEur((parsed / rate).toFixed(2));
+      const parsed = parseNL(value);
+      if (Number.isFinite(parsed)) {
+        setEur(eurFmt.format(parsed / rate));
       } else {
         setEur("");
       }
@@ -69,93 +87,131 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
     else debounceTimer.current = window.setTimeout(update, CROSS_DEBOUNCE_MS);
   }
 
-  function tapChipEur(amount: number) {
+  function tapChip(chip: Chip) {
     try {
       navigator.vibrate?.(8);
     } catch {}
-    setFromEur(String(amount), true);
+    setActiveSide(chip.side);
+    if (chip.side === "eur") {
+      setFromEur(String(chip.amount), true);
+    } else {
+      setFromHuf(hufFmt.format(chip.amount), true);
+    }
   }
 
-  function tapChipHuf(amount: number) {
+  function tapSwap() {
     try {
-      navigator.vibrate?.(8);
+      navigator.vibrate?.(10);
     } catch {}
-    setFromHuf(String(amount), true);
+    setSwapSpin((n) => n + 180);
+    setActiveSide((s) => (s === "eur" ? "huf" : "eur"));
   }
+
+  function reformatOnBlur(side: Side) {
+    if (side === "eur") {
+      const parsed = parseNL(eur);
+      if (Number.isFinite(parsed)) setEur(eurFmt.format(parsed));
+    } else {
+      const parsed = parseNL(huf);
+      if (Number.isFinite(parsed)) setHuf(hufFmt.format(parsed));
+    }
+  }
+
+  const eurActive = activeSide === "eur";
+  const hufActive = activeSide === "huf";
 
   return (
     <div className="rounded-tool border border-border bg-card px-5 pt-6 pb-6 shadow-card">
-      <div className="flex items-baseline justify-between gap-3">
-        <div>
-          <span className="text-label-xs text-hu-green">HUF-Hustler Pro</span>
-          <h2 className="mt-1 text-display-lg text-ink">Wisselkoers</h2>
-        </div>
-        <div className="flex flex-col items-end">
-          <span className="text-body-sm text-ink-soft tabular-nums">
-            1 € = {rate.toFixed(2)} HUF
-          </span>
+      <span className="text-label-xs text-hu-green">HUF-Hustler Pro</span>
+      <h2 className="mt-1 text-display-lg text-ink">Wisselkoers</h2>
+
+      <div
+        key={rate}
+        className="mt-2 flex items-center justify-between gap-3 rate-pulse"
+      >
+        <span className="text-body-md text-ink-soft tabular-nums">
+          1 € = {rate.toFixed(2)} Ft
+        </span>
+        <span
+          className={`inline-flex items-center gap-1.5 rounded-pill border border-border-soft px-2 py-0.5 text-label-xs ${
+            isFallback ? "text-ink-muted" : "text-hu-green"
+          }`}
+        >
           <span
-            className={`mt-0.5 inline-flex items-center gap-1 text-label-xs ${
-              isFallback ? "text-ink-muted" : "text-hu-green"
+            aria-hidden="true"
+            className={`inline-block size-1.5 rounded-full ${
+              isFallback ? "" : "pulse-soft"
             }`}
-          >
-            <span
-              aria-hidden="true"
-              className={`inline-block size-2 rounded-full ${
-                isFallback ? "pulse-soft" : ""
-              }`}
-              style={{
-                backgroundColor: isFallback
-                  ? "var(--color-ink-muted)"
-                  : "var(--color-hu-green)",
-              }}
-            />
-            {isFallback ? "Cached" : "Live"}
-          </span>
-        </div>
+            style={{
+              backgroundColor: isFallback
+                ? "var(--color-ink-muted)"
+                : "var(--color-hu-green)",
+            }}
+          />
+          {isFallback ? "Cached" : "Live"}
+        </span>
       </div>
 
       <div className="mt-5 flex items-stretch gap-2 rounded-tool border border-border-soft bg-bg p-2">
         <label
-          className={`flex-1 rounded-card px-3 py-2.5 transition-colors duration-150 focus-within:bg-card ${
-            flashSide === "eur" ? "cross-flash" : ""
-          }`}
+          onClick={() => setActiveSide("eur")}
+          className={`flex-1 rounded-card border px-3 py-2.5 transition-all duration-150 ${
+            eurActive
+              ? "border-gold/40 bg-card"
+              : "border-transparent opacity-60"
+          } ${flashSide === "eur" ? "cross-flash" : ""}`}
         >
-          <span className="block text-label-xs text-ink-muted">Echte Euro&apos;s €</span>
+          <span className="block text-label-xs text-ink-muted">
+            Echte Euro&apos;s €
+          </span>
           <input
-            type="number"
+            type="text"
             inputMode="decimal"
-            min={0}
             value={eur}
+            onFocus={() => setActiveSide("eur")}
             onChange={(e) => setFromEur(e.target.value)}
+            onBlur={() => reformatOnBlur("eur")}
             placeholder="0"
             aria-label="Bedrag in euro's"
             className="w-full bg-transparent text-display-md text-ink tabular-nums outline-none placeholder:text-ink-muted/50"
           />
         </label>
-        <span
-          aria-hidden="true"
-          className="grid w-9 shrink-0 place-items-center text-ink-muted"
+
+        <button
+          type="button"
+          onClick={tapSwap}
+          aria-label="Wissel actieve valuta"
+          className="press-feedback grid size-10 shrink-0 self-center place-items-center rounded-pill border border-border bg-card text-ink-soft"
         >
           <span
-            className="swap-glyph inline-flex"
-            data-active={activeSide ?? "none"}
+            className="inline-flex transition-transform duration-300"
+            style={{
+              transform: `rotate(${swapSpin}deg)`,
+              transitionTimingFunction: "var(--ease-out-strong)",
+            }}
           >
-            <IconArrowSwap size={20} />
+            <IconArrowSwap size={18} />
           </span>
-        </span>
+        </button>
+
         <label
-          className={`flex-1 rounded-card px-3 py-2.5 text-right transition-colors duration-150 focus-within:bg-card ${
-            flashSide === "huf" ? "cross-flash" : ""
-          }`}
+          onClick={() => setActiveSide("huf")}
+          className={`flex-1 rounded-card border px-3 py-2.5 text-right transition-all duration-150 ${
+            hufActive
+              ? "border-gold/40 bg-card"
+              : "border-transparent opacity-60"
+          } ${flashSide === "huf" ? "cross-flash" : ""}`}
         >
-          <span className="block text-label-xs text-ink-muted">Monopoly-poen HUF</span>
+          <span className="block text-label-xs text-ink-muted">
+            Monopoly-poen Ft
+          </span>
           <input
-            type="number"
+            type="text"
             inputMode="decimal"
-            min={0}
             value={huf}
+            onFocus={() => setActiveSide("huf")}
             onChange={(e) => setFromHuf(e.target.value)}
+            onBlur={() => reformatOnBlur("huf")}
             placeholder="0"
             aria-label="Bedrag in Hongaarse forint"
             className="w-full bg-transparent text-right text-display-md text-ink tabular-nums outline-none placeholder:text-ink-muted/50"
@@ -163,29 +219,17 @@ export function CurrencyConverter({ rate, isFallback }: Props) {
         </label>
       </div>
 
-      <div className="mt-4 flex flex-col gap-2">
-        <div className="flex flex-wrap gap-2">
-          {EUR_CHIPS.map((amount) => (
-            <button
-              key={`eur-${amount}`}
-              type="button"
-              onClick={() => tapChipEur(amount)}
-              className="press-feedback inline-flex min-h-9 items-center rounded-pill border border-border bg-bg px-3 text-label-xs text-ink-soft hover:text-ink"
-            >
-              €{amount}
-            </button>
-          ))}
-          {HUF_CHIPS.map((amount) => (
-            <button
-              key={`huf-${amount}`}
-              type="button"
-              onClick={() => tapChipHuf(amount)}
-              className="press-feedback inline-flex min-h-9 items-center rounded-pill border border-border bg-bg px-3 text-label-xs text-ink-soft hover:text-ink"
-            >
-              {amount.toLocaleString("nl-NL")} Ft
-            </button>
-          ))}
-        </div>
+      <div className="mt-4 flex gap-2">
+        {CHIPS.map((chip) => (
+          <button
+            key={`${chip.side}-${chip.amount}`}
+            type="button"
+            onClick={() => tapChip(chip)}
+            className="press-feedback inline-flex min-h-10 flex-1 items-center justify-center rounded-pill border border-border bg-card px-2 text-label-xs text-ink-soft hover:text-ink"
+          >
+            {chip.label}
+          </button>
+        ))}
       </div>
     </div>
   );
