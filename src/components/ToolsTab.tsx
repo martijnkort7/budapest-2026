@@ -2,8 +2,6 @@ import { SpinWheel } from "./SpinWheel";
 import { BeerCounter } from "./BeerCounter";
 import { CurrencyConverter } from "./CurrencyConverter";
 import { Lexicon } from "./Lexicon";
-import { Limericks } from "./Limericks";
-
 type Props = {
   rate: number;
   isFallback: boolean;
@@ -30,13 +28,6 @@ export function ToolsTab({ rate, isFallback }: Props) {
         <Lexicon />
       </div>
 
-      <div className="flex flex-col gap-4">
-        <header className="flex items-baseline justify-between gap-3 px-1">
-          <h2 className="text-display-md text-ink">De Boys</h2>
-          <span className="text-label-xs text-hu-red">Vereeuwigd in vers</span>
-        </header>
-        <Limericks />
-      </div>
     </section>
   );
 }
