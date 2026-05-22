@@ -48,9 +48,6 @@ export function SpinWheel() {
 
     ctx.clearRect(0, 0, CSS_SIZE, CSS_SIZE);
 
-    const weights = WHEEL_NAMES.map((name) => (name === "Jeroen" ? 4 : 1));
-    const totalWeight = weights.reduce((a, b) => a + b, 0);
-
     for (let i = 0; i < numSegments; i++) {
       const segStart = angleRef.current + i * arc;
       const segColor = WHEEL_COLORS[i % WHEEL_COLORS.length];
@@ -77,19 +74,10 @@ export function SpinWheel() {
       ctx.translate(cx, cy);
       ctx.rotate(segStart + arc / 2);
       ctx.fillStyle = contrastInkOn(segColor);
+      ctx.font = "600 14px Outfit, system-ui, sans-serif";
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
-
-      const pct = Math.round((weights[i] / totalWeight) * 100);
-
-      ctx.font = "600 13px Outfit, system-ui, sans-serif";
-      ctx.fillText(WHEEL_NAMES[i], radius - 14, -7);
-
-      ctx.font = "500 10px Outfit, system-ui, sans-serif";
-      ctx.globalAlpha = 0.82;
-      ctx.fillText(`${pct}%`, radius - 14, 7);
-      ctx.globalAlpha = 1;
-
+      ctx.fillText(WHEEL_NAMES[i], radius - 14, 0);
       ctx.restore();
     }
 
@@ -118,15 +106,7 @@ export function SpinWheel() {
   }
 
   function pickBiasedWinner(): number {
-    // Jeroen krijgt 4× het gewicht — hij is de lul
-    const weights = WHEEL_NAMES.map((name) => (name === "Jeroen" ? 4 : 1));
-    const total = weights.reduce((a, b) => a + b, 0);
-    let r = Math.random() * total;
-    for (let i = 0; i < weights.length; i++) {
-      r -= weights[i];
-      if (r <= 0) return i;
-    }
-    return WHEEL_NAMES.length - 1;
+    return Math.floor(Math.random() * WHEEL_NAMES.length);
   }
 
   function spin() {
