@@ -106,8 +106,8 @@ export function SpinWheel() {
   }
 
   function pickBiasedWinner(): number {
-    // Jeroen krijgt 2× het gewicht — hij is de lul
-    const weights = WHEEL_NAMES.map((name) => (name === "Jeroen" ? 2 : 1));
+    // Jeroen krijgt 4× het gewicht — hij is de lul
+    const weights = WHEEL_NAMES.map((name) => (name === "Jeroen" ? 4 : 1));
     const total = weights.reduce((a, b) => a + b, 0);
     let r = Math.random() * total;
     for (let i = 0; i < weights.length; i++) {
