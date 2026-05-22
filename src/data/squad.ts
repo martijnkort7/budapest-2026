@@ -51,7 +51,7 @@ export const SQUAD: SquadMember[] = [
     accentColor: "#9d4edd",
   },
   {
-    name: "Peter Pan",
+    name: "Peter Pan 💀",
     initial: "P",
     alias: "BadPeter",
     status: "BadPete (35) is vrijgezel en gaat de club in met een pil op zak. De OG is terug.",
